@@ -82,7 +82,8 @@ suspend fun main() {
             }
         } catch (e: NumberFormatException) {
             resp.respond {
-                content = "Le time code soit être sous la forme `mm:ss`\nhttps://cdn.discordapp.com/attachments/810240818111053826/1203115327685271602/7b7a52b4-ce86-4c09-ab74-b42865767571.gif?ex=65cfeb76&is=65bd7676&hm=fc088b29ec7993d3071727374c04fcfb349f03ad9376be7eb8d9d714e94bea26&"
+                content = "Le time code doit être sous la forme `mm:ss`"
+                addFile(Path("pas_compliquer.gif"))
             }
             return@on
         }
