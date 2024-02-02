@@ -1,7 +1,7 @@
 package fr.imacaron.kaamelott.gif
 
 fun main() {
-    val ep1 = Episode(1, 1, "Heat")
+    val ep1 = Episode(1, 1)
 //    println(ep1.info.sceneChange)
 //    val start = ep1.info.sceneChange[0]
 //    val duration = ep1.getSceneDuration(1)

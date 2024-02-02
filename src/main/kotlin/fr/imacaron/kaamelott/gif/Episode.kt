@@ -6,10 +6,9 @@ import kotlin.math.sqrt
 
 class Episode(
     val number: Byte,
-    val book: Byte,
-    val title: String
+    val book: Byte
 ) {
-    private val fileName = "L${book}_E${number}_${title}.mkv"
+    private val fileName = "L${book}_E${number}.mkv"
     private val infoFileName = "L${book}_E${number}.info"
 
     val info: EpisodeInfo by lazy {
