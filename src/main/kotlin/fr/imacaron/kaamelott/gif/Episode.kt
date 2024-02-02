@@ -8,8 +8,8 @@ class Episode(
     val number: Byte,
     val book: Byte
 ) {
-    private val fileName = "L${book}_E${number}.mkv"
-    private val infoFileName = "L${book}_E${number}.info"
+    private val fileName = "L${book}_E${number.toString().padStart(3, '0')}.mkv"
+    private val infoFileName = "L${book}_E${number.toString().padStart(3, '0')}.info"
 
     val info: EpisodeInfo by lazy {
         val f = File("./info/$infoFileName")
@@ -22,8 +22,7 @@ class Episode(
             EpisodeInfo(timeCodes, frameRate, width, height)
         } else {
             val result =
-                "ffmpeg -i $fileName -filter:v select='gt(scene,0.1)',showinfo -f null -".runCommand(File("./episodes/"))
-                    ?.lines()!!
+                "ffmpeg -i episodes/$fileName -filter:v select='gt(scene,0.1)',showinfo -f null -".runCommand().apply { println(this) }?.lines()!!
             f.createNewFile()
             val (frameRate, width, height) = result.find { ".*Stream.*#[0-9]:[0-9]:.*Video.*".toRegex().matches(it) }!!.let { l ->
                 val fr = "([0-9]+) fps".toRegex().find(l)?.groupValues?.get(1)!!.toInt()
@@ -56,12 +55,12 @@ class Episode(
 
     fun createScene(start: Double, duration: Double): String {
         val path = "tmp/${UUID.randomUUID()}.mp4"
-        println("ffmpeg -ss $start -i ./episodes/$fileName -t $duration -map 0:0 -c copy $path".runCommand())
+        println("ffmpeg -ss $start -i ./episodes/$fileName -t $duration -map 0:0 -map_chapters -1 -c copy $path".runCommand())
         return path
     }
 
     fun getTextLength(scene: String, text: String, textSize: Int = 156): Double {
-        val t = text.replace("'", "\\'")
+        val t = text.replace("'", "")
         val lines ="ffmpeg -i $scene -vf drawtext=fontfile=./font.otf:fontsize=$textSize:text=\'$t\':x=0+0*print(tw):y=0+0*print(th) -vframes 1 -f null -".runCommand().apply { println(this) }!!.lines()
         try {
             return lines.first { "^[0-9.]+$".toRegex().matches(it) }.toDouble()
@@ -88,17 +87,20 @@ class Episode(
         files.forEach { it.delete() }
     }
 
-    fun convertToGif(meme: String) {
+    fun convertToGif(meme: String): String {
         val name = meme.substring(meme.lastIndexOf('/')).removeSuffix(".mp4")
         "ffmpeg -y -i $meme -r 15 -vf scale=512:-1,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse -ss 00:00:00 -to 00:02:00 gif/$name.gif".runCommand()
+        return "gif/$name.gif"
     }
 
-    fun createMeme(name: String, sceneIndex: Int, text: String, textSize: Int = 156) {
+    fun createMeme(name: String, sceneIndex: Int, text: String, textSize: Int = 156): String? {
         println("start = ${getSceneStart(sceneIndex)}, duration = ${getSceneDuration(sceneIndex)}")
         val tmp = createScene(getSceneStart(sceneIndex), getSceneDuration(sceneIndex))
+        println("scene $tmp created")
         val textLength = getTextLength(tmp, text, textSize)
+        println("text length = $textLength")
         if(textLength.isNaN()) {
-            return
+            return null
         }
         val avgChar = textLength / text.length
         val words = text.split(' ').filter { it.isNotBlank() }
@@ -113,8 +115,11 @@ class Episode(
             }
         }
         writeText(tmp, lines, name, textSize)
+        println("text written")
         File(tmp).delete()
-        convertToGif("out/$name.mp4")
+        val gif = convertToGif("out/$name.mp4")
+        println("gif made")
         File("out/$name.mp4").delete()
+        return gif
     }
 }
