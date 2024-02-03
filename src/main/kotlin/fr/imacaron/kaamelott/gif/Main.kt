@@ -25,6 +25,7 @@ import org.slf4j.simple.SimpleLoggerFactory
 import java.io.File
 import java.util.*
 import kotlin.io.path.Path
+import kotlin.math.log
 import kotlin.time.Duration.Companion.seconds
 
 suspend fun main() {
@@ -40,7 +41,14 @@ suspend fun main() {
     File("episodes").apply {
         list()?.forEach { f ->
             episodeNumbers[f[1].digitToInt()] = (episodeNumbers[f[1].digitToInt()] ?: 0) + 1
+        } ?: run {
+            logger.error("episodes files doesn't contain anything")
+            return
         }
+    }
+    if(episodeNumbers.size != 6) {
+        logger.error("Missing book")
+        return
     }
 
     kord.createGlobalChatInputCommand("kaagif", "Une commande pour créer des gif kaamelot") {
@@ -67,12 +75,25 @@ suspend fun main() {
         when(interaction.command.data.name.value) {
             "kaagif" -> {
                 if(options[1].value.value?.focused.value == true) {
-                    val ep = interaction.command.strings["episode"]
+                    val ep = interaction.command.strings["episode"] ?: run {
+                        logger.debug("No episode in command")
+                        return@on
+                    }
                     val choices = interaction.command.integers["livre"]?.let { livre ->
-                        (1..episodeNumbers[livre.toInt()]!!).asSequence().map {
+                        val number = episodeNumbers[livre.toInt()] ?: run {
+                            logger.debug("Missing book in episodeNumbers")
+                            return@on
+                        }
+                        (1..number).asSequence().map {
+                            logger.debug("Choice(\"Épisode $it\", Optional(null), $it)")
                             Choice.IntegerChoice("Épisode $it", Optional(null), it.toLong())
-                        }.filter { (ep ?: "") in it.value.toString() }
+                        }.filter {
+                            (ep in it.value.toString()).apply {
+                                logger.debug("${it.value} is keep with ep=$ep: $this")
+                            }
+                        }
                     } ?: (1..25).asSequence().map {
+                        logger.debug("Choice(\"Épisode $it\", Optional(null), $it)")
                         Choice.IntegerChoice("Épisode $it", Optional(null), it.toLong())
                     }
                     interaction.suggest(choices.take(25).toList())
@@ -82,19 +103,29 @@ suspend fun main() {
     }
 
     kord.on<GuildChatInputCommandInteractionCreateEvent> {
+        val user = interaction.user
+        logger.debug("Receive command from ${user.effectiveName}. Defer it")
         val resp = interaction.deferPublicResponse()
         try {
-            val ep = Episode(
-                interaction.command.integers["episode"]!!.toByte(),
-                interaction.command.integers["livre"]!!.toByte()
-            )
+            val epNum = interaction.command.integers["episode"]?.toByte() ?: run {
+                logger.debug("No ep num in command")
+                return@on
+            }
+            val book = interaction.command.integers["livre"]?.toByte() ?: run {
+                logger.debug("No book in command")
+                return@on
+            }
+            val ep = Episode(epNum, book)
             val time = try {
-                interaction.command.strings["timecode"]!!.split(":").let {
+                interaction.command.strings["timecode"]?.split(":")?.let {
                     if (it.size != 2) {
                         resp.respondTimecode()
                         return@on
                     }
                     it[0].toInt() * 60 + it[1].toInt()
+                } ?: run {
+                    logger.debug("No timecode in command")
+                    return@on
                 }
             } catch (e: NumberFormatException) {
                 resp.respondTimecode()
@@ -108,17 +139,25 @@ suspend fun main() {
                 resp.respondTropCourt()
                 return@on
             }
-            val text = interaction.command.strings["text"]!!
+            val text = interaction.command.strings["text"] ?: run {
+                logger.debug("No text in command")
+                return@on
+            }
             val scene = (ep.info.sceneChange.indexOfFirst { it > time } - 1).coerceAtLeast(0) + 1
+            logger.debug("Getting scene $scene, starting at ${ep.getSceneStart(scene)} and last ${ep.getSceneDuration(scene)}")
+            logger.debug("Creating meme")
             ep.createMeme("${UUID.randomUUID()}", scene, text)
                 .onFailure {
+                    logger.debug("Creating meme failed", it)
                     when(it) {
                         is NotEnoughTimeException -> {
+                            logger.debug("Not enough time to create scene")
                             resp.respond {
                                 content = "La portion choisie est trop petite, veuillez en sélectionner une autre"
                             }
                         }
                         is ErrorWhileDrawingText -> {
+                            logger.debug("Error while drawing text on scene")
                             resp.respond {
                                 content = "Erreur lors du dessin du texte"
                             }
@@ -126,6 +165,7 @@ suspend fun main() {
                     }
                 }
                 .onSuccess {
+                    logger.debug("meme $it successfully created")
                     resp.respond {
                         addFile(Path(it))
                     }
@@ -136,7 +176,9 @@ suspend fun main() {
         }
     }
 
+    logger.info("Starting")
     kord.login()
+    logger.info("Gracefully stopping")
 }
 
 suspend fun DeferredPublicMessageInteractionResponseBehavior.respondTimecode() {
