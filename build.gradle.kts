@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.plugin.mpp.pm20.util.archivesName
+
 plugins {
     application
     kotlin("jvm") version "1.9.22"
@@ -34,6 +36,7 @@ tasks {
             .map { if (it.isDirectory) it else zipTree(it) } +
                 sourcesMain.output
         from(contents)
+        archiveFileName = "kaamelott-gif.jar"
     }
     build {
         dependsOn(fatJar) // Trigger fat jar creation during build
