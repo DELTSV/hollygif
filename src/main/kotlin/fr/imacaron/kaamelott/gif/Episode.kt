@@ -101,17 +101,17 @@ class Episode(
         return "gif/$name.gif"
     }
 
-    fun createMeme(name: String, sceneIndex: Int, text: String, textSize: Int = 156): String? {
+    fun createMeme(name: String, sceneIndex: Int, text: String, textSize: Int = 156): Result<String> {
         println("start = ${getSceneStart(sceneIndex)}, duration = ${getSceneDuration(sceneIndex)}")
         if(getSceneDuration(sceneIndex) < 0) {
-            return null
+            return Result.failure(NotEnoughTimeException())
         }
         val tmp = createScene(getSceneStart(sceneIndex), getSceneDuration(sceneIndex))
         println("scene $tmp created")
         val textLength = getTextLength(tmp, text, textSize)
         println("text length = $textLength")
         if(textLength.isNaN()) {
-            return null
+            return Result.failure(ErrorWhileDrawingText())
         }
         val avgChar = textLength / text.length
         val words = text.split(' ').filter { it.isNotBlank() }
@@ -131,6 +131,6 @@ class Episode(
         val gif = convertToGif("out/$name.mp4")
         println("gif made")
         File("out/$name.mp4").delete()
-        return gif
+        return Result.success(gif)
     }
 }

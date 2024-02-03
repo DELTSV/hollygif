@@ -110,16 +110,26 @@ suspend fun main() {
             }
             val text = interaction.command.strings["text"]!!
             val scene = (ep.info.sceneChange.indexOfFirst { it > time } - 1).coerceAtLeast(0) + 1
-            val gif = ep.createMeme("${UUID.randomUUID()}", scene, text)
-            if (gif == null) {
-                resp.respond {
-                    content = "Erreur lors de la création du gif"
+            ep.createMeme("${UUID.randomUUID()}", scene, text)
+                .onFailure {
+                    when(it) {
+                        is NotEnoughTimeException -> {
+                            resp.respond {
+                                content = "La portion choisie est trop petite, veuillez en sélectionner une autre"
+                            }
+                        }
+                        is ErrorWhileDrawingText -> {
+                            resp.respond {
+                                content = "Erreur lors du dessin du texte"
+                            }
+                        }
+                    }
                 }
-            } else {
-                resp.respond {
-                    addFile(Path(gif))
+                .onSuccess {
+                    resp.respond {
+                        addFile(Path(it))
+                    }
                 }
-            }
         }catch (e: Exception) {
             logger.error(e)
             resp.respondUnknownError()
