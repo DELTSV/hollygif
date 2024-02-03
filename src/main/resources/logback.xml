@@ -27,7 +27,9 @@
 		<else>
 			<root level="info">
 				<appender-ref ref="FILE_INFO"/>
-				<appender-ref ref="FILE_DEBUG" level="debug"/>
+			</root>
+			<root level="debug">
+				<appender-ref ref="FILE_DEBUG"/>
 			</root>
 		</else>
 	</if>
