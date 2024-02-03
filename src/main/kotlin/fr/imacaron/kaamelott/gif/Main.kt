@@ -19,8 +19,9 @@ import java.io.File
 import java.util.*
 import kotlin.io.path.Path
 
+val logger = LoggerFactory.getLogger("fr.imacaron.kaamelott.gif.Main")
+
 suspend fun main() {
-    val logger = LoggerFactory.getLogger("fr.imacaron.kaamelott.gif.Main")
     val token = System.getenv("TOKEN") ?: run {
         logger.error("No TOKEN specified")
         return
