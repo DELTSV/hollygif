@@ -1,35 +1,27 @@
 package fr.imacaron.kaamelott.gif
 
 import dev.kord.common.entity.Choice
-import dev.kord.common.entity.InteractionType
 import dev.kord.common.entity.optional.Optional
 import dev.kord.common.entity.optional.value
 import dev.kord.core.Kord
 import dev.kord.core.behavior.interaction.response.DeferredPublicMessageInteractionResponseBehavior
 import dev.kord.core.behavior.interaction.response.respond
 import dev.kord.core.behavior.interaction.suggest
-import dev.kord.core.event.Event
 import dev.kord.core.event.interaction.AutoCompleteInteractionCreateEvent
-import dev.kord.core.event.interaction.GlobalChatInputCommandInteractionCreateEvent
-import dev.kord.core.event.interaction.GuildApplicationCommandInteractionCreateEvent
 import dev.kord.core.event.interaction.GuildChatInputCommandInteractionCreateEvent
 import dev.kord.core.on
-import dev.kord.rest.NamedFile
 import dev.kord.rest.builder.interaction.integer
 import dev.kord.rest.builder.interaction.string
 import dev.kord.rest.builder.message.addFile
-import dev.kord.rest.builder.message.modify.InteractionResponseModifyBuilder
-import io.ktor.client.request.forms.*
 import io.ktor.util.logging.*
-import org.slf4j.simple.SimpleLoggerFactory
+import org.slf4j.LoggerFactory
 import java.io.File
 import java.util.*
 import kotlin.io.path.Path
-import kotlin.math.log
 import kotlin.time.Duration.Companion.seconds
 
 suspend fun main() {
-    val logger = SimpleLoggerFactory().getLogger("Main logger")
+    val logger = LoggerFactory.getLogger("fr.imacaron.kaamelott.gif.Main")
     val token = System.getenv("TOKEN") ?: run {
         logger.error("No TOKEN specified")
         return

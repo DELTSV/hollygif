@@ -14,9 +14,9 @@ repositories {
 
 dependencies {
     implementation("dev.kord:kord-core:0.13.1")
-    implementation("org.slf4j:slf4j-simple:2.0.11")
     implementation("org.jetbrains.kotlin:kotlin-stdlib:1.9.22")
-
+    implementation("ch.qos.logback:logback-classic:1.4.14")
+    implementation("org.codehaus.janino:janino:3.1.8")
 
     testImplementation("org.jetbrains.kotlin:kotlin-test")
 }
