@@ -41,8 +41,8 @@ jobs:
       with:
         host: 151.80.58.137
         port: 10
-        username: macaron
-        password: ''
+        username: 'macaron'
+        password: 'password'
         localPath: './build/libs'
         remotePath: '/var/www/kaamelott-gif'
         privateKey: ${{ secrets.SSH_PRIVATE_KEY }}
