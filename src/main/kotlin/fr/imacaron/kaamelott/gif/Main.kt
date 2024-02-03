@@ -14,7 +14,6 @@ import dev.kord.core.on
 import dev.kord.rest.builder.interaction.integer
 import dev.kord.rest.builder.interaction.string
 import dev.kord.rest.builder.message.addFile
-import dev.kord.rest.request.HttpStatus
 import dev.kord.rest.request.KtorRequestException
 import io.ktor.util.logging.*
 import org.slf4j.LoggerFactory
