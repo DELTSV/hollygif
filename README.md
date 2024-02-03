@@ -22,7 +22,7 @@ Un bot discord pour créer des gifs kaamelott avec FFMPEG
 
 ## Todo
 
-- [ ] Ajouter une commande pour upload certains gif automatiquement sur tenor
+- [ ] Ajouter une commande pour upload certains gif automatiquement sur ~~tenor~~ (impossible) giphy
 - [ ] Ajouter une commande pour afficher les gifs disponible (déjà créer)
 - [ ] Améliorer le message durant la création du gif (avec des status et leur évolution)
 - [ ] Améliorer la gestion d'erreur
