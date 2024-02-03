@@ -4,10 +4,8 @@ import dev.kord.common.entity.Choice
 import dev.kord.common.entity.optional.Optional
 import dev.kord.common.entity.optional.value
 import dev.kord.core.Kord
-import dev.kord.core.behavior.interaction.response.DeferredPublicMessageInteractionResponseBehavior
 import dev.kord.core.behavior.interaction.response.respond
 import dev.kord.core.behavior.interaction.suggest
-import dev.kord.core.entity.User
 import dev.kord.core.event.interaction.AutoCompleteInteractionCreateEvent
 import dev.kord.core.event.interaction.GuildChatInputCommandInteractionCreateEvent
 import dev.kord.core.on
@@ -20,7 +18,6 @@ import org.slf4j.LoggerFactory
 import java.io.File
 import java.util.*
 import kotlin.io.path.Path
-import kotlin.time.Duration.Companion.seconds
 
 suspend fun main() {
     val logger = LoggerFactory.getLogger("fr.imacaron.kaamelott.gif.Main")
