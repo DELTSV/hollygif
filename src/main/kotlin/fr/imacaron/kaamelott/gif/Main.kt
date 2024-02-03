@@ -24,7 +24,11 @@ import java.util.*
 import kotlin.io.path.Path
 
 suspend fun main() {
-    val token = System.getenv("TOKEN")
+    val logger = SimpleLoggerFactory().getLogger("Main logger")
+    val token = System.getenv("TOKEN") ?: run {
+        logger.error("No TOKEN specified")
+        return
+    }
 
     val kord = Kord(token)
 
