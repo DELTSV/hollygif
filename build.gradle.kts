@@ -14,6 +14,7 @@ dependencies {
     implementation("dev.kord:kord-core:0.13.1")
     implementation("org.jetbrains.kotlin:kotlin-stdlib:1.9.22")
     implementation("ch.qos.logback:logback-classic:1.4.14")
+    implementation("ch.qos.logback:logback-core:1.4.14")
     implementation("org.codehaus.janino:janino:3.1.8")
 
     testImplementation("org.jetbrains.kotlin:kotlin-test")
@@ -29,6 +30,9 @@ tasks {
         archiveClassifier.set("standalone") // Naming the jar
         duplicatesStrategy = DuplicatesStrategy.EXCLUDE
         manifest { attributes(mapOf("Main-Class" to application.mainClass)) } // Provided we set it up in the application plugin configuration
+        exclude("META-INF/*.RSA")
+        exclude("META-INF/*.SF")
+        exclude("META-INF/*.DSA")
         val sourcesMain = sourceSets.main.get()
         val contents = configurations.runtimeClasspath.get()
             .map { if (it.isDirectory) it else zipTree(it) } +
