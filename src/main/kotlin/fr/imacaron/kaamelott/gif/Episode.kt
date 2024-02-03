@@ -18,8 +18,9 @@ class Episode(
             val frameRate = lines.first().toInt()
             val width = lines[1].toInt()
             val height = lines[2].toInt()
-            val timeCodes = lines.drop(3).map { it.toDouble() }
-            EpisodeInfo(timeCodes, frameRate, width, height)
+            val duration = lines[3].toDouble()
+            val timeCodes = lines.drop(4).map { it.toDouble() }
+            EpisodeInfo(timeCodes, frameRate, width, height, duration)
         } else {
             val result =
                 "ffmpeg -i episodes/$fileName -filter:v select='gt(scene,0.1)',showinfo -f null -".runCommand().apply { println(this) }?.lines()!!
@@ -32,6 +33,13 @@ class Episode(
                 f.writeText("$fr\n$w\n$h\n")
                 Triple(fr, w, h)
             }
+            val duration = result.find { ".*Duration: [0-9:]+.*".toRegex().matches(it) }!!.let { l ->
+                "([0-9]+):([0-9]+):([0-9.]+)".toRegex().find(l)!!.groupValues.let {
+                    println(l)
+                    println(it)
+                    it[1].toInt() * 3600 + it[2].toInt() * 60 + it[3].toDouble()
+                }
+            }.apply { f.appendText("$this\n") }
             val timeCodes = result.let { lines ->
                 lines.filter { "pts_time" in it }.map {
                     val start = it.indexOf("pts_time:") + 9
@@ -41,7 +49,7 @@ class Episode(
             }.apply {
                 f.appendText(this.joinToString(separator = "\n"))
             }
-            EpisodeInfo(timeCodes, frameRate, width, height)
+            EpisodeInfo(timeCodes, frameRate, width, height, duration)
         }
     }
 
