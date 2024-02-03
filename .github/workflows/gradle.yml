@@ -46,6 +46,14 @@ jobs:
         localPath: './build/libs'
         remotePath: '/var/www/kaamelott-gif'
         privateKey: ${{ secrets.SSH_PRIVATE_KEY }}
+    - name: Restart the bot
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: 151.80.58.137
+        username: 'macaron'
+        port: 10
+        script: 'sudo service kaamelott-gif restart'
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
     
     # NOTE: The Gradle Wrapper is the default and recommended way to run Gradle (https://docs.gradle.org/current/userguide/gradle_wrapper.html).
     # If your project does not have the Gradle Wrapper configured, you can use the following configuration to run Gradle with a specified version.
