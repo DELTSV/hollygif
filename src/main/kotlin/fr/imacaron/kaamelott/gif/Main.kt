@@ -109,7 +109,7 @@ suspend fun main() {
                 return@on
             }
             val text = interaction.command.strings["text"]!!
-            val scene = (ep.info.sceneChange.indexOfFirst { it > time } - 1).coerceAtLeast(0)
+            val scene = (ep.info.sceneChange.indexOfFirst { it > time } - 1).coerceAtLeast(0) + 1
             val gif = ep.createMeme("${UUID.randomUUID()}", scene, text)
             if (gif == null) {
                 resp.respond {

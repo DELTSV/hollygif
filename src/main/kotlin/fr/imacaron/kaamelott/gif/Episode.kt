@@ -103,6 +103,9 @@ class Episode(
 
     fun createMeme(name: String, sceneIndex: Int, text: String, textSize: Int = 156): String? {
         println("start = ${getSceneStart(sceneIndex)}, duration = ${getSceneDuration(sceneIndex)}")
+        if(getSceneDuration(sceneIndex) < 0) {
+            return null
+        }
         val tmp = createScene(getSceneStart(sceneIndex), getSceneDuration(sceneIndex))
         println("scene $tmp created")
         val textLength = getTextLength(tmp, text, textSize)
