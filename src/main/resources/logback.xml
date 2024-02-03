@@ -10,6 +10,11 @@
 		<encoder>
 			<pattern>%date %level [%thread] %logger{10} [%file:%line] -%kvp- %msg%n</pattern>
 		</encoder>
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+			<level>DEBUG</level>
+			<onMatch>DENY</onMatch>
+			<onMismatch>ACCEPT</onMismatch>
+		</filter>
 	</appender>
 	<appender name="FILE_DEBUG" class="ch.qos.logback.core.FileAppender">
 		<file>kaamelott-gif.log.extended</file>
@@ -25,10 +30,8 @@
 			</root>
 		</then>
 		<else>
-			<root level="info">
-				<appender-ref ref="FILE_INFO"/>
-			</root>
 			<root level="debug">
+				<appender-ref ref="FILE_INFO"/>
 				<appender-ref ref="FILE_DEBUG"/>
 			</root>
 		</else>
