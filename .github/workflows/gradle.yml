@@ -39,7 +39,7 @@ jobs:
     - name: Send the Jar to the server
       uses: Creepios/sftp-action@v1.0.5
       with:
-        host: ${{ env.SERVER_IP }}
+        host: 151.80.58.137
         port: 10
         username: macaron
         password: ''
