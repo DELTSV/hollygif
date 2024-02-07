@@ -38,3 +38,10 @@ Un bot discord pour créer des gifs kaamelott avec FFMPEG
 - [ ] Fixer les problèmes de textes
 - [ ] Limiter la tailler des textes
 - [ ] Permettre un texte vide
+- [ ] Rendre la commande spécifique aux guildes
+- [ ] Utiliser une interface pour la récupération des fichiers
+- [ ] Préparer plusieurs méthode de récupération de fichier (S3, SFTP …)
+- [ ] Faire en sorte que le bot répondent aux commandes sur les serveurs autorisé uniquement
+- [ ] Ajouter une interface admin au site pour les configuration de base
+- [ ] Permettre de configurer la font
+- [ ] Permettre de configurer le wording du bot
