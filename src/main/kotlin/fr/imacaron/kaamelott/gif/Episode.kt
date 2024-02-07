@@ -112,7 +112,7 @@ class Episode(
 	}
 
 	fun writeText(scene: String, text: List<String>, name: String, textSize: Int = 156) {
-		logger.debug("Writing text \"$text\" on scene $scene with text size $textSize")
+		logger.debug("Writing text \"{}\" on scene {} with text size {}", text, scene, textSize)
 		var i = 1
 		val files = mutableListOf<File>()
 		logger.debug("Creating text files")
@@ -128,7 +128,7 @@ class Episode(
 				writeText(t)
 				logger.debug("		Done")
 			})
-			"drawtext=fontfile=./font.otf:fontsize=$textSize:fontcolor=white:textfile=$path:x=(w-text_w)/2:y=h-(${i++}*th)-10"
+			"drawtext=fontfile=./font.otf:fontsize=$textSize:fontcolor=white:textfile=$path:x=(w-text_w)/2:y=h-(${(i++*textSize)})-10"
 		}
 		logger.debug("Drawtext commands: {}", commands)
 		"ffmpeg -y -i $scene -vf ${commands.joinToString(",")} out/$name.mp4".runCommand().apply {
