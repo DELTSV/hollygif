@@ -82,8 +82,8 @@ class Episode(
 		info.sceneChange[index] - info.sceneChange[index - 1] - (1.0 / info.frameRate) * sqrt(info.frameRate.toDouble())
 	}.also { logger.debug("Get scene $index duration: $it") }
 
-	fun createScene(start: Double, duration: Double): String {
-		val path = "tmp/${UUID.randomUUID()}.mp4"
+	fun createScene(start: Double, duration: Double, name: String): String {
+		val path = "out/$name.mp4"
 		logger.debug("Creating scene at $path")
 		"ffmpeg -ss $start -i ./episodes/$fileName -t $duration -map 0:0 -map_chapters -1 -c copy $path".runCommand().apply {
 			logger.debug(this)
@@ -131,7 +131,7 @@ class Episode(
 			"drawtext=fontfile=./font.otf:fontsize=$textSize:fontcolor=white:textfile=$path:x=(w-text_w)/2:y=h-(${(i++*textSize)})-10"
 		}
 		logger.debug("Drawtext commands: {}", commands)
-		"ffmpeg -y -i $scene -vf ${commands.joinToString(",")} out/$name.mp4".runCommand().apply {
+		"ffmpeg -y -i $scene -vf ${commands.joinToString(",")} tmp/$name.mp4".runCommand().apply {
 			logger.debug(this)
 		}
 		logger.debug("Text written")
@@ -157,8 +157,14 @@ class Episode(
 		if (getSceneDuration(sceneIndex) < 0) {
 			return Result.failure(NotEnoughTimeException())
 		}
-		val tmp = createScene(getSceneStart(sceneIndex), getSceneDuration(sceneIndex))
-		val textLength = getTextLength(tmp, text, textSize)
+		val sceneName = "${book}_${number}_${sceneIndex}"
+		val sceneFile = File("out/$sceneName.mp4")
+		val scene = if(sceneFile.exists()) {
+			"out/$sceneName.mp4"
+		} else {
+			createScene(getSceneStart(sceneIndex), getSceneDuration(sceneIndex), sceneName)
+		}
+		val textLength = getTextLength(scene, text, textSize)
 		if (textLength.isNaN()) {
 			return Result.failure(ErrorWhileDrawingText())
 		}
@@ -174,10 +180,9 @@ class Episode(
 				index++
 			}
 		}
-		writeText(tmp, lines, name, textSize)
-		File(tmp).delete()
-		val gif = convertToGif("out/$name.mp4")
-		File("out/$name.mp4").delete()
+		writeText(scene, lines, name, textSize)
+		val gif = convertToGif("tmp/$name.mp4")
+		File("tmp/$name.mp4").delete()
 		logger.debug("Meme created")
 		return Result.success(gif)
 	}

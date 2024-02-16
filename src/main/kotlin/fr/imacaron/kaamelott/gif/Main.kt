@@ -146,7 +146,7 @@ suspend fun main() {
             val scene = (ep.info.sceneChange.indexOfFirst { it > time } - 1).coerceAtLeast(0) + 1
             logger.debug("Getting scene $scene, starting at ${ep.getSceneStart(scene)} and last ${ep.getSceneDuration(scene)}")
             logger.debug("Creating meme")
-            ep.createMeme("${name}", scene, text)
+            ep.createMeme("$name", scene, text)
                 .onFailure {
                     logger.debug("Creating meme failed", it)
                     when(it) {
