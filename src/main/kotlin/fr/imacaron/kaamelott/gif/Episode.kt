@@ -1,7 +1,6 @@
 package fr.imacaron.kaamelott.gif
 
 import java.io.File
-import java.util.UUID
 import kotlin.math.sqrt
 
 class Episode(
