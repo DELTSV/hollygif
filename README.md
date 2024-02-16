@@ -26,7 +26,7 @@ Un bot discord pour créer des gifs kaamelott avec FFMPEG
 - [ ] Ajouter une commande pour afficher les gifs disponible (déjà créer)
 - [ ] Améliorer le message durant la création du gif (avec des status et leur évolution)
 - [ ] Améliorer la gestion d'erreur
-- [ ] Conserver les mp4 sans texte
+- [x] Conserver les mp4 sans texte
 - [ ] Sauvegarder les infos dans une base
   - [ ] Parser les infos déjà disponible vers la base
 - [ ] Sauvegarder les appels au bot dans une base
