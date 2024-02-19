@@ -20,7 +20,7 @@ dependencies {
     implementation("org.liquibase:liquibase-core:4.25.1")
 
     liquibaseRuntime("org.liquibase:liquibase-core:4.25.1")
-    liquibaseRuntime("com.mysql:mysql-connector-j:8.3.0")
+    liquibaseRuntime("org.mariadb.jdbc:mariadb-java-client:3.3.2")
     liquibaseRuntime("info.picocli:picocli:4.7.5")
     liquibaseRuntime("org.yaml:snakeyaml:2.2")
 
@@ -44,7 +44,7 @@ liquibase {
             "referenceUsername" to refDbUser,
             "referencePassword" to refDbPass,
             "logLevel" to "info",
-            "changelogFile" to "src/main/resources/migrations/changelog.mysql.sql",
+            "changelogFile" to "src/main/resources/migrations/changelog.mariadb.sql",
             "url" to dbUrl,
             "username" to dbUser,
             "password" to dbPass
