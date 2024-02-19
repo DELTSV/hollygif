@@ -34,7 +34,7 @@ Un bot discord pour créer des gifs kaamelott avec FFMPEG
   - [ ] Générer la première image de chaque scène d'un épisode
   - [ ] Utiliser les MP4 des scènes quand ils existent pour présenter les scènes
   - [ ] Sauvegarder les fichiers sur un S3
-- [ ] Ajouter une réponse éphémere à la commande permettant de supprimer ou de demander la sauvegarde d'un gif
+- [ ] Ajouter ~~une réponse éphémere à la commande~~ une commande de message permettant de supprimer ou de demander la sauvegarde d'un gif
 - [ ] Fixer les problèmes de textes
 - [ ] Limiter la tailler des textes
 - [ ] Permettre un texte vide

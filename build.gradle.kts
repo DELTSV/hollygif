@@ -1,6 +1,7 @@
 plugins {
     application
     kotlin("jvm") version "1.9.22"
+    id("org.liquibase.gradle") version "2.2.1"
 }
 
 group = "fr.imacaron"
@@ -16,12 +17,40 @@ dependencies {
     implementation("ch.qos.logback:logback-classic:1.4.14")
     implementation("ch.qos.logback:logback-core:1.4.14")
     implementation("org.codehaus.janino:janino:3.1.8")
+    implementation("org.liquibase:liquibase-core:4.25.1")
+
+    liquibaseRuntime("org.liquibase:liquibase-core:4.25.1")
+    liquibaseRuntime("com.mysql:mysql-connector-j:8.3.0")
+    liquibaseRuntime("info.picocli:picocli:4.7.5")
+    liquibaseRuntime("org.yaml:snakeyaml:2.2")
 
     testImplementation("org.jetbrains.kotlin:kotlin-test")
 }
 
 application {
     mainClass.set("fr.imacaron.kaamelott.gif.MainKt")
+}
+
+liquibase {
+    activities.register("main") {
+        val dbUrl = System.getenv("DB_URL")
+        val dbUser = System.getenv("DB_USER")
+        val dbPass = System.getenv("DB_PASSWORD")
+        val refDbUrl = System.getenv("REF_DB_URL")
+        val refDbUser = System.getenv("REF_DB_USER")
+        val refDbPass = System.getenv("REF_DB_PASSWORD")
+        arguments = mapOf(
+            "referenceUrl" to refDbUrl,
+            "referenceUsername" to refDbUser,
+            "referencePassword" to refDbPass,
+            "logLevel" to "info",
+            "changelogFile" to "src/main/resources/migrations/changelog.mysql.sql",
+            "url" to dbUrl,
+            "username" to dbUser,
+            "password" to dbPass
+        )
+    }
+    runList = "main"
 }
 
 tasks {
