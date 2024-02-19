@@ -15,6 +15,10 @@ on:
 
 jobs:
   build:
+    env:
+      DB_URL: ${{ secrets.DB_URL }}
+      DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+      DB_USER: ${{ secrets.DB_USER }}
 
     runs-on: ubuntu-latest
     permissions:
@@ -46,6 +50,7 @@ jobs:
         localPath: './build/libs'
         remotePath: '/var/www/kaamelott-gif'
         privateKey: ${{ secrets.SSH_PRIVATE_KEY }}
+
     - name: Stop the bot
       uses: appleboy/ssh-action@v1.0.3
       with:
