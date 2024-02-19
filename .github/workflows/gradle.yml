@@ -56,7 +56,7 @@ jobs:
         key: ${{ secrets.SSH_PRIVATE_KEY }}
 
     - name: Run database migration with liquibase
-      run: ./gradlew update --url="jdbc:mariadb://151.80.58.137:1653/kaamelott-gif" --user=${{ secrets.DB_USER }} --password=${{ secrets.DB_PASS }}
+      run: ./gradlew update
 
     - name: Start the bot
       uses: appleboy/ssh-action@v1.0.3
