@@ -1,5 +1,6 @@
 package fr.imacaron.kaamelott.gif
 
+import com.mchange.v2.c3p0.ComboPooledDataSource
 import dev.kord.common.entity.Choice
 import dev.kord.common.entity.optional.Optional
 import dev.kord.common.entity.optional.value
@@ -13,7 +14,12 @@ import dev.kord.rest.builder.interaction.integer
 import dev.kord.rest.builder.interaction.string
 import dev.kord.rest.builder.message.addFile
 import dev.kord.rest.request.KtorRequestException
+import fr.imacaron.kaamelott.gif.repository.EpisodeRepository
+import fr.imacaron.kaamelott.gif.repository.SceneRepository
+import fr.imacaron.kaamelott.gif.repository.SeasonRepository
+import fr.imacaron.kaamelott.gif.repository.SeriesRepository
 import io.ktor.util.logging.*
+import org.ktorm.database.Database
 import org.slf4j.LoggerFactory
 import java.io.File
 import java.util.*
@@ -27,17 +33,34 @@ suspend fun main() {
         return
     }
 
+    val cpds = ComboPooledDataSource().apply {
+        driverClass = "org.mariadb.jdbc.Driver"
+        jdbcUrl = System.getenv("DB_URL")
+        user = System.getenv("DB_USER")
+        password = System.getenv("DB_PASSWORD")
+        minPoolSize = 5
+        acquireIncrement = 5
+        maxPoolSize = 10
+    }
+
+    val db = Database.connect(cpds)
+
+    val sceneRepository = SceneRepository(db)
+    val episodeRepository = EpisodeRepository(db, sceneRepository)
+    val seasonRepository = SeasonRepository(db)
+    val seriesRepository = SeriesRepository(db, seasonRepository, episodeRepository)
+
+    val kaamelott = seriesRepository.getSeries("kaamelott").getOrElse {
+        logger.error("Missing kaamelott")
+        return
+    }
+
     val kord = Kord(token)
 
-    val episodeNumbers = mutableMapOf<Int, Int>()
-    File("episodes").apply {
-        list()?.forEach { f ->
-            episodeNumbers[f[1].digitToInt()] = (episodeNumbers[f[1].digitToInt()] ?: 0) + 1
-        } ?: run {
-            logger.error("episodes files doesn't contain anything")
-            return
-        }
+    val episodeNumbers = kaamelott.seasons.associate {
+        it.number to it.episodes.size
     }
+
     if(episodeNumbers.size != 6) {
         logger.error("Missing book")
         return
@@ -46,7 +69,7 @@ suspend fun main() {
     kord.createGlobalChatInputCommand("kaagif", "Une commande pour créer des gif kaamelot") {
         integer("livre", "Livre") {
             required = true
-            for (i in 1..6) {
+            for (i in episodeNumbers.keys) {
                 choice("Livre $i", i.toLong())
             }
         }
