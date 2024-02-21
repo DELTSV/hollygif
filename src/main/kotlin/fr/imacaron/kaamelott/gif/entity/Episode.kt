@@ -6,7 +6,7 @@ import fr.imacaron.kaamelott.gif.repository.SceneRepository
 
 class Episode(
 	private val sceneRepository: SceneRepository,
-	private val entity: EpisodeEntity
+	val entity: EpisodeEntity
 ) {
 	val title: String
 		get() = entity.title

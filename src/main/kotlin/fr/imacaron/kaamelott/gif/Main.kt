@@ -27,7 +27,7 @@ import kotlin.io.path.Path
 
 val logger = LoggerFactory.getLogger("fr.imacaron.kaamelott.gif.Main")
 
-suspend fun main() {
+suspend fun main(args: Array<String>) {
     val token = System.getenv("TOKEN") ?: run {
         logger.error("No TOKEN specified")
         return
@@ -47,8 +47,19 @@ suspend fun main() {
 
     val sceneRepository = SceneRepository(db)
     val episodeRepository = EpisodeRepository(db, sceneRepository)
-    val seasonRepository = SeasonRepository(db)
+    val seasonRepository = SeasonRepository(db, episodeRepository)
     val seriesRepository = SeriesRepository(db, seasonRepository, episodeRepository)
+
+    if(args.size > 1) {
+        val loader = Loader(sceneRepository, episodeRepository, seasonRepository, seriesRepository)
+        loader.loadSeries(args[0])
+        loader.loadSeason(args[1].toInt())
+        for(i in 1..loader.series.seasons.size) {
+            val dir = File("${args[2]}$i")
+            loader.loadEpisodesInSeason("Kaamelott\\.S[0-9]{2}E([0-9]+)\\.(.*)\\.mkv", i, dir)
+        }
+        return
+    }
 
     val kaamelott = seriesRepository.getSeries("kaamelott").getOrElse {
         logger.error("Missing kaamelott")

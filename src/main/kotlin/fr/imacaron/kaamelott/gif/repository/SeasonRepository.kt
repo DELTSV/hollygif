@@ -1,22 +1,28 @@
 package fr.imacaron.kaamelott.gif.repository
 
 import fr.imacaron.kaamelott.gif.NotFoundException
+import fr.imacaron.kaamelott.gif.entity.Season
 import org.ktorm.database.Database
+import org.ktorm.dsl.and
 import org.ktorm.dsl.eq
 import org.ktorm.entity.*
 import org.ktorm.schema.Table
 import org.ktorm.schema.int
 
 class SeasonRepository(
-	private val db: Database
+	private val db: Database,
+	private val episodeRepository: EpisodeRepository
 ) {
 	fun getSeriesSeasons(series: SeriesEntity): Result<List<SeasonEntity>> =
-		Result.success(db.seasons.map { it })
+		Result.success(db.seasons.filter { it.series eq series.id }.map { it })
 
-	fun getSeriesSeason(series: SeriesEntity, number: Int): Result<SeasonEntity> =
-		db.seasons.find { it.number eq number }?.let {
-			Result.success(it)
+	fun getSeriesSeason(series: SeriesEntity, number: Int): Result<Season> =
+		db.seasons.find { (it.series eq series.id) and (it.number eq number) }?.let {
+			Result.success(Season(episodeRepository, it))
 		} ?: Result.failure(NotFoundException("Season not found"))
+
+	fun getSeriesSeasonsSize(series: SeriesEntity): Int =
+		db.seasons.count { it.series eq series.id }
 
 	fun addSeriesSeason(series: String, season: SeasonEntity): Result<SeasonEntity> {
 		val dbSeries = db.series.find { it.name eq series } ?: return Result.failure(NotFoundException("Series not found"))

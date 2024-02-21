@@ -26,8 +26,9 @@ class EpisodeRepository(
 			Result.success(Episode(sceneRepository, it))
 		} ?: Result.failure(NotFoundException("Episode not found"))
 
-	fun addEpisode(season: SeasonEntity, episode: EpisodeEntity): Result<EpisodeEntity> {
-		TODO("Not yet implemented")
+	fun addEpisode(episode: EpisodeEntity): Result<EpisodeEntity> {
+		db.episodes.add(episode)
+		return Result.success(episode)
 	}
 
 }
@@ -45,13 +46,15 @@ object EpisodeTable: Table<EpisodeEntity>("EPISODES") {
 
 interface EpisodeEntity: Entity<EpisodeEntity> {
 	val id: Int
-	val number: Int
-	val fps: Int
-	val width: Int
-	val height: Int
-	val title: String
-	val duration: Double
-	val season: SeasonEntity
+	var number: Int
+	var fps: Int
+	var width: Int
+	var height: Int
+	var title: String
+	var duration: Double
+	var season: SeasonEntity
+
+	companion object: Entity.Factory<EpisodeEntity>()
 }
 
 val Database.episodes get() = this.sequenceOf(EpisodeTable)

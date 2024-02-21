@@ -2,6 +2,7 @@ package fr.imacaron.kaamelott.gif.repository
 
 import org.ktorm.database.Database
 import org.ktorm.entity.Entity
+import org.ktorm.entity.add
 import org.ktorm.entity.sequenceOf
 import org.ktorm.schema.Table
 import org.ktorm.schema.double
@@ -18,8 +19,9 @@ class SceneRepository(
 		TODO("Not yet implemented")
 	}
 
-	fun addEpisodeScene(episode: EpisodeEntity, info: SceneEntity): Result<SceneEntity> {
-		TODO("Not yet implemented")
+	fun addEpisodeScene(info: SceneEntity): Result<SceneEntity> {
+		db.scenes.add(info)
+		return Result.success(info)
 	}
 }
 

@@ -5,7 +5,7 @@ import fr.imacaron.kaamelott.gif.repository.SeasonEntity
 
 class Season(
 	private val episodeRepository: EpisodeRepository,
-	private val entity: SeasonEntity
+	val entity: SeasonEntity
 ) {
 	var id
 		get() = entity.id
