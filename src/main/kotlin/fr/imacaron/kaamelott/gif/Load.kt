@@ -57,7 +57,7 @@ class Loader(
 				if(episodeRepository.getSeasonEpisode(season.entity, number).isSuccess) {
 					return@forEach
 				}
-				val title = result.groupValues[2]
+				val title = result.groupValues[2].replace("_", " ")
 				val metadata = FFMPEG.getFileMetadata(epFile.absolutePath)
 				episodeRepository.addEpisode(EpisodeEntity {
 					this.number = number

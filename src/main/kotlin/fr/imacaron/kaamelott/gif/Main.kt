@@ -56,7 +56,7 @@ suspend fun main(args: Array<String>) {
         loader.loadSeason(args[1].toInt())
         for(i in 1..loader.series.seasons.size) {
             val dir = File("${args[2]}$i")
-            loader.loadEpisodesInSeason("Kaamelott\\.S[0-9]{2}E([0-9]+)\\.(.*)\\.mkv", i, dir)
+            loader.loadEpisodesInSeason("Kaamelott\\.S[0-9]{2}E([0-9]+)\\.(.*)\\.mkv$", i, dir)
         }
         return
     }
