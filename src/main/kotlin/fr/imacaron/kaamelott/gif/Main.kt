@@ -11,7 +11,9 @@ import dev.kord.core.event.interaction.GuildChatInputCommandInteractionCreateEve
 import dev.kord.core.on
 import dev.kord.rest.builder.interaction.integer
 import dev.kord.rest.builder.interaction.string
+import dev.kord.rest.builder.message.EmbedBuilder
 import dev.kord.rest.builder.message.addFile
+import dev.kord.rest.builder.message.embed
 import dev.kord.rest.request.KtorRequestException
 import io.ktor.util.logging.*
 import org.slf4j.LoggerFactory
@@ -57,9 +59,7 @@ suspend fun main() {
         string("timecode", "Timecode sous la forme mm:ss") {
             required = true
         }
-        string("text", "Texte") {
-            required = true
-        }
+        string("text", "Texte")
     }
 
     kord.on<AutoCompleteInteractionCreateEvent> {
@@ -140,8 +140,7 @@ suspend fun main() {
             }
             val text = interaction.command.strings["text"] ?: run {
                 logger.debug("No text in command")
-                resp.respondBadCommand(user)
-                return@on
+                ""
             }
             val scene = (ep.info.sceneChange.indexOfFirst { it > time } - 1).coerceAtLeast(0) + 1
             logger.debug("Getting scene $scene, starting at ${ep.getSceneStart(scene)} and last ${ep.getSceneDuration(scene)}")
@@ -163,7 +162,13 @@ suspend fun main() {
                 .onSuccess {
                     logger.debug("meme $it successfully created")
                     resp.respond {
-                        content = "<@${user.id}>\n"
+                        embed {
+                            title = "Gif créer"
+                            author {
+                                this.name = "Kaamelott gifeur"
+                            }
+                            this.description = "<@${user.id}> à générer un gif avec la commande suivante\n`/kaagif Livre: $book Épisode $epNum timecode: ${interaction.command.strings["timecode"]} text: $text`"
+                        }
                         addFile(Path(it))
                     }
                 }
