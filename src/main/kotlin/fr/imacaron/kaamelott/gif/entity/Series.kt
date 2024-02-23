@@ -27,8 +27,10 @@ class Series(
 	val seasons = SeasonList()
 
 	inner class SeasonList {
-		operator fun get(index: Int): Result<Season> {
-			return seasonsRepository.getSeriesSeason(entity, index)
+		operator fun get(index: Int): Season {
+			return seasonsRepository.getSeriesSeason(entity, index).getOrElse {
+				throw IndexOutOfBoundsException()
+			}
 		}
 
 		fun <K, V>associate(transform: (Season) -> Pair<K, V>): Map<K, V> {

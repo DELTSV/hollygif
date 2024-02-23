@@ -24,8 +24,10 @@ class Season(
 	val episodes: EpisodeList = EpisodeList()
 
 	inner class EpisodeList {
-		operator fun get(i: Int): Result<Episode> {
-			return episodeRepository.getSeasonEpisode(entity, i)
+		operator fun get(i: Int): Episode {
+			return episodeRepository.getSeasonEpisode(entity, i).getOrElse {
+				throw IndexOutOfBoundsException()
+			}
 		}
 
 		val size by lazy {

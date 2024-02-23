@@ -23,7 +23,7 @@ class EpisodeRepository(
 
 	fun getSeasonEpisode(season: SeasonEntity, number: Int): Result<Episode> =
 		db.episodes.find { (it.season eq season.id) and (it.number eq number) }?.let {
-			Result.success(Episode(sceneRepository, it))
+			Result.success(Episode(sceneRepository, it, season))
 		} ?: Result.failure(NotFoundException("Episode not found"))
 
 	fun addEpisode(episode: EpisodeEntity): Result<EpisodeEntity> {

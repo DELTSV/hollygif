@@ -134,17 +134,26 @@ suspend fun main(args: Array<String>) {
         val resp = interaction.deferPublicResponse()
         val name = UUID.randomUUID()
         try {
-            val epNum = interaction.command.integers["episode"]?.toByte() ?: run {
+            val epNum = interaction.command.integers["episode"]?.toInt() ?: run {
                 logger.debug("No ep num in command")
                 resp.respondBadCommand(user)
                 return@on
             }
-            val book = interaction.command.integers["livre"]?.toByte() ?: run {
+            val book = interaction.command.integers["livre"]?.toInt() ?: run {
                 logger.debug("No book in command")
                 resp.respondBadCommand(user)
                 return@on
             }
-            val ep = Episode(epNum, book)
+            if(book <= 0 || book > kaamelott.seasons.size) {
+                resp.respondBookError(user)
+                return@on
+            }
+            val season = kaamelott.seasons[book]
+            if(epNum <= 0 || book > season.episodes.size) {
+                resp.respondEpNumError(user)
+                return@on
+            }
+            val ep = season.episodes[epNum]
             val time = try {
                 interaction.command.strings["timecode"]?.split(":")?.let {
                     if (it.size != 2) {
@@ -162,9 +171,9 @@ suspend fun main(args: Array<String>) {
                 resp.respondTimecode(user)
                 return@on
             }
-            if(time > ep.info.duration) {
+            if(time > ep.duration) {
                 logger.debug("Timecode greater than episode duration")
-                resp.respondTropLoin(ep.info.duration, time, user)
+                resp.respondTropLoin(ep.duration, time, user)
                 return@on
             }
             if(time < 0) {
@@ -176,10 +185,14 @@ suspend fun main(args: Array<String>) {
                 logger.debug("No text in command")
                 ""
             }
-            val scene = (ep.info.sceneChange.indexOfFirst { it > time } - 1).coerceAtLeast(0) + 1
-            logger.debug("Getting scene $scene, starting at ${ep.getSceneStart(scene)} and last ${ep.getSceneDuration(scene)}")
+            val scene = ep.scenes.getSceneFromTime(time.toDouble()) ?: run {
+                logger.debug("Scene doesn't exist")
+                resp.respondNoScene(user, interaction.command.strings["timecode"] ?: "")
+                return@on
+            }
+            logger.debug("Getting scene $scene, starting at ${scene.start} and last ${scene.duration}")
             logger.debug("Creating meme")
-            ep.createMeme("$name", scene, text)
+            scene.createMeme(text)
                 .onFailure {
                     logger.debug("Creating meme failed", it)
                     when(it) {

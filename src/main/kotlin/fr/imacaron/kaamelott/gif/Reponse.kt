@@ -73,3 +73,21 @@ suspend fun DeferredPublicMessageInteractionResponseBehavior.repondTropGros(user
         content = "<@${user.id}>\nLe gif il est trop gros là\nFichier: `$fileName: $size$stringUnit`\nContactez macaron pour avoir le gif si vous le souhaitez"
     }
 }
+
+suspend fun DeferredPublicMessageInteractionResponseBehavior.respondBookError(user: User) {
+    respond {
+        content = "<@${user.id}>\nErreur, ce livre n'existe pas"
+    }
+}
+
+suspend fun DeferredPublicMessageInteractionResponseBehavior.respondEpNumError(user: User) {
+    respond {
+        content = "<@${user.id}>\nErreur, cet épisode n'existe pas"
+    }
+}
+
+suspend fun DeferredPublicMessageInteractionResponseBehavior.respondNoScene(user: User, timeCode: String) {
+    respond {
+        content = "<@${user.id}>\nErreur, aucune scene correspond à ce timecode $timeCode "
+    }
+}

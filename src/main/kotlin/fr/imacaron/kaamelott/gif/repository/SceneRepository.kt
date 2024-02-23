@@ -1,8 +1,15 @@
 package fr.imacaron.kaamelott.gif.repository
 
+import fr.imacaron.kaamelott.gif.NotFoundException
+import fr.imacaron.kaamelott.gif.entity.Scene
 import org.ktorm.database.Database
+import org.ktorm.dsl.and
+import org.ktorm.dsl.eq
+import org.ktorm.dsl.gte
+import org.ktorm.dsl.lte
 import org.ktorm.entity.Entity
 import org.ktorm.entity.add
+import org.ktorm.entity.find
 import org.ktorm.entity.sequenceOf
 import org.ktorm.schema.Table
 import org.ktorm.schema.double
@@ -16,7 +23,15 @@ class SceneRepository(
 	}
 
 	fun getEpisodeScene(episode: EpisodeEntity, index: Int): Result<SceneEntity> {
-		TODO("Not yet implemented")
+		return db.scenes.find { (it.episode eq episode.id) and (it.index eq index) }?.let {
+			Result.success(it)
+		} ?: Result.failure(NotFoundException("Cannot found scene"))
+	}
+
+	fun getEpisodeSceneAt(episode: EpisodeEntity, at: Double): Result<Scene> {
+		return db.scenes.find { (it.start lte at) and (it.end gte at) and (it.episode eq episode.id) }?.let {
+			Result.success(Scene(it, episode))
+		} ?: Result.failure(NotFoundException("Cannot find scene with this timecode"))
 	}
 
 	fun addEpisodeScene(info: SceneEntity): Result<SceneEntity> {

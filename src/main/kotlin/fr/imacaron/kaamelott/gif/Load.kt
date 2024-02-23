@@ -50,33 +50,32 @@ class Loader(
 			logger.error("File ${dir.absolutePath} is not a directory")
 			return
 		}
-		series.seasons[seasonNumber].onSuccess { season ->
-			dir.listFiles()?.forEach { epFile ->
-				val result = Regex(episodeFormat).find(epFile.name) ?: return@forEach
-				val number = result.groupValues[1].toInt()
-				if(episodeRepository.getSeasonEpisode(season.entity, number).isSuccess) {
-					return@forEach
-				}
-				val title = result.groupValues[2].replace("_", " ")
-				val metadata = FFMPEG.getFileMetadata(epFile.absolutePath)
-				episodeRepository.addEpisode(EpisodeEntity {
-					this.number = number
-					this.title = title
-					this.season = season.entity
-					this.width = metadata.width
-					this.height = metadata.height
-					this.duration = metadata.duration
-					this.fps = metadata.fps
-				}).onSuccess {
-					metadata.scenes.add(0, .0)
-					metadata.scenes.forEachIndexed { index, d ->
-						sceneRepository.addEpisodeScene(SceneEntity {
-							this.start = d
-							this.end = metadata.scenes.getOrNull(index + 1) ?: metadata.duration
-							this.index = index
-							this.episode = it
-						})
-					}
+		val season = series.seasons[seasonNumber]
+		dir.listFiles()?.forEach { epFile ->
+			val result = Regex(episodeFormat).find(epFile.name) ?: return@forEach
+			val number = result.groupValues[1].toInt()
+			if(episodeRepository.getSeasonEpisode(season.entity, number).isSuccess) {
+				return@forEach
+			}
+			val title = result.groupValues[2].replace("_", " ")
+			val metadata = FFMPEG.getFileMetadata(epFile.absolutePath)
+			episodeRepository.addEpisode(EpisodeEntity {
+				this.number = number
+				this.title = title
+				this.season = season.entity
+				this.width = metadata.width
+				this.height = metadata.height
+				this.duration = metadata.duration
+				this.fps = metadata.fps
+			}).onSuccess {
+				metadata.scenes.add(0, .0)
+				metadata.scenes.forEachIndexed { index, d ->
+					sceneRepository.addEpisodeScene(SceneEntity {
+						this.start = d
+						this.end = metadata.scenes.getOrNull(index + 1) ?: metadata.duration
+						this.index = index
+						this.episode = it
+					})
 				}
 			}
 		}
