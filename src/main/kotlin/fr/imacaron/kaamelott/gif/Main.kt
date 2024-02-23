@@ -12,7 +12,6 @@ import dev.kord.core.event.interaction.GuildChatInputCommandInteractionCreateEve
 import dev.kord.core.on
 import dev.kord.rest.builder.interaction.integer
 import dev.kord.rest.builder.interaction.string
-import dev.kord.rest.builder.message.EmbedBuilder
 import dev.kord.rest.builder.message.addFile
 import dev.kord.rest.builder.message.embed
 import dev.kord.rest.request.KtorRequestException
@@ -22,12 +21,13 @@ import fr.imacaron.kaamelott.gif.repository.SeasonRepository
 import fr.imacaron.kaamelott.gif.repository.SeriesRepository
 import io.ktor.util.logging.*
 import org.ktorm.database.Database
+import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.io.File
 import java.util.*
 import kotlin.io.path.Path
 
-val logger = LoggerFactory.getLogger("fr.imacaron.kaamelott.gif.Main")
+val logger: Logger = LoggerFactory.getLogger("fr.imacaron.kaamelott.gif.Main")
 
 suspend fun main(args: Array<String>) {
     val token = System.getenv("TOKEN") ?: run {
@@ -79,7 +79,7 @@ suspend fun main(args: Array<String>) {
         return
     }
 
-    kord.createGlobalChatInputCommand("kaagif", "Une commande pour créer des gif kaamelot") {
+    kord.createGlobalChatInputCommand("kaagif", "Une commande pour créer des gif kaamelott") {
         integer("livre", "Livre") {
             required = true
             for (i in episodeNumbers.keys) {
@@ -190,7 +190,7 @@ suspend fun main(args: Array<String>) {
                 resp.respondNoScene(user, interaction.command.strings["timecode"] ?: "")
                 return@on
             }
-            logger.debug("Getting scene $scene, starting at ${scene.start} and last ${scene.duration}")
+            logger.debug("Getting scene {}, starting at {} and last {}", scene, scene.start, scene.duration)
             logger.debug("Creating meme")
             scene.createMeme(text)
                 .onFailure {
