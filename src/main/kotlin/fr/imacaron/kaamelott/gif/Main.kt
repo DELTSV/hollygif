@@ -212,9 +212,27 @@ suspend fun main(args: Array<String>) {
                         embed {
                             title = "Gif créer"
                             author {
-                                this.name = "Kaamelott gifeur"
+                                this.name = user.effectiveName
+                                this.icon = user.memberAvatar?.cdnUrl?.toUrl()
                             }
-                            this.description = "<@${user.id}> à générer un gif avec la commande suivante\n`/kaagif Livre: $book Épisode $epNum timecode: ${interaction.command.strings["timecode"]} text: $text`"
+                            this.field {
+                                this.name = "Livre"
+                                this.value = book.toString()
+                            }
+                            this.field {
+                                this.name = "Épisode"
+                                this.value = epNum.toString()
+                            }
+                            this.field {
+                                this.name = "Time Code"
+                                this.value = interaction.command.strings["timecode"] ?: ""
+                            }
+                            if(text.isNotBlank()) {
+                                this.field {
+                                    this.name = "Texte"
+                                    this.value = text
+                                }
+                            }
                         }
                         addFile(Path(it))
                     }
