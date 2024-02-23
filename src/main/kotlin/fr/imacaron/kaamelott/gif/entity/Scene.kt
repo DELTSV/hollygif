@@ -9,7 +9,7 @@ import fr.imacaron.kaamelott.gif.repository.SceneEntity
 import java.io.File
 
 class Scene(
-	private val entity: SceneEntity,
+	val entity: SceneEntity,
 	private val ep: EpisodeEntity
 ) {
 	val start

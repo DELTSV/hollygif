@@ -46,6 +46,8 @@ object SceneTable: Table<SceneEntity>("SCENES") {
 	val end = double("end").bindTo { it.end }
 	val index = int("index").bindTo { it.index }
 	val episode = int("episode").references(EpisodeTable) { it.episode }
+
+	val episodes: EpisodeTable get() = episode.referenceTable as EpisodeTable
 }
 
 interface SceneEntity: Entity<SceneEntity> {

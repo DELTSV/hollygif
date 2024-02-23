@@ -15,12 +15,12 @@ import dev.kord.rest.builder.interaction.string
 import dev.kord.rest.builder.message.addFile
 import dev.kord.rest.builder.message.embed
 import dev.kord.rest.request.KtorRequestException
-import fr.imacaron.kaamelott.gif.repository.EpisodeRepository
-import fr.imacaron.kaamelott.gif.repository.SceneRepository
-import fr.imacaron.kaamelott.gif.repository.SeasonRepository
-import fr.imacaron.kaamelott.gif.repository.SeriesRepository
+import fr.imacaron.kaamelott.gif.commands.Archives
+import fr.imacaron.kaamelott.gif.repository.*
 import io.ktor.util.logging.*
+import kotlinx.datetime.Clock
 import org.ktorm.database.Database
+import org.ktorm.support.mysql.MySqlDialect
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.io.File
@@ -28,6 +28,8 @@ import java.util.*
 import kotlin.io.path.Path
 
 val logger: Logger = LoggerFactory.getLogger("fr.imacaron.kaamelott.gif.Main")
+
+const val PAGE_SIZE = 10
 
 suspend fun main(args: Array<String>) {
     val token = System.getenv("TOKEN") ?: run {
@@ -45,8 +47,9 @@ suspend fun main(args: Array<String>) {
         maxPoolSize = 10
     }
 
-    val db = Database.connect(cpds)
+    val db = Database.connect(cpds, dialect = MySqlDialect())
 
+    val gifRepository = GifRepository(db)
     val sceneRepository = SceneRepository(db)
     val episodeRepository = EpisodeRepository(db, sceneRepository)
     val seasonRepository = SeasonRepository(db, episodeRepository)
@@ -69,6 +72,8 @@ suspend fun main(args: Array<String>) {
     }
 
     val kord = Kord(token)
+
+    val archives = Archives(kord, gifRepository).apply { init() }
 
     val episodeNumbers = kaamelott.seasons.associate {
         it.number to it.episodes.size
@@ -129,129 +134,144 @@ suspend fun main(args: Array<String>) {
     }
 
     kord.on<GuildChatInputCommandInteractionCreateEvent> {
-        val user = interaction.user
-        logger.debug("Receive command from ${user.effectiveName}. Defer it")
-        val resp = interaction.deferPublicResponse()
-        val name = UUID.randomUUID()
-        try {
-            val epNum = interaction.command.integers["episode"]?.toInt() ?: run {
-                logger.debug("No ep num in command")
-                resp.respondBadCommand(user)
-                return@on
-            }
-            val book = interaction.command.integers["livre"]?.toInt() ?: run {
-                logger.debug("No book in command")
-                resp.respondBadCommand(user)
-                return@on
-            }
-            if(book <= 0 || book > kaamelott.seasons.size) {
-                resp.respondBookError(user)
-                return@on
-            }
-            val season = kaamelott.seasons[book]
-            if(epNum <= 0 || book > season.episodes.size) {
-                resp.respondEpNumError(user)
-                return@on
-            }
-            val ep = season.episodes[epNum]
-            val time = try {
-                interaction.command.strings["timecode"]?.split(":")?.let {
-                    if (it.size != 2) {
+        when(interaction.command.rootName) {
+            "archives" -> archives(interaction)
+            "kaagif" -> {
+                val user = interaction.user
+                logger.debug("Receive command from ${user.effectiveName}. Defer it")
+                val resp = interaction.deferPublicResponse()
+                val name = UUID.randomUUID()
+                try {
+                    val epNum = interaction.command.integers["episode"]?.toInt() ?: run {
+                        logger.debug("No ep num in command")
+                        resp.respondBadCommand(user)
+                        return@on
+                    }
+                    val book = interaction.command.integers["livre"]?.toInt() ?: run {
+                        logger.debug("No book in command")
+                        resp.respondBadCommand(user)
+                        return@on
+                    }
+                    if (book <= 0 || book > kaamelott.seasons.size) {
+                        resp.respondBookError(user)
+                        return@on
+                    }
+                    val season = kaamelott.seasons[book]
+                    if (epNum <= 0 || book > season.episodes.size) {
+                        resp.respondEpNumError(user)
+                        return@on
+                    }
+                    val timecode = interaction.command.strings["timecode"] ?: run {
+                        logger.debug("No timecode in command")
+                        resp.respondBadCommand(user)
+                        return@on
+                    }
+                    val ep = season.episodes[epNum]
+                    val time = try {
+                        timecode.split(":").let {
+                            if (it.size != 2) {
+                                resp.respondTimecode(user)
+                                return@on
+                            }
+                            it[0].toInt() * 60 + it[1].toInt()
+                        }
+                    } catch (e: NumberFormatException) {
+                        logger.debug("Time code not only numbers")
                         resp.respondTimecode(user)
                         return@on
                     }
-                    it[0].toInt() * 60 + it[1].toInt()
-                } ?: run {
-                    logger.debug("No timecode in command")
-                    resp.respondBadCommand(user)
-                    return@on
-                }
-            } catch (e: NumberFormatException) {
-                logger.debug("Time code not only numbers")
-                resp.respondTimecode(user)
-                return@on
-            }
-            if(time > ep.duration) {
-                logger.debug("Timecode greater than episode duration")
-                resp.respondTropLoin(ep.duration, time, user)
-                return@on
-            }
-            if(time < 0) {
-                logger.debug("Timecode less than 0")
-                resp.respondTropCourt(user)
-                return@on
-            }
-            val text = interaction.command.strings["text"] ?: run {
-                logger.debug("No text in command")
-                ""
-            }
-            val scene = ep.scenes.getSceneFromTime(time.toDouble()) ?: run {
-                logger.debug("Scene doesn't exist")
-                resp.respondNoScene(user, interaction.command.strings["timecode"] ?: "")
-                return@on
-            }
-            logger.debug("Getting scene {}, starting at {} and last {}", scene, scene.start, scene.duration)
-            logger.debug("Creating meme")
-            scene.createMeme(text)
-                .onFailure {
-                    logger.debug("Creating meme failed", it)
-                    when(it) {
-                        is NotEnoughTimeException -> {
-                            logger.debug("Not enough time to create scene")
-                            resp.respondPortionTropCourte(user)
-                        }
-                        is ErrorWhileDrawingText -> {
-                            logger.debug("Error while drawing text on scene")
-                            resp.respondTexteErreur(user)
-                        }
+                    if (time > ep.duration) {
+                        logger.debug("Timecode greater than episode duration")
+                        resp.respondTropLoin(ep.duration, time, user)
+                        return@on
                     }
-                }
-                .onSuccess {
-                    logger.debug("meme $it successfully created")
-                    resp.respond {
-                        embed {
-                            title = "Gif créer"
-                            author {
-                                this.name = user.effectiveName
-                                this.icon = user.memberAvatar?.cdnUrl?.toUrl()
-                            }
-                            this.field {
-                                this.name = "Livre"
-                                this.value = book.toString()
-                            }
-                            this.field {
-                                this.name = "Épisode"
-                                this.value = epNum.toString()
-                            }
-                            this.field {
-                                this.name = "Time Code"
-                                this.value = interaction.command.strings["timecode"] ?: ""
-                            }
-                            if(text.isNotBlank()) {
-                                this.field {
-                                    this.name = "Texte"
-                                    this.value = text
+                    if (time < 0) {
+                        logger.debug("Timecode less than 0")
+                        resp.respondTropCourt(user)
+                        return@on
+                    }
+                    val text = interaction.command.strings["text"] ?: run {
+                        logger.debug("No text in command")
+                        ""
+                    }
+                    val scene = ep.scenes.getSceneFromTime(time.toDouble()) ?: run {
+                        logger.debug("Scene doesn't exist")
+                        resp.respondNoScene(user, timecode)
+                        return@on
+                    }
+                    logger.debug("Getting scene {}, starting at {} and last {}", scene, scene.start, scene.duration)
+                    logger.debug("Creating meme")
+                    scene.createMeme(text)
+                        .onFailure {
+                            logger.debug("Creating meme failed", it)
+                            when (it) {
+                                is NotEnoughTimeException -> {
+                                    logger.debug("Not enough time to create scene")
+                                    resp.respondPortionTropCourte(user)
+                                }
+
+                                is ErrorWhileDrawingText -> {
+                                    logger.debug("Error while drawing text on scene")
+                                    resp.respondTexteErreur(user)
                                 }
                             }
                         }
-                        addFile(Path(it))
+                        .onSuccess {
+                            logger.debug("meme $it successfully created")
+                            gifRepository.addGif(GifEntity {
+                                this.scene = scene.entity
+                                this.date = Clock.System.now()
+                                this.text = text
+                                this.user = user.id.toString()
+                                this.timecode = timecode
+                            })
+                            resp.respond {
+                                embed {
+                                    title = "Gif créer"
+                                    author {
+                                        this.name = user.effectiveName
+                                        this.icon = user.memberAvatar?.cdnUrl?.toUrl()
+                                    }
+                                    this.field {
+                                        this.name = "Livre"
+                                        this.value = book.toString()
+                                    }
+                                    this.field {
+                                        this.name = "Épisode"
+                                        this.value = epNum.toString()
+                                    }
+                                    this.field {
+                                        this.name = "Time Code"
+                                        this.value = timecode
+                                    }
+                                    if (text.isNotBlank()) {
+                                        this.field {
+                                            this.name = "Texte"
+                                            this.value = text
+                                        }
+                                    }
+                                }
+                                addFile(Path(it))
+                            }
+                        }
+                } catch (e: Exception) {
+                    when (e) {
+                        is KtorRequestException -> {
+                            if (e.status.code == 413) {
+                                val size = File("gif/$name.gif").length()
+                                logger.warn("File $name.gif too large, ${size}B")
+                                resp.repondTropGros(user, size, "$name.gif")
+                            } else {
+                                logger.error(e)
+                                resp.respondUnknownError(user)
+                            }
+                        }
+
+                        else -> {
+                            logger.error(e)
+                            resp.respondUnknownError(user)
+                        }
                     }
-                }
-        }catch (e: Exception) {
-            when(e) {
-                is KtorRequestException -> {
-                    if(e.status.code == 413) {
-                        val size = File("gif/$name.gif").length()
-                        logger.warn("File $name.gif too large, ${size}B")
-                        resp.repondTropGros(user, size, "$name.gif")
-                    } else {
-                        logger.error(e)
-                        resp.respondUnknownError(user)
-                    }
-                }
-                else -> {
-                    logger.error(e)
-                    resp.respondUnknownError(user)
                 }
             }
         }

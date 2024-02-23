@@ -42,6 +42,8 @@ object EpisodeTable: Table<EpisodeEntity>("EPISODES") {
 	val title = varchar("title").bindTo { it.title }
 	val duration = double("duration").bindTo { it.duration }
 	val season = int("season").references(SeasonTable) { it.season }
+
+	val seasons: SeasonTable get() = season.referenceTable as SeasonTable
 }
 
 interface EpisodeEntity: Entity<EpisodeEntity> {

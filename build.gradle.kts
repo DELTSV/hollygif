@@ -19,6 +19,7 @@ dependencies {
     implementation("org.codehaus.janino:janino:3.1.8")
     implementation("org.liquibase:liquibase-core:4.25.1")
     implementation("org.ktorm:ktorm-core:3.6.0")
+    implementation("org.ktorm:ktorm-support-mysql:3.6.0")
     implementation("com.mchange:c3p0:0.9.5.5")
     implementation("org.mariadb.jdbc:mariadb-java-client:3.3.2")
 
