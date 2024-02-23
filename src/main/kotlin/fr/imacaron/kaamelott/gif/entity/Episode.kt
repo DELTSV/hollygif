@@ -1,7 +1,6 @@
 package fr.imacaron.kaamelott.gif.entity
 
 import fr.imacaron.kaamelott.gif.NotFoundException
-import fr.imacaron.kaamelott.gif.logger
 import fr.imacaron.kaamelott.gif.repository.*
 
 class Episode(

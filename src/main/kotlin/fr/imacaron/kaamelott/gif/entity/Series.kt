@@ -4,7 +4,6 @@ import fr.imacaron.kaamelott.gif.logger
 import fr.imacaron.kaamelott.gif.repository.EpisodeRepository
 import fr.imacaron.kaamelott.gif.repository.SeasonRepository
 import fr.imacaron.kaamelott.gif.repository.SeriesEntity
-import io.ktor.util.logging.*
 
 class Series(
 	private val seasonsRepository: SeasonRepository,

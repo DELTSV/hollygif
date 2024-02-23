@@ -24,13 +24,11 @@ object FFMPEG {
 				it[1].toInt() * 3600 + it[2].toInt() * 60 + it[3].toDouble()
 			}
 		}
-		val timeCodes = result.let { lines ->
-			lines.filter { "pts_time" in it }.map {
-				val start = it.indexOf("pts_time:") + 9
-				val end = it.indexOf(' ', start)
-				it.substring(start, end).toDouble()
-			}.toMutableList()
-		}
+		val timeCodes = result.filter { "pts_time" in it }.map {
+			val start = it.indexOf("pts_time:") + 9
+			val end = it.indexOf(' ', start)
+			it.substring(start, end).toDouble()
+		}.toMutableList()
 		return Metadata(width, height, fps, duration, timeCodes)
 	}
 
