@@ -48,7 +48,7 @@ liquibase {
             "referenceUsername" to refDbUser,
             "referencePassword" to refDbPass,
             "logLevel" to "info",
-            "changelogFile" to "src/main/resources/migrations/changelog.mariadb.sql",
+            "changelogFile" to "bot/src/main/resources/migrations/changelog.mariadb.sql",
             "url" to dbUrl,
             "username" to dbUser,
             "password" to dbPass
