@@ -60,6 +60,6 @@ class Scene(
 		FFMPEG.writeText(scene, "./tmp/$name.mp4", lines, textSize)
 		FFMPEG.convertToGif("./tmp/$name.mp4", "./gif/$name.gif", duration)
 		logger.debug("Meme created")
-		return Result.success("./gif/$name.gif")
+		return Result.success("$name.gif")
 	}
 }

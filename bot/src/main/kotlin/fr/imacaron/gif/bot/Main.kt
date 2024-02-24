@@ -252,6 +252,7 @@ suspend fun main(args: Array<String>) {
                                             this.value = text
                                         }
                                     }
+                                    logger.debug("IMAGE URL = $API/api/gif/$it")
                                     image = "$API/api/gif/$it"
                                 }
                             }
