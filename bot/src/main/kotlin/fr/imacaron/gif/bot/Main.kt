@@ -232,19 +232,29 @@ suspend fun main(args: Array<String>) {
                                     title = "Gif créer"
                                     author {
                                         this.name = user.effectiveName
-                                        this.icon = user.memberAvatar?.cdnUrl?.toUrl()
+                                        val avatar = user.memberAvatar?.cdnUrl?.toUrl() ?:
+                                        user.avatar?.cdnUrl?.toUrl() ?:
+                                        if(user.discriminator == "0") {
+                                            "https://discord.com/api/v10/embed/avatars/${user.id.toString().toLong().shr(22) % 6}.png"
+                                        } else {
+                                            "https://discord.com/api/v10/embed/avatars/${user.discriminator.toInt() % 5}.png"
+                                        }
+                                        this.icon = avatar
                                     }
                                     this.field {
                                         this.name = "Livre"
                                         this.value = book.toString()
+                                        this.inline = true
                                     }
                                     this.field {
                                         this.name = "Épisode"
                                         this.value = epNum.toString()
+                                        this.inline = true
                                     }
                                     this.field {
                                         this.name = "Time Code"
                                         this.value = timecode
+                                        this.inline = true
                                     }
                                     if (text.isNotBlank()) {
                                         this.field {
@@ -254,6 +264,7 @@ suspend fun main(args: Array<String>) {
                                     }
                                     logger.debug("IMAGE URL = $API/api/gif/$it")
                                     image = "$API/api/gif/$it"
+                                    url = "$API/api/gif/$it"
                                 }
                             }
                         }
