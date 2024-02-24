@@ -3,3 +3,4 @@ plugins {
 }
 rootProject.name = "kaamelott-gif"
 include("bot")
+include("api")
