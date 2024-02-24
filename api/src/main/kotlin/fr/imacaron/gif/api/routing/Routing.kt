@@ -18,7 +18,11 @@ fun Application.configureRouting() {
 		}
 	}
 	routing {
-		staticFiles("/app", File("front"))
+		route("/app") {
+			singlePageApplication {
+				react("front")
+			}
+		}
 		get("/") {
 			call.respondText("GIF API/APP")
 		}
