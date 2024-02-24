@@ -17,13 +17,12 @@ fun Application.configureRouting() {
 		}
 	}
 	routing {
-		route("app") {
-			singlePageApplication {
-				useResources = true
-				filesPath = "front"
-				defaultPage = "index.html"
-				ignoreFiles { "/assets/" in it }
-			}
+		singlePageApplication {
+			applicationRoute = "/app"
+			useResources = true
+			filesPath = "front"
+			defaultPage = "index.html"
+			ignoreFiles { "/assets/" in it }
 		}
 //		get("/") {
 //			call.respondText("GIF API/APP")
