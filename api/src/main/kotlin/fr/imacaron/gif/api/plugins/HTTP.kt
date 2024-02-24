@@ -20,9 +20,6 @@ fun Application.configureHTTP() {
 	install(ForwardedHeaders) // WARNING: for security, do not include this if not behind a reverse proxy
 	install(XForwardedHeaders) // WARNING: for security, do not include this if not behind a reverse proxy
 	routing {
-		openAPI(path = "openapi")
-	}
-	routing {
 		swaggerUI(path = "openapi")
 	}
 }

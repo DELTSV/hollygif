@@ -1,5 +1,6 @@
 package fr.imacaron.gif.api.routing
 
+import fr.imacaron.gif.api.routing.route.FileRoute
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.plugins.statuspages.*
@@ -15,9 +16,6 @@ fun Application.configureRouting() {
 		}
 	}
 	routing {
-		get<Gif.File> {
-			call.respond("Euh ça marche avec /api ?")
-		}
 		get("/") {
 			call.respondText("GIF API/APP")
 		}

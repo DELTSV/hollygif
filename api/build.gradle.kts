@@ -37,7 +37,15 @@ dependencies {
 	implementation("io.ktor:ktor-serialization-kotlinx-json-jvm")
 	implementation("io.ktor:ktor-server-cio-jvm")
 	implementation("ch.qos.logback:logback-classic:$logback_version")
+	implementation("ch.qos.logback:logback-core:$logback_version")
+	implementation("org.codehaus.janino:janino:3.1.8")
 	implementation("io.ktor:ktor-server-config-yaml:2.3.8")
+	implementation("org.ktorm:ktorm-core:3.6.0")
+	implementation("org.ktorm:ktorm-support-mysql:3.6.0")
+	implementation("com.mchange:c3p0:0.9.5.5")
+	implementation("org.mariadb.jdbc:mariadb-java-client:3.3.2")
+	implementation(project(":shared"))
+
 	testImplementation("io.ktor:ktor-server-tests-jvm")
 	testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
 }
@@ -61,8 +69,4 @@ tasks {
 	build {
 		dependsOn(fatJar) // Trigger fat jar creation during build
 	}
-}
-
-kotlin {
-	jvmToolchain(17)
 }
