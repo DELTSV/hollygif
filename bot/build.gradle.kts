@@ -23,6 +23,8 @@ dependencies {
     implementation("com.mchange:c3p0:0.9.5.5")
     implementation("org.mariadb.jdbc:mariadb-java-client:3.3.2")
 
+    implementation(project(":shared"))
+
     liquibaseRuntime("org.liquibase:liquibase-core:4.25.1")
     liquibaseRuntime("org.mariadb.jdbc:mariadb-java-client:3.3.2")
     liquibaseRuntime("info.picocli:picocli:4.7.5")

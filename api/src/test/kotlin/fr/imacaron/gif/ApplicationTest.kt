@@ -1,5 +1,6 @@
 package fr.imacaron.gif
 
+import fr.imacaron.gif.api.plugins.configureRouting
 import fr.imacaron.gif.plugins.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
