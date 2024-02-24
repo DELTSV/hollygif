@@ -124,12 +124,13 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+      - run: cd front
+
       - name: build front
         uses: actions/setup-node@v4
         with:
           node-version: 18.x
           cache: "npm"
-      - run: cd front
       - run: npm install
       - run: npm run build
 
