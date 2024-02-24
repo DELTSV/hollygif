@@ -15,6 +15,9 @@ fun Application.configureRouting() {
 		}
 	}
 	routing {
+		get<Gif.File> {
+			call.respond("Euh ça marche avec /api ?")
+		}
 		get("/") {
 			call.respondText("GIF API/APP")
 		}
