@@ -62,7 +62,6 @@ jobs:
 
     - name: Run database migration with liquibase
       run: |
-        ./gradlew bot:clearChecksums;
         ./gradlew bot:update;
 
     - name: Start the bot
