@@ -38,7 +38,7 @@ jobs:
       uses: gradle/actions/setup-gradle@ec92e829475ac0c2315ea8f9eced72db85bb337a # v3.0.0
 
     - name: Build with Gradle Wrapper
-      run: ./gradlew fatJar
+      run: ./gradlew bot:fatJar
 
     - name: Send the Jar to the server
       uses: Creepios/sftp-action@v1.0.5
@@ -47,7 +47,7 @@ jobs:
         port: 10
         username: 'macaron'
         password: 'password'
-        localPath: './build/libs'
+        localPath: './bot/build/libs'
         remotePath: '/var/www/kaamelott-gif'
         privateKey: ${{ secrets.SSH_PRIVATE_KEY }}
 
@@ -62,8 +62,8 @@ jobs:
 
     - name: Run database migration with liquibase
       run: |
-        ./gradlew clearChecksums;
-        ./gradlew update;
+        ./gradlew bot:clearChecksums;
+        ./gradlew bot:update;
 
     - name: Start the bot
       uses: appleboy/ssh-action@v1.0.3
@@ -73,17 +73,6 @@ jobs:
         port: 10
         script: 'sudo service kaamelott-gif start'
         key: ${{ secrets.SSH_PRIVATE_KEY }}
-    
-    # NOTE: The Gradle Wrapper is the default and recommended way to run Gradle (https://docs.gradle.org/current/userguide/gradle_wrapper.html).
-    # If your project does not have the Gradle Wrapper configured, you can use the following configuration to run Gradle with a specified version.
-    #
-    # - name: Setup Gradle
-    #   uses: gradle/actions/setup-gradle@ec92e829475ac0c2315ea8f9eced72db85bb337a # v3.0.0
-    #   with:
-    #     gradle-version: '8.5'
-    #
-    # - name: Build with Gradle 8.5
-    #   run: gradle build
 
   dependency-submission:
 
