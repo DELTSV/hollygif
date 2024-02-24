@@ -29,7 +29,7 @@ class Scene(
 		if(duration < 0) {
 			return Result.failure(NotEnoughTimeException())
 		}
-		val name = "${ep.season.number}${ep.number}$index$text".hashCode()
+		val name = "${ep.season.number}_${ep.number}_${index}_${text.hashCode()}"
 		val sceneName = "${ep.season.number}_${ep.number}_$index"
 		val scene = "./out/$sceneName.mp4"
 		val sceneFile = File(scene)

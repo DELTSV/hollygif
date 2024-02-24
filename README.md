@@ -22,15 +22,15 @@ Un bot discord pour créer des gifs kaamelott avec FFMPEG
 
 ## Todo
 
-- [ ] Ajouter une commande pour upload certains gif automatiquement sur ~~tenor~~ (pas prévu mais faisable) giphy
+- [ ] Ajouter une commande pour upload certains gif automatiquement sur ~~tenor~~ (pas prévu, mais faisable) giphy
 - [ ] Ajouter une commande pour afficher les gifs disponible (déjà créer)
 - [ ] Améliorer le message durant la création du gif (avec des status et leur évolution)
 - [x] Améliorer la gestion d'erreur
 - [x] Conserver les mp4 sans texte
 - [x] Sauvegarder les infos dans une base
-  - [x] Parser les infos déjà disponible vers la base
-- [ ] Sauvegarder les appels au bot dans une base
-- [ ] Faire un site web pour présenter tout les scènes de tout les épisode
+  - [x] Parser les infos déjà disponibles vers la base
+- [x] Sauvegarder les appels au bot dans une base
+- [ ] Faire un site web pour présenter toutes les scènes de tous les épisodes
   - [ ] Générer la première image de chaque scène d'un épisode
   - [x] Utiliser les MP4 des scènes quand ils existent pour présenter les scènes
   - [ ] Sauvegarder les fichiers sur un S3
@@ -45,3 +45,6 @@ Un bot discord pour créer des gifs kaamelott avec FFMPEG
 - [ ] Ajouter une interface admin au site pour les configurations de base
 - [ ] Permettre de configurer la font
 - [ ] Permettre de configurer le wording du bot
+- [x] Héberger les gifs sur un site pour avoir des gifs de toutes tailles
+- [x] Ajouter une commande pour voir son historique de création de gif
+- [ ] Supprimer automatiquement les gifs après un certain temps (3 jours)
