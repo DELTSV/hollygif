@@ -31,6 +31,8 @@ import kotlin.io.path.Path
 
 val logger: Logger = LoggerFactory.getLogger("fr.imacaron.kaamelott.gif.bot")
 
+val API = System.getenv("API")
+
 suspend fun main(args: Array<String>) {
     val token = System.getenv("TOKEN") ?: run {
         logger.error("No TOKEN specified")
@@ -250,8 +252,8 @@ suspend fun main(args: Array<String>) {
                                             this.value = text
                                         }
                                     }
+                                    image = "$API/api/gif/$it"
                                 }
-                                addFile(Path(it))
                             }
                         }
                 } catch (e: Exception) {
