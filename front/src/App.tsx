@@ -13,8 +13,8 @@ function App() {
                     setUser={setUser}
                     token={token}
                     setToken={setToken}
-                    redirectUri={"http://localhost:5173/"}
-                    clientId={"1203342110917402666"}
+                    redirectUri={import.meta.env.VITE_REDIRECT}
+                    clientId={import.meta.env.VITE_CLIENT_ID}
                     scope={"identify"}
                 />
             </div>
