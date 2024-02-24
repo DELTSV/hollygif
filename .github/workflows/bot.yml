@@ -57,7 +57,7 @@ jobs:
         host: 151.80.58.137
         username: 'macaron'
         port: 10
-        script: 'sudo service kaamelott-gif stop'
+        script: 'sudo service gif-bot stop'
         key: ${{ secrets.SSH_PRIVATE_KEY }}
 
     - name: Run database migration with liquibase
@@ -70,7 +70,7 @@ jobs:
         host: 151.80.58.137
         username: 'macaron'
         port: 10
-        script: 'sudo service kaamelott-gif start'
+        script: 'sudo service gif-bot start'
         key: ${{ secrets.SSH_PRIVATE_KEY }}
 
   build-api:
