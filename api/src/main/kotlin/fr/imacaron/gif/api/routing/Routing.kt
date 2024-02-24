@@ -18,7 +18,6 @@ fun Application.configureRouting() {
 	}
 	routing {
 		singlePageApplication {
-			applicationRoute = "/app"
 			useResources = true
 			filesPath = "front"
 			defaultPage = "index.html"
