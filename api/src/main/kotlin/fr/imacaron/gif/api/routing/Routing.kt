@@ -20,6 +20,9 @@ fun Application.configureRouting() {
 	routing {
 		singlePageApplication {
 			react("front")
+			ignoreFiles {
+				"/assets/" in it
+			}
 		}
 //		get("/") {
 //			call.respondText("GIF API/APP")
