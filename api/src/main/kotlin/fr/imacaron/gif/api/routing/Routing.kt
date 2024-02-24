@@ -18,13 +18,11 @@ fun Application.configureRouting() {
 		}
 	}
 	routing {
-		route("/app") {
-			singlePageApplication {
-				react("front")
-			}
+		singlePageApplication {
+			react("front")
 		}
-		get("/") {
-			call.respondText("GIF API/APP")
-		}
+//		get("/") {
+//			call.respondText("GIF API/APP")
+//		}
 	}
 }
