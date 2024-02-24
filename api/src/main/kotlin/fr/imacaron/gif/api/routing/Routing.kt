@@ -8,7 +8,6 @@ import io.ktor.server.plugins.statuspages.*
 import io.ktor.server.resources.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import java.io.File
 
 fun Application.configureRouting() {
 	install(Resources)
@@ -18,10 +17,12 @@ fun Application.configureRouting() {
 		}
 	}
 	routing {
-		singlePageApplication {
-			react("front")
-			ignoreFiles {
-				"/assets/" in it
+		route("app") {
+			singlePageApplication {
+				useResources = true
+				filesPath = "front"
+				defaultPage = "index.html"
+				ignoreFiles { "/assets/" in it }
 			}
 		}
 //		get("/") {
