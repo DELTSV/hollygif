@@ -131,7 +131,7 @@ jobs:
         with:
           node-version: 18.x
           cache: "npm"
-        run: npm install; npm run build
+        run: npm install; npm run build;
 
       - name: Send front files to the server
         uses: Creepios/sftp-action@v1.0.5
