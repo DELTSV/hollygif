@@ -126,12 +126,13 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: build front
-#        working-directory: ./front
+        working-directory: ./front
         uses: actions/setup-node@v4
         with:
           node-version: 18.x
           cache: "npm"
-      - run: npm install; npm run build;
+        run: npm install
+      - run: npm run build
 
       - name: Send front files to the server
         uses: Creepios/sftp-action@v1.0.5
