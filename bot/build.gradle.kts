@@ -34,7 +34,7 @@ dependencies {
 }
 
 application {
-    mainClass.set("fr.imacaron.kaamelott.gif.MainKt")
+    mainClass.set("fr.imacaron.gif.bot.MainKt")
 }
 
 liquibase {
