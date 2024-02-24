@@ -120,6 +120,9 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
 
   build-front:
+    env:
+      VITE_CLIENT_ID: ${{ secrets.CLIENT_ID }}
+      VITE_REDIRECT: ${{ secrets.REDIRECT }}
     runs-on: ubuntu-latest
     defaults:
       run:
