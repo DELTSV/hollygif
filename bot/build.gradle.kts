@@ -71,7 +71,7 @@ tasks {
             .map { if (it.isDirectory) it else zipTree(it) } +
                 sourcesMain.output
         from(contents)
-        archiveFileName = "kaamelott-gif.jar"
+        archiveFileName = "gif-bot.jar"
     }
     build {
         dependsOn(fatJar) // Trigger fat jar creation during build

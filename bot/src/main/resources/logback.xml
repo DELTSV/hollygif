@@ -6,7 +6,7 @@
 		</encoder>
 	</appender>
 	<appender name="FILE_INFO" class="ch.qos.logback.core.FileAppender">
-		<file>kaamelott-gif.log</file>
+		<file>gif-bot.log</file>
 		<encoder>
 			<pattern>%date %level [%thread] %logger{10} [%file:%line] -%kvp- %msg%n</pattern>
 		</encoder>
@@ -17,7 +17,7 @@
 		</filter>
 	</appender>
 	<appender name="FILE_DEBUG" class="ch.qos.logback.core.FileAppender">
-		<file>kaamelott-gif.log.extended</file>
+		<file>gif-bot.log.extended</file>
 		<encoder>
 			<pattern>%date %level [%thread] %logger{10} [%file:%line] -%kvp- %msg%n</pattern>
 		</encoder>
