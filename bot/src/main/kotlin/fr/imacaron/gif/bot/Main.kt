@@ -47,6 +47,8 @@ suspend fun main(args: Array<String>) {
         minPoolSize = 5
         acquireIncrement = 5
         maxPoolSize = 10
+        maxIdleTime = 28_800
+        idleConnectionTestPeriod = 14400
     }
 
     val db = Database.connect(cpds, dialect = MySqlDialect())

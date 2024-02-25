@@ -14,6 +14,8 @@ fun Application.configureDatabase(): Database {
 		minPoolSize = 5
 		acquireIncrement = 5
 		maxPoolSize = 10
+		maxIdleTime = 28_800
+		idleConnectionTestPeriod = 14400
 	}
 
 	return Database.connect(cpds, dialect = MySqlDialect())
