@@ -24,6 +24,7 @@ repositories {
 }
 
 dependencies {
+	implementation("dev.kord:kord-core:0.13.1")
 	implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.5.0")
 	implementation("io.ktor:ktor-server-core-jvm")
 	implementation("io.ktor:ktor-server-resources")

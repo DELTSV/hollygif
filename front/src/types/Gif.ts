@@ -1,6 +1,6 @@
 interface Gif {
 	id: number,
-	creator: string,
+	creator: DiscordUser,
 	file: string,
 	createdAt: string,
 	scene: Scene,

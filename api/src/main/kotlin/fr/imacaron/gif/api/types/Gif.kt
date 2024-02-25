@@ -1,5 +1,6 @@
 package fr.imacaron.gif.api.types
 
+import dev.kord.core.entity.User
 import fr.imacaron.gif.shared.repository.GifEntity
 import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
@@ -7,16 +8,16 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class Gif(
 	val id: Int,
-	val creator: String,
+	val creator: DiscordUser,
 	val file: String,
 	val createdAt: Instant,
 	val scene: Scene,
 	val timecode: String,
 	val text: String
 ) {
-	constructor(entity: GifEntity): this(
+	constructor(entity: GifEntity, user: User?): this(
 		entity.id,
-		entity.user,
+		DiscordUser(user),
 		"${entity.scene.episode.season.number}_${entity.scene.episode.number}_${entity.scene.index}_${entity.text.hashCode()}.gif",
 		entity.date,
 		Scene(entity.scene),

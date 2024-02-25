@@ -8,7 +8,7 @@ import API from "./api/api.ts";
 
 function App() {
     const [user, setUser] = useState<User|null>(null);
-    const [token, setToken] = useState<string|null>(null);
+    const [userToken, setUserToken] = useState<string|null>(null);
 
     const api = useMemo(() => new API(import.meta.env.VITE_API), []);
 
@@ -33,8 +33,8 @@ function App() {
                     <DiscordAuth
                         user={user}
                         setUser={setUser}
-                        token={token}
-                        setToken={setToken}
+                        token={userToken}
+                        setToken={setUserToken}
                         redirectUri={import.meta.env.VITE_REDIRECT}
                         clientId={import.meta.env.VITE_CLIENT_ID}
                         scope={"identify"}
