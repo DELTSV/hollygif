@@ -1,9 +1,6 @@
 package fr.imacaron.gif.shared.entity
 
-import fr.imacaron.gif.shared.repository.EpisodeEntity
-import fr.imacaron.gif.shared.repository.GifEntity
-import fr.imacaron.gif.shared.repository.SeasonEntity
-import fr.imacaron.gif.shared.repository.SeriesEntity
+import fr.imacaron.gif.shared.repository.*
 import kotlinx.datetime.Instant
 
 class Gif(
@@ -29,4 +26,7 @@ class Gif(
 
 	val series: SeriesEntity
 		get() = entity.scene.episode.season.series
+
+	val status: GifStatus
+		get() = entity.status
 }

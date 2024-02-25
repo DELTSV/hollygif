@@ -6,6 +6,7 @@ import dev.kord.core.entity.interaction.GuildChatInputCommandInteraction
 import dev.kord.rest.builder.interaction.integer
 import dev.kord.rest.builder.message.embed
 import fr.imacaron.gif.shared.repository.GifRepository
+import fr.imacaron.gif.shared.repository.GifStatus
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toJavaLocalDateTime
 import kotlinx.datetime.toLocalDateTime
@@ -34,7 +35,7 @@ class Archives(
 				}
 				gifs.forEach { gif ->
 					field {
-						name = gif.date.toLocalDateTime(TimeZone.currentSystemDefault()).toJavaLocalDateTime().format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM))
+						name = gif.date.toLocalDateTime(TimeZone.currentSystemDefault()).toJavaLocalDateTime().format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM)) + if(gif.status == GifStatus.SUCCESS) ": Créé" else ": En erreur"
 						value = "Livre: **${gif.season.number}** Episode: **${gif.episode.number}** Timecode **${gif.timeCode}** Texte **${gif.text}**"
 					}
 				}
