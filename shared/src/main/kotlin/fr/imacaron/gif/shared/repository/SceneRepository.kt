@@ -40,7 +40,10 @@ class SceneRepository(
 	}
 }
 
-object SceneTable: Table<SceneEntity>("SCENES") {
+open class SceneTable(alias: String?): Table<SceneEntity>("SCENES", alias) {
+	companion object: SceneTable(null)
+	override fun aliased(alias: String) = SceneTable(alias)
+
 	val id = int("id_scene").primaryKey().bindTo { it.id }
 	val start = double("start").bindTo { it.start }
 	val end = double("end").bindTo { it.end }

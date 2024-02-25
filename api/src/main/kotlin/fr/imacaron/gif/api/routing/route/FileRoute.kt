@@ -1,5 +1,6 @@
 package fr.imacaron.gif.api.routing.route
 
+import fr.imacaron.gif.api.respond as respondAPI
 import fr.imacaron.gif.api.routing.resources.API
 import fr.imacaron.gif.api.types.Response
 import fr.imacaron.gif.shared.repository.GifRepository
@@ -22,7 +23,7 @@ class FileRoute(
 			get<API.Gif.File> {
 				val f = File("./gif/${it.file}")
 				if(!f.exists()) {
-					call.respond(Response.NotFound)
+					call.respondAPI(Response.NotFound)
 					return@get
 				}
 				call.respondFile(f)

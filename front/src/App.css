@@ -1,0 +1,7 @@
+.bg-logo {
+	background-image: url("/logo.png");
+	background-position: center;
+	background-size: cover;
+	background-repeat: no-repeat;
+	opacity: 0.25;
+}

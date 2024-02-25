@@ -9,6 +9,7 @@ data class Response<T>(
 	val data: T
 ) {
 	companion object {
+		fun <T>Ok(data: T) = Response(200, "OK", data)
 		val NotFound = Response<String?>(404, "Not Found", null)
 	}
 }

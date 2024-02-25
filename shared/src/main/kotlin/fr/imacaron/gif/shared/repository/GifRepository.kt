@@ -27,7 +27,8 @@ class GifRepository(
 
 	fun getSeriesGifs(seriesEntity: SeriesEntity, page: Int): List<Gif> =
 		db.gifs
-			.filter { SeasonTable.series eq seriesEntity.id }
+			.filter { GifsTable.scenes.episodes.seasons.series eq seriesEntity.id }
+			.sortedBy { it.id.desc() }
 			.drop(page * PAGE_SIZE).take(PAGE_SIZE)
 			.map { Gif(it) }
 
@@ -50,7 +51,7 @@ object GifsTable: Table<GifEntity>("GIFS") {
 	val scene = int("scene").references(SceneTable) { it.scene }
 	val status = enumInt<GifStatus>("status").bindTo { it.status }
 
-	val scenes: SceneTable get() = scene.referenceTable as SceneTable
+	val scenes: SceneTable get() = scene.referenceTable!! as SceneTable
 }
 
 interface GifEntity : Entity<GifEntity> {

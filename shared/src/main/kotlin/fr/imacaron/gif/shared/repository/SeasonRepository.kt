@@ -32,7 +32,10 @@ class SeasonRepository(
 	}
 }
 
-object SeasonTable: Table<SeasonEntity>("SEASONS") {
+open class SeasonTable(alias: String?): Table<SeasonEntity>("SEASONS", alias) {
+	companion object: SeasonTable(null)
+	override fun aliased(alias: String) = SeasonTable(alias)
+
 	val id = int("id_season").primaryKey().bindTo { it.id }
 	val number = int("number").bindTo { it.number }
 	val series = int("series").references(SeriesTable) { it.series }

@@ -33,7 +33,10 @@ class EpisodeRepository(
 
 }
 
-object EpisodeTable: Table<EpisodeEntity>("EPISODES") {
+open class EpisodeTable(alias: String?): Table<EpisodeEntity>("EPISODES", alias) {
+	companion object: EpisodeTable(null)
+	override fun aliased(alias: String) = EpisodeTable(alias)
+
 	val id = int("id_episode").primaryKey().bindTo { it.id }
 	val number = int("number").bindTo { it.number }
 	val fps = int("fps").bindTo { it.fps }
