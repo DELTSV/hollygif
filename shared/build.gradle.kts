@@ -17,6 +17,7 @@ dependencies {
     implementation("org.ktorm:ktorm-support-mysql:3.6.0")
     implementation("com.mchange:c3p0:0.9.5.5")
     implementation("org.mariadb.jdbc:mariadb-java-client:3.3.2")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.0")
 
     testImplementation("org.jetbrains.kotlin:kotlin-test")
 }

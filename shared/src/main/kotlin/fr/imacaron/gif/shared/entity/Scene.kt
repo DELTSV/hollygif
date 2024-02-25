@@ -6,6 +6,8 @@ import fr.imacaron.gif.shared.NotEnoughTimeException
 import fr.imacaron.gif.shared.logger
 import fr.imacaron.gif.shared.repository.EpisodeEntity
 import fr.imacaron.gif.shared.repository.SceneEntity
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import java.io.File
 
 class Scene(
@@ -24,10 +26,20 @@ class Scene(
 	val duration
 		get() = end - start - (2.0 / ep.fps)
 
-	fun createMeme(text: String, textSize: Int = 156): Result<String> {
+	data class Status(
+		val scene: Boolean = false,
+		val textLength: Boolean = false,
+		val text: Boolean = false,
+		val gif: Boolean = false,
+		val result: String? = null,
+		val error: Exception? = null
+	)
+
+	fun createMeme(text: String, textSize: Int = 156): Flow<Status> = flow {
 		logger.debug("Create meme")
 		if(duration < 0) {
-			return Result.failure(NotEnoughTimeException())
+			emit(Status(error = NotEnoughTimeException()))
+			return@flow
 		}
 		val name = "${ep.season.number}_${ep.number}_${index}_${text.hashCode()}"
 		val sceneName = "${ep.season.number}_${ep.number}_$index"
@@ -41,9 +53,13 @@ class Scene(
 				end
 			)
 		}
+		emit(Status(scene = true))
 		val textLength = FFMPEG.getTextLength(scene, text, textSize)
 		if(textLength.isNaN()){
-			return Result.failure(ErrorWhileDrawingText())
+			emit(Status(scene = true, error = ErrorWhileDrawingText()))
+			return@flow
+		} else {
+			emit(Status(scene = true, textLength = true))
 		}
 		val avgChar = textLength / text.length
 		val words = text.split(' ').filter { it.isNotBlank() }
@@ -58,8 +74,10 @@ class Scene(
 			}
 		}
 		FFMPEG.writeText(scene, "./tmp/$name.mp4", lines, textSize)
+		emit(Status(scene = true, textLength = true, text = true))
 		FFMPEG.convertToGif("./tmp/$name.mp4", "./gif/$name.gif", duration)
+		emit(Status(scene = true, textLength = true, text = true, gif = true))
 		logger.debug("Meme created")
-		return Result.success("$name.gif")
+		emit(Status(scene = true, textLength = true, text = true, gif = true, result = "$name.gif"))
 	}
 }
