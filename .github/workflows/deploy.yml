@@ -124,6 +124,7 @@ jobs:
     env:
       VITE_CLIENT_ID: ${{ secrets.CLIENT_ID }}
       VITE_REDIRECT: ${{ secrets.REDIRECT }}
+      VITE_API: ${{ secrets.API }}
     runs-on: ubuntu-latest
     defaults:
       run:
