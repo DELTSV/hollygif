@@ -39,7 +39,7 @@ export default function DiscordAuth(props: DiscordAuthProps) {
 			<div className={"flex items-center gap-4"}>
 				<p className={"text-neutral-100 text-xl"}>{user?.global_name}</p>
 				<img src={`https://cdn.discordapp.com/avatars/${user?.id}/${user?.avatar}.png`} alt={"Profile picture"} className={"rounded-full h-12"}/>
-				<Button onClick={() => {
+				<Button className={"!text-neutral-100 hover:!text-black"} onClick={() => {
 					setUser(null);
 					setToken(null);
 				}}>Se déconnecter</Button>
