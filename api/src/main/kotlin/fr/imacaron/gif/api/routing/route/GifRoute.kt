@@ -3,6 +3,7 @@ package fr.imacaron.gif.api.routing.route
 import dev.kord.common.entity.Snowflake
 import dev.kord.core.Kord
 import dev.kord.core.entity.User
+import fr.imacaron.gif.api.respond
 import fr.imacaron.gif.api.routing.resources.API
 import fr.imacaron.gif.api.types.Gif
 import fr.imacaron.gif.api.types.Response
@@ -43,6 +44,7 @@ class GifRoute(
 	private fun Application.route() {
 		routing {
 			getGifList()
+			getGif()
 		}
 	}
 
@@ -58,6 +60,21 @@ class GifRoute(
 				Gif(it.entity, user)
 			}
 			call.respond(Response.Ok(gifs))
+		}
+	}
+
+	private fun Route.getGif() {
+		get<API.Gif.ID> { gifId ->
+			val id = gifId.id
+			gifRepository.getGif(id).onSuccess {
+				val user = users[it.entity.user] ?: withContext(usersContext) {
+					kord.getUser(Snowflake(it.entity.user))?.let { u ->
+						users[it.entity.user] = u
+						u
+					}
+				}
+				call.respond(Response.Ok(Gif(it.entity, user)))
+			}
 		}
 	}
 }

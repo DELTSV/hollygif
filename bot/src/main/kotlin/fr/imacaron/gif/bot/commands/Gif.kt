@@ -205,9 +205,9 @@ class Gif(
 									this.value = text
 								}
 							}
-							logger.debug("IMAGE URL = $API/api/gif/${it.result}")
-							image = "$API/api/gif/${it.result}"
-							url = "$API/api/gif/${it.result}"
+							logger.debug("IMAGE URL = $API/api/gif/file/${it.result}")
+							image = "$API/api/gif/file/${it.result}"
+							url = "$API/api/gif/file/${it.result}"
 						}
 					}
 				} else if(it.gif) {

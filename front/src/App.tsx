@@ -19,7 +19,7 @@ function App() {
         },
         {
             path: "gif/:id",
-            element: <Gif/>
+            element: <Gif api={api}/>
         }
     ])
 
@@ -42,7 +42,7 @@ function App() {
                 </div>
                 <div className={"grow bg-neutral-400 py-4 relative overflow-auto"}>
                     <div className={"absolute top-0 left-0 w-full h-full bg-logo z-0"}/>
-                    <div className={"relative z-10"}>
+                    <div className={"relative z-10 w-full flex flex-col items-center"}>
                         <RouterProvider router={router}/>
                     </div>
                 </div>

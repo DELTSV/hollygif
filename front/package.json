@@ -13,6 +13,7 @@
     "@types/react-simple-oauth2-login": "^0.5.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-feather": "^2.0.10",
     "react-router-dom": "^6.22.1",
     "react-simple-oauth2-login": "^0.5.4"
   },

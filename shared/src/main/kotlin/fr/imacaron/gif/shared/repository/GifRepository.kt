@@ -1,5 +1,6 @@
 package fr.imacaron.gif.shared.repository
 
+import fr.imacaron.gif.shared.NotFoundException
 import fr.imacaron.gif.shared.PAGE_SIZE
 import fr.imacaron.gif.shared.entity.Gif
 import fr.imacaron.gif.shared.enums.TEnum
@@ -13,6 +14,12 @@ import org.ktorm.schema.*
 class GifRepository(
 	private val db: Database
 ) {
+	fun getGif(id: Int): Result<Gif> {
+		return db.gifs.find { it.id eq id }?.let {
+			Result.success(Gif(it))
+		} ?: Result.failure(NotFoundException("Gif not found"))
+	}
+
 	fun getUserGifs(user: String, page: Int): List<Gif> =
 		db.gifs.filter { GifsTable.user eq user }.drop(page * PAGE_SIZE).take(PAGE_SIZE).map { Gif(it) }
 

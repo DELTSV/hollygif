@@ -9,17 +9,15 @@ interface HomeProps {
 export default function Home(props: HomeProps) {
 	const [gifs, setGifs] = useState<Gif[]|null>(null)
 	useEffect(() => {
-		props.api.gif().then(res => {
+		props.api.gifs().then(res => {
 			setGifs(res)
 		});
 	}, [props.api]);
 	return (
-		<div className={"w-full flex flex-col items-center"}>
-			<div className={"w-3/4 flex flex-col items-center"}>
-				<h1 className={"text-4xl"}>Les derniers gif</h1>
-				<div className={"grid grid-cols-4 gap-4"}>
-					{gifs?.map(gif => <GifCard gif={gif}/>)}
-				</div>
+		<div className={"w-3/4 flex flex-col items-center"}>
+			<h1 className={"text-4xl"}>Les derniers gif</h1>
+			<div className={"grid grid-cols-4 gap-4"}>
+				{gifs?.map(gif => <GifCard gif={gif}/>)}
 			</div>
 		</div>
 	)
