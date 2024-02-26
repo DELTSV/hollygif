@@ -3,6 +3,7 @@ package fr.imacaron.gif.api.routing.route
 import dev.kord.common.entity.Snowflake
 import dev.kord.core.Kord
 import dev.kord.core.entity.User
+import fr.imacaron.gif.api.int
 import fr.imacaron.gif.api.respond
 import fr.imacaron.gif.api.routing.resources.API
 import fr.imacaron.gif.api.types.Gif
@@ -50,7 +51,9 @@ class GifRoute(
 
 	private fun Route.getGifList() {
 		get<API.Gif> {
-			val gifs = gifRepository.getSeriesGifs(kaamelott.entity, 0).map {
+			val page = call.request.queryParameters.int("page") ?: 0
+			val pageSize = call.request.queryParameters.int("page_size") ?: 12
+			val gifs = gifRepository.getSeriesGifs(kaamelott.entity, page, pageSize).map {
 				val user = users[it.entity.user] ?: withContext(usersContext) {
 					kord.getUser(Snowflake(it.entity.user))?.let {u ->
 						users[it.entity.user] = u

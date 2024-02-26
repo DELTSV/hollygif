@@ -13,8 +13,8 @@ export default class API {
 		return await rep.json();
 	}
 
-	async gifs(): Promise<Gif[]> {
-		const rep = await this.request<Gif[]>("/api/gif");
+	async gifs(page: number): Promise<Gif[]> {
+		const rep = await this.request<Gif[]>("/api/gif?page_size=12&page=" + page);
 		return rep.data;
 	}
 

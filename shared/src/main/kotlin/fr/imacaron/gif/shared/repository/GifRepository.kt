@@ -20,23 +20,23 @@ class GifRepository(
 		} ?: Result.failure(NotFoundException("Gif not found"))
 	}
 
-	fun getUserGifs(user: String, page: Int): List<Gif> =
-		db.gifs.filter { GifsTable.user eq user }.drop(page * PAGE_SIZE).take(PAGE_SIZE).map { Gif(it) }
+	fun getUserGifs(user: String, page: Int, pageSize: Int): List<Gif> =
+		db.gifs.filter { GifsTable.user eq user }.drop(page * pageSize).take(pageSize).map { Gif(it) }
 
-	fun getSceneGifs(sceneEntity: SceneEntity, page: Int): List<Gif> =
-		db.gifs.filter { GifsTable.scene eq sceneEntity.id }.drop(page * PAGE_SIZE).take(PAGE_SIZE).map { Gif(it) }
+	fun getSceneGifs(sceneEntity: SceneEntity, page: Int, pageSize: Int): List<Gif> =
+		db.gifs.filter { GifsTable.scene eq sceneEntity.id }.drop(page * pageSize).take(pageSize).map { Gif(it) }
 
-	fun getEpisodeGifs(episodeEntity: EpisodeEntity, page: Int): List<Gif> =
-		db.gifs.filter { GifsTable.scenes.episode eq episodeEntity.id }.drop(page * PAGE_SIZE).take(PAGE_SIZE).map { Gif(it) }
+	fun getEpisodeGifs(episodeEntity: EpisodeEntity, page: Int, pageSize: Int): List<Gif> =
+		db.gifs.filter { GifsTable.scenes.episode eq episodeEntity.id }.drop(page * pageSize).take(pageSize).map { Gif(it) }
 
-	fun getSeasonGifs(seasonEntity: SeasonEntity, page: Int): List<Gif> =
-		db.gifs.filter { EpisodeTable.season eq seasonEntity.id }.drop(page * PAGE_SIZE).take(PAGE_SIZE).map { Gif(it) }
+	fun getSeasonGifs(seasonEntity: SeasonEntity, page: Int, pageSize: Int): List<Gif> =
+		db.gifs.filter { EpisodeTable.season eq seasonEntity.id }.drop(page * pageSize).take(pageSize).map { Gif(it) }
 
-	fun getSeriesGifs(seriesEntity: SeriesEntity, page: Int): List<Gif> =
+	fun getSeriesGifs(seriesEntity: SeriesEntity, page: Int, pageSize: Int): List<Gif> =
 		db.gifs
 			.filter { GifsTable.scenes.episodes.seasons.series eq seriesEntity.id }
 			.sortedBy { it.id.desc() }
-			.drop(page * PAGE_SIZE).take(PAGE_SIZE)
+			.drop(page * pageSize).take(pageSize)
 			.map { Gif(it) }
 
 	fun addGif(gifEntity: GifEntity): GifEntity = gifEntity.apply { db.gifs.add(gifEntity) }
