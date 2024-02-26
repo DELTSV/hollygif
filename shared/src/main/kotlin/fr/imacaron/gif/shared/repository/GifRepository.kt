@@ -21,7 +21,11 @@ class GifRepository(
 	}
 
 	fun getUserGifs(user: String, page: Int, pageSize: Int): List<Gif> =
-		db.gifs.filter { GifsTable.user eq user }.drop(page * pageSize).take(pageSize).map { Gif(it) }
+		db.gifs
+			.filter { GifsTable.user eq user }
+			.sortedBy { it.date.desc() }
+			.drop(page * pageSize).take(pageSize)
+			.map { Gif(it) }
 
 	fun getSceneGifs(sceneEntity: SceneEntity, page: Int, pageSize: Int): List<Gif> =
 		db.gifs.filter { GifsTable.scene eq sceneEntity.id }.drop(page * pageSize).take(pageSize).map { Gif(it) }
@@ -35,7 +39,7 @@ class GifRepository(
 	fun getSeriesGifs(seriesEntity: SeriesEntity, page: Int, pageSize: Int): List<Gif> =
 		db.gifs
 			.filter { GifsTable.scenes.episodes.seasons.series eq seriesEntity.id }
-			.sortedBy { it.id.desc() }
+			.sortedBy { it.date.desc() }
 			.drop(page * pageSize).take(pageSize)
 			.map { Gif(it) }
 

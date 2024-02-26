@@ -11,5 +11,8 @@ class API {
 
 		@Resource("/{id}")
 		class ID(val gif: Gif = Gif(), val id: Int)
+
+		@Resource("/me")
+		class Me(val gif: Gif = Gif())
 	}
 }

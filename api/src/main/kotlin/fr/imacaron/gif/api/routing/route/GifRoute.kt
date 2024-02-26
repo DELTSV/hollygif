@@ -13,8 +13,9 @@ import fr.imacaron.gif.shared.entity.Series
 import fr.imacaron.gif.shared.repository.GifRepository
 import fr.imacaron.gif.shared.repository.SeriesRepository
 import io.ktor.server.application.*
+import io.ktor.server.auth.*
+import io.ktor.server.request.*
 import io.ktor.server.resources.*
-import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -46,6 +47,9 @@ class GifRoute(
 		routing {
 			getGifList()
 			getGif()
+			authenticate("discord-token") {
+				getMyGif()
+			}
 		}
 	}
 
@@ -78,6 +82,27 @@ class GifRoute(
 				}
 				call.respond(Response.Ok(Gif(it.entity, user)))
 			}
+		}
+	}
+
+	private fun Route.getMyGif() {
+		get<API.Gif.Me> {
+			val id = call.principal<UserIdPrincipal>()?.name ?: run {
+				call.respond(Response.Unauthorized)
+				return@get
+			}
+			val page = call.request.queryParameters.int("page") ?: 0
+			val pageSize = call.request.queryParameters.int("page_size") ?: 12
+			val gifs = gifRepository.getUserGifs(id, page, pageSize).map {
+				val user = users[it.entity.user] ?: withContext(usersContext) {
+					kord.getUser(Snowflake(it.entity.user))?.let {u ->
+						users[it.entity.user] = u
+						u
+					}
+				}
+				Gif(it.entity, user)
+			}
+			call.respond(Response.Ok(gifs))
 		}
 	}
 }

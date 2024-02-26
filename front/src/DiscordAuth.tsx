@@ -2,6 +2,7 @@ import OAuth2Login from "react-simple-oauth2-login";
 import React, {useCallback, useEffect, useState} from "react";
 import Button from "./Components/Button.tsx";
 import Spinner from "./Components/Spinner.tsx";
+import API from "./api/api.ts";
 
 interface DiscordAuthProps {
 	token: string|null,
@@ -10,7 +11,8 @@ interface DiscordAuthProps {
 	setUser: React.Dispatch<React.SetStateAction<User|null>>
 	redirectUri: string,
 	clientId: string,
-	scope: string
+	scope: string,
+	api: API
 }
 
 export default function DiscordAuth(props: DiscordAuthProps) {
@@ -24,20 +26,23 @@ export default function DiscordAuth(props: DiscordAuthProps) {
 		}).catch(() => {
 			setToken(null);
 			localStorage.removeItem("token")
+			props.api.refreshToken();
 		});
-	}, [setToken, setUser]);
+	}, [props.api, setToken, setUser]);
 
 	const [loading, setLoading] = useState(true);
 	useEffect(() => {
 		const t = localStorage.getItem("token");
 		if(t === null) {
 			setLoading(false);
+			props.api.refreshToken();
 		} else {
 			setLoading(false);
 			setToken(t);
 			getUser(t);
+			props.api.refreshToken();
 		}
-	}, [setToken, getUser]);
+	}, [props.api, setToken, getUser]);
 	if(loading) {
 		return (
 			<Spinner/>
@@ -50,11 +55,12 @@ export default function DiscordAuth(props: DiscordAuthProps) {
 				responseType={"token"}
 				clientId={props.clientId}
 				redirectUri={props.redirectUri}
-				className={"border-2 border-neutral-400 text-neutral-100 hover:text-black hover:bg-neutral-400 px-4 py-2 m-2 rounded-lg hover:scale-110 transition"}
+				className={"border-2 border-neutral-400 text-neutral-100 hover:text-black hover:bg-neutral-400 px-4 py-2 mx-2 rounded-lg hover:scale-110 transition"}
 				onSuccess={(r) => {
 					setToken(r["access_token"]);
 					localStorage.setItem("token", r["access_token"]);
 					getUser(r["access_token"]);
+					props.api.refreshToken();
 				}}
 				onFailure={console.error}
 				scope={props.scope}
@@ -68,7 +74,8 @@ export default function DiscordAuth(props: DiscordAuthProps) {
 				<Button className={"!text-neutral-100 hover:!text-black"} onClick={() => {
 					setUser(null);
 					setToken(null);
-					localStorage.removeItem("token")
+					localStorage.removeItem("token");
+					props.api.refreshToken();
 				}}>Se déconnecter</Button>
 			</div>
 		)

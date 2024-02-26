@@ -1,10 +1,7 @@
 package fr.imacaron.gif.api
 
 import dev.kord.core.Kord
-import fr.imacaron.gif.api.plugins.configureDatabase
-import fr.imacaron.gif.api.plugins.configureHTTP
-import fr.imacaron.gif.api.plugins.configureMonitoring
-import fr.imacaron.gif.api.plugins.configureSerialization
+import fr.imacaron.gif.api.plugins.*
 import fr.imacaron.gif.api.routing.configureRouting
 import fr.imacaron.gif.api.routing.route.FileRoute
 import fr.imacaron.gif.api.routing.route.GifRoute
@@ -21,6 +18,7 @@ fun Application.module() = runBlocking {
 	configureMonitoring()
 	configureSerialization()
 	configureRouting()
+	configureAuth()
 
 	val kord = Kord(System.getenv("TOKEN"))
 
