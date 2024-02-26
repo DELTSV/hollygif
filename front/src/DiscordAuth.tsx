@@ -21,8 +21,11 @@ export default function DiscordAuth(props: DiscordAuthProps) {
 		h.append("Authorization", "Bearer " + token);
 		fetch("https://discord.com/api/v10/users/@me", {headers: h}).then(async (r) => {
 			setUser(await r.json());
+		}).catch(() => {
+			setToken(null);
+			localStorage.removeItem("token")
 		});
-	}, [setUser]);
+	}, [setToken, setUser]);
 
 	const [loading, setLoading] = useState(true);
 	useEffect(() => {
