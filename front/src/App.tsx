@@ -25,7 +25,7 @@ function App() {
     ]);
 
     const handleScroll = useCallback((e: React.UIEvent<HTMLDivElement>) => {
-        const target = e.target as HTMLDivElement;
+        const target = e.currentTarget;
         if(target.scrollHeight - target.scrollTop === target.clientHeight) {
             setBottom(true)
         } else {
@@ -50,7 +50,11 @@ function App() {
                         scope={"identify"}
                     />
                 </div>
-                <div className={"grow bg-neutral-400 py-4 relative overflow-auto"} onScroll={handleScroll}>
+                <div className={"grow bg-neutral-400 py-4 relative overflow-auto"} onScroll={handleScroll} onLoad={e => {
+                    if(e.currentTarget.scrollHeight === e.currentTarget.clientHeight) {
+                        setBottom(true);
+                    }
+                }}>
                     <div className={"absolute top-0 left-0 w-full h-full bg-logo z-0"}/>
                     <div className={"relative z-10 w-full flex flex-col items-center"}>
                         <RouterProvider router={router}/>
