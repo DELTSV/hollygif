@@ -5,6 +5,7 @@ import dev.kord.core.behavior.interaction.response.respond
 import dev.kord.core.entity.interaction.GuildChatInputCommandInteraction
 import dev.kord.rest.builder.interaction.integer
 import dev.kord.rest.builder.message.embed
+import fr.imacaron.gif.shared.PAGE_SIZE
 import fr.imacaron.gif.shared.repository.GifRepository
 import fr.imacaron.gif.shared.repository.GifStatus
 import kotlinx.datetime.TimeZone
@@ -26,7 +27,7 @@ class Archives(
 	suspend operator fun invoke(interaction: GuildChatInputCommandInteraction) {
 		val resp = interaction.deferEphemeralResponse()
 		val page = interaction.command.integers["page"]?.toInt()?: 0
-		val gifs = gifRepository.getUserGifs(interaction.user.id.toString(), page)
+		val gifs = gifRepository.getUserGifs(interaction.user.id.toString(), page, PAGE_SIZE)
 		resp.respond {
 			embed {
 				title = "Archives"
