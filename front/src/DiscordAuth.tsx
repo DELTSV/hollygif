@@ -1,6 +1,7 @@
 import OAuth2Login from "react-simple-oauth2-login";
-import React from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import Button from "./Components/Button.tsx";
+import Spinner from "./Components/Spinner.tsx";
 
 interface DiscordAuthProps {
 	token: string|null,
@@ -13,7 +14,32 @@ interface DiscordAuthProps {
 }
 
 export default function DiscordAuth(props: DiscordAuthProps) {
-	const {token, setToken, user, setUser} = props
+	const {token, setToken, user, setUser} = props;
+
+	const getUser = useCallback((token: string) => {
+		const h = new Headers();
+		h.append("Authorization", "Bearer " + token);
+		fetch("https://discord.com/api/v10/users/@me", {headers: h}).then(async (r) => {
+			setUser(await r.json());
+		});
+	}, [setUser]);
+
+	const [loading, setLoading] = useState(true);
+	useEffect(() => {
+		const t = localStorage.getItem("token");
+		if(t === null) {
+			setLoading(false);
+		} else {
+			setLoading(false);
+			setToken(t);
+			getUser(t);
+		}
+	}, [setToken, getUser]);
+	if(loading) {
+		return (
+			<Spinner/>
+		)
+	}
 	if(token === null) {
 		return (
 			<OAuth2Login
@@ -23,12 +49,9 @@ export default function DiscordAuth(props: DiscordAuthProps) {
 				redirectUri={props.redirectUri}
 				className={"border-2 border-neutral-400 text-neutral-100 hover:text-black hover:bg-neutral-400 px-4 py-2 m-2 rounded-lg hover:scale-110 transition"}
 				onSuccess={(r) => {
-					const h = new Headers();
 					setToken(r["access_token"]);
-					h.append("Authorization", "Bearer " + r["access_token"]);
-					fetch("https://discord.com/api/v10/users/@me", {headers: h}).then(async (r) => {
-						setUser(await r.json());
-					});
+					localStorage.setItem("token", r["access_token"]);
+					getUser(r["access_token"]);
 				}}
 				onFailure={console.error}
 				scope={props.scope}
