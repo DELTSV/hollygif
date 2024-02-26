@@ -65,6 +65,7 @@ export default function DiscordAuth(props: DiscordAuthProps) {
 				<Button className={"!text-neutral-100 hover:!text-black"} onClick={() => {
 					setUser(null);
 					setToken(null);
+					localStorage.removeItem("token")
 				}}>Se déconnecter</Button>
 			</div>
 		)
