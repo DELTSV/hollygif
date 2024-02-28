@@ -16,7 +16,7 @@ Un bot discord pour créer des gifs kaamelott avec FFMPEG
 
 `episode` -> Le numéro de l'épisode voulu
 
-`timecode` -> Le time code de la scène dans l'épisode au format `mm:ss`
+`timecode` -> Le time code de la scène dans l'épisode au format `mm:ss[.mmm]`
 
 `text` -> Le text à ajouter sur le gif
 

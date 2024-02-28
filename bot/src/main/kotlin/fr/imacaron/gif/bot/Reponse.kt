@@ -9,12 +9,12 @@ import kotlin.time.Duration.Companion.seconds
 
 suspend fun DeferredPublicMessageInteractionResponseBehavior.respondTimecode(user: User) {
     respond {
-        content = "<@${user.id}>\nLe time code doit être sous la forme `mm:ss`"
+        content = "<@${user.id}>\nLe time code doit être sous la forme `mm:ss[.mmm]`"
         addFile(Path("pas_compliquer.gif"))
     }
 }
 
-suspend fun DeferredPublicMessageInteractionResponseBehavior.respondTropLoin(duration: Double, demand: Int, user: User) {
+suspend fun DeferredPublicMessageInteractionResponseBehavior.respondTropLoin(duration: Double, demand: Double, user: User) {
     respond {
         val min = duration.seconds.inWholeMinutes
         content = "<@${user.id}>\nL'épisode fait ${min}min${duration.toInt()%60}s donc la scène à la ${demand/60}min et ${demand%60}s. Bon voilà quoi"

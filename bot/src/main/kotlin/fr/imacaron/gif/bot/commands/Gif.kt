@@ -42,7 +42,7 @@ class Gif(
 				required = true
 				autocomplete = true
 			}
-			string("timecode", "Timecode sous la forme mm:ss") {
+			string("timecode", "Timecode sous la forme mm:ss[.mmm]") {
 				required = true
 			}
 			string("text", "Texte")
@@ -114,7 +114,7 @@ class Gif(
 						resp.respondTimecode(user)
 						return
 					}
-					it[0].toInt() * 60 + it[1].toInt()
+					it[0].toInt() * 60 + it[1].toDouble()
 				}
 			} catch (e: NumberFormatException) {
 				logger.debug("Time code not only numbers")
@@ -135,7 +135,7 @@ class Gif(
 				logger.debug("No text in command")
 				""
 			}
-			val scene = ep.scenes.getSceneFromTime(time.toDouble()) ?: run {
+			val scene = ep.scenes.getSceneFromTime(time) ?: run {
 				logger.debug("Scene doesn't exist")
 				resp.respondNoScene(user, timecode)
 				return
