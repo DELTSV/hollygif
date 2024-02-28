@@ -10,7 +10,7 @@ interface CardProps {
 
 export default function Card(props: CardProps) {
 	return (
-		<div className={clsx(props.className, "rounded overflow-hidden bg-neutral-700 text-yellow-500 hover:drop-shadow-xl transition")}>
+		<div className={clsx(props.className, "rounded overflow-hidden bg-black bg-opacity-75 text-yellow-500 hover:drop-shadow-xl transition")}>
 			{props.image &&
 			<>
 				<img src={props.image} alt={"gif"}
