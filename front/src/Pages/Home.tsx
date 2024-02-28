@@ -35,9 +35,9 @@ export default function Home(props: HomeProps) {
 	}, [props.bottom]);
 	return (
 		<div className={"w-11/12 2xl:w-10/12 flex flex-col items-center"}>
-			<h1 className={"text-4xl"}>Les derniers gif</h1>
+			<h1 className={"text-4xl text-yellow-500"}>Les derniers gif</h1>
 			<div className={"grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4"}>
-				{gifs?.map((gif, index) => <GifCard key={index} gif={gif}/>)}
+				{gifs?.map((gif, index) => <GifCard key={index} gif={gif} redirect={true} width={"min-w-72 max-w-72"}/>)}
 			</div>
 		</div>
 	)

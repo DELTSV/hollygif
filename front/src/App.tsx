@@ -48,7 +48,7 @@ function App() {
 interface RootProps {
     handleScroll: UIEventHandler<HTMLDivElement>,
     setBottom: React.Dispatch<React.SetStateAction<boolean>>,
-	api: API
+    api: API
 }
 
 function Root(props: RootProps) {
@@ -57,14 +57,14 @@ function Root(props: RootProps) {
 
     return (
         <>
-            <div className={"w-screen h-screen max-h-screen flex flex-col"}>
+            <div className={"w-screen h-screen max-h-screen flex flex-col text-yellow-500 shadow"}>
                 <div className={"w-full grid grid-cols-3 justify-between bg-black items-center px-8 py-2 drop-shadow-header"}>
-                    <Link className={"text-neutral-100 text-3xl grow"} to={"/"}>
+                    <Link className={"text-3xl grow"} to={"/"}>
                         Kaamelott - gif
                     </Link>
                     <div className={"flex justify-center"}>
                         {user !== null &&
-                            <Link to={"/gif/me"} className={"text-neutral-100"}>Mes gifs</Link>
+                            <Link to={"/gif/me"}>Mes gifs</Link>
                         }
                     </div>
                     <div className={"grow flex justify-end"}>
@@ -76,11 +76,11 @@ function Root(props: RootProps) {
                             redirectUri={import.meta.env.VITE_REDIRECT}
                             clientId={import.meta.env.VITE_CLIENT_ID}
                             scope={"identify"}
-							api={props.api}
+                            api={props.api}
                         />
                     </div>
                 </div>
-                <div className={"grow bg-neutral-400 py-4 relative overflow-auto"} onScroll={props.handleScroll} onLoad={e => {
+                <div className={"grow bg-neutral-600 py-4 relative overflow-auto"} onScroll={props.handleScroll} onLoad={e => {
                     if(e.currentTarget.scrollHeight === e.currentTarget.clientHeight) {
                         props.setBottom(true);
                     }
@@ -90,7 +90,7 @@ function Root(props: RootProps) {
                         <Outlet/>
                     </div>
                 </div>
-                <div className={"bg-black text-neutral-100 flex justify-center px-8 py-2 drop-shadow-footer"}>
+                <div className={"bg-black flex justify-center px-8 py-2 drop-shadow-footer"}>
                     Fait avec <span className={"text-red-600 px-1"}>♥</span> par imacaron
                 </div>
             </div>

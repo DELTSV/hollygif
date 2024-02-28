@@ -1,19 +1,29 @@
 import {Link} from "react-router-dom";
+import {useMemo} from "react";
+import Card from "./Card.tsx";
 
 interface GifCardProps {
-	gif: Gif
+	gif: Gif | null,
+	redirect: boolean,
+	width?: string
 }
 
 export default function GifCard(props: GifCardProps) {
-	const { gif } = props;
-	return (
-		<Link className={"border-2 border-black rounded overflow-hidden bg-neutral-300"} to={"/gif/" + gif.id}>
-			<img src={import.meta.env.VITE_API + "/api/gif/file/" + gif.file} alt={"gif"} className={"min-w-72 max-w-72"}/>
-			<div className={"h-0.5 w-full bg-black"}/>
+	const { gif, redirect } = props;
+	const content = useMemo(() => {
+		return <Card image={import.meta.env.VITE_API + "/api/gif/file/" + gif?.file}>
 			<div className={"flex items-center px-2 py-1 gap-2"}>
-				<img className={"h-6 rounded-full"} src={gif.creator.avatar ?? ""} alt={"Profile picture"}/>
-				<p>{gif.creator.global_name}</p>
+				<img className={"h-6 rounded-full"} src={gif?.creator.avatar ?? ""} alt={"Profile picture"}/>
+				<p>{gif?.creator.global_name}</p>
 			</div>
-		</Link>
-	)
+		</Card>
+	}, [gif]);
+	if (redirect) {
+		return (
+			<Link to={"/gif/" + gif?.id}>
+				{content}
+			</Link>
+		);
+	}
+	return content;
 }
