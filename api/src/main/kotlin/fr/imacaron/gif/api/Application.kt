@@ -5,6 +5,8 @@ import fr.imacaron.gif.api.plugins.*
 import fr.imacaron.gif.api.routing.configureRouting
 import fr.imacaron.gif.api.routing.route.FileRoute
 import fr.imacaron.gif.api.routing.route.GifRoute
+import fr.imacaron.gif.api.routing.route.SeasonsRoute
+import fr.imacaron.gif.api.routing.route.SeriesRoute
 import fr.imacaron.gif.shared.repository.*
 import io.ktor.server.application.*
 import kotlinx.coroutines.runBlocking
@@ -31,4 +33,6 @@ fun Application.module() = runBlocking {
 	val seriesRepository = SeriesRepository(db, seasonRepository, episodeRepository)
 	FileRoute(gifRepository,this@module)
 	GifRoute(seriesRepository, gifRepository, kord, this@module)
+	SeasonsRoute(this@module, seriesRepository, seasonRepository)
+	SeriesRoute(this@module, seriesRepository)
 }

@@ -1,4 +1,5 @@
 interface Series {
 	id: number,
-	name: string
+	name: string,
+	logo: string
 }

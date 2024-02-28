@@ -33,11 +33,13 @@ class SeriesRepository(
 object SeriesTable: Table<SeriesEntity>("SERIES") {
 	val id = int("id_series").primaryKey().bindTo { it.id }
 	val name = varchar("name").bindTo { it.name }
+	val logo = varchar("logo").bindTo { it.logo }
 }
 
 interface SeriesEntity: Entity<SeriesEntity> {
 	var id: Int
 	var name: String
+	var logo: String
 
 	companion object: Entity.Factory<SeriesEntity>()
 }

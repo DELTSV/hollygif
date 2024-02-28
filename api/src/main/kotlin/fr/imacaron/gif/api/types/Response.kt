@@ -13,5 +13,6 @@ data class Response<T>(
 		val BadRequest = Response<String?>(400, "Bad Request", null)
 		val Unauthorized = Response<String?>(code = 401, "Unauthorized", null)
 		val NotFound = Response<String?>(404, "Not Found", null)
+		val ServerError = Response<String?>(500, "InternalServerError", null)
 	}
 }

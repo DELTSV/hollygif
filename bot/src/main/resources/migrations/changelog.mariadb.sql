@@ -67,3 +67,8 @@ ALTER TABLE GIFS ADD CONSTRAINT GIFS_SCENES_id_scene_fk FOREIGN KEY (scene) REFE
 -- changeset macaron:1708858905887-1
 ALTER TABLE GIFS ADD status INT DEFAULT 1 NOT NULL;
 
+-- liquibase formatted sql
+
+-- changeset macaron:1709133086251-1
+ALTER TABLE SERIES ADD logo TEXT NOT NULL;
+

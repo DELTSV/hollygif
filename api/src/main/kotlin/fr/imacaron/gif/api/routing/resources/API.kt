@@ -15,4 +15,13 @@ class API {
 		@Resource("/me")
 		class Me(val gif: Gif = Gif())
 	}
+
+	@Resource("/series")
+	class Series(val parent: API = API()) {
+		@Resource("/{name}")
+		class Name(val parent: Series = Series(), val name: String) {
+			@Resource("/seasons")
+			class Seasons(val parent: Name)
+		}
+	}
 }

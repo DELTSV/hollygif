@@ -6,10 +6,12 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class Series(
 	val id: Int,
-	val name: String
+	val name: String,
+	val logo: String
 ) {
 	constructor(entity: SeriesEntity): this(
 		entity.id,
-		entity.name
+		entity.name,
+		entity.logo
 	)
 }

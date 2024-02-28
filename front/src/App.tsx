@@ -6,6 +6,8 @@ import Home from "./Pages/Home.tsx";
 import "./App.css"
 import API from "./api/api.ts";
 import UserGifs from "./Pages/UserGifs.tsx";
+import Series from "./Pages/Series.tsx";
+import Seasons from "./Pages/Seasons.tsx";
 
 function App() {
     const [bottom, setBottom] = useState(false);
@@ -35,6 +37,18 @@ function App() {
                 {
                     path: "gif/me",
                     element: <UserGifs api={api} bottom={bottom}/>
+                },
+                {
+                    path: "series",
+                    element: <Series api={api}/>
+                },
+                {
+                    path: "series/:name",
+                    element: <Seasons api={api}/>
+                },
+                {
+                    path: "series/:name/:season",
+                    element: "Pas fait"
                 }
             ]
         }
@@ -62,10 +76,11 @@ function Root(props: RootProps) {
                     <Link className={"text-3xl grow"} to={"/"}>
                         Kaamelott - gif
                     </Link>
-                    <div className={"flex justify-center"}>
+                    <div className={"flex justify-center gap-4"}>
                         {user !== null &&
                             <Link to={"/gif/me"}>Mes gifs</Link>
                         }
+                        <Link to={"/series"}>Les séries</Link>
                     </div>
                     <div className={"grow flex justify-end"}>
                         <DiscordAuth

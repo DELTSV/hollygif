@@ -38,4 +38,19 @@ export default class API {
 		const rep = await this.request<Gif[]>("/api/gif/me?page_size=12&page=" + page);
 		return rep.data;
 	}
+
+	async series(): Promise<Series[]> {
+		const rep = await this.request<Series[]>("/api/series");
+		return rep.data;
+	}
+
+	async oneSeries(name: string): Promise<Series> {
+		const rep = await this.request<Series>("/api/series/" + name);
+		return rep.data;
+	}
+
+	async seasons(name: string): Promise<Season[]> {
+		const rep = await this.request<Season[]>(`/api/series/${name}/seasons`);
+		return rep.data;
+	}
 }
