@@ -23,7 +23,7 @@ export default function Home(props: HomeProps) {
 				const seen: {[n: number]: boolean} = {};
 				const tmp = (prev ?? []).concat(res).filter(g => {
 					return seen.hasOwnProperty(g.id) ? false : (seen[g.id] = true);
-				});
+				}).sort((a, b) => (new Date(b.createdAt)).getTime() - (new Date(a.createdAt)).getTime());
 				return [...new Set(tmp)];
 			});
 		});
