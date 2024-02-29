@@ -19,6 +19,7 @@ import fr.imacaron.gif.shared.ErrorWhileDrawingText
 import fr.imacaron.gif.shared.NotEnoughTimeException
 import fr.imacaron.gif.bot.commands.Archives
 import fr.imacaron.gif.bot.commands.Gif
+import fr.imacaron.gif.shared.entity.Series
 import fr.imacaron.gif.shared.repository.*
 import io.ktor.util.logging.*
 import kotlinx.datetime.Clock
@@ -56,11 +57,11 @@ suspend fun main(args: Array<String>) {
 
     val gifRepository = GifRepository(db)
     val sceneRepository = SceneRepository(db)
-    val episodeRepository = EpisodeRepository(db, sceneRepository)
-    val seasonRepository = SeasonRepository(db, episodeRepository)
-    val seriesRepository = SeriesRepository(db, seasonRepository, episodeRepository)
+    val episodeRepository = EpisodeRepository(db)
+    val seasonRepository = SeasonRepository(db)
+    val seriesRepository = SeriesRepository(db)
 
-    if(args.size > 1) {
+    if(args.size > 1 && args[0] != "LOAD") {
         val loader = Loader(sceneRepository, episodeRepository, seasonRepository, seriesRepository)
         loader.loadSeries(args[0])
         loader.loadSeason(args[1].toInt())
@@ -74,6 +75,14 @@ suspend fun main(args: Array<String>) {
     val kaamelott = seriesRepository.getSeries("kaamelott").getOrElse {
         logger.error("Missing kaamelott")
         return
+    }.let {
+        Series(seasonRepository, episodeRepository, sceneRepository, it)
+    }
+
+    if(args.isNotEmpty() && args[0] == "LOAD") {
+        File("./gif").listFiles()?.forEach { f ->
+            kaamelott.s3.putFile("gif", f.name, f.readBytes())
+        }
     }
 
     val kord = Kord(token)

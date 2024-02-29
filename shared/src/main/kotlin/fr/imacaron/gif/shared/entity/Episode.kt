@@ -8,7 +8,7 @@ import fr.imacaron.gif.shared.repository.SeasonEntity
 class Episode(
 	private val sceneRepository: SceneRepository,
 	val entity: EpisodeEntity,
-	val season: SeasonEntity
+	val season: Season
 ) {
 	val title: String
 		get() = entity.title
@@ -31,7 +31,7 @@ class Episode(
 	val scenes = SceneList()
 
 	inner class SceneList {
-		operator fun get(i: Int): Scene = sceneRepository.getEpisodeScene(entity, i).getOrThrow().let { Scene(it, entity) }
+		operator fun get(i: Int): Scene = sceneRepository.getEpisodeScene(entity, i).getOrThrow().let { Scene(it, this@Episode) }
 
 		fun getSceneFromTime(time: Double): Scene? {
 			return sceneRepository.getEpisodeSceneAt(entity, time).getOrElse {
@@ -39,7 +39,7 @@ class Episode(
 					return null
 				}
 				throw Exception()
-			}
+			}.let { Scene(it, this@Episode) }
 		}
 	}
 }

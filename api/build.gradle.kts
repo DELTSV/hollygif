@@ -50,6 +50,7 @@ dependencies {
 	implementation("org.ktorm:ktorm-support-mysql:3.6.0")
 	implementation("com.mchange:c3p0:0.9.5.5")
 	implementation("org.mariadb.jdbc:mariadb-java-client:3.3.2")
+	implementation("software.amazon.awssdk:s3:2.24.12")
 	implementation(project(":shared"))
 
 	testImplementation("io.ktor:ktor-server-tests-jvm")

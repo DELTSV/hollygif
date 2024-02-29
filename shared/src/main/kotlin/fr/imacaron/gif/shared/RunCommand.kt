@@ -1,20 +1,35 @@
 package fr.imacaron.gif.shared
 
 import java.io.File
+import java.io.InputStream
+import java.io.OutputStream
 import java.util.concurrent.TimeUnit
 
 fun String.runCommand(
-    workingDir: File = File("."),
-    timeoutAmount: Long = 60,
-    timeoutUnit: TimeUnit = TimeUnit.SECONDS
+    workingDir: File = File(".")
 ): String ? = runCatching {
     ProcessBuilder(this.splitCommand())
         .directory(workingDir)
         .redirectOutput(ProcessBuilder.Redirect.PIPE)
         .redirectErrorStream(true)
         .redirectError(ProcessBuilder.Redirect.PIPE)
-        .start().also { it.waitFor(timeoutAmount, timeoutUnit) }
+        .start()
         .inputStream.bufferedReader().readText()
+}.onFailure { it.printStackTrace() }.getOrNull()
+
+fun String.runCommandStream(
+    workingDir: File = File("."),
+    commandInput: InputStream? = null
+): InputStream? = kotlin.runCatching {
+    ProcessBuilder(this.splitCommand())
+        .directory(workingDir)
+        .redirectInput(ProcessBuilder.Redirect.PIPE)
+        .redirectOutput(ProcessBuilder.Redirect.PIPE)
+        .redirectErrorStream(true)
+        .redirectError(ProcessBuilder.Redirect.PIPE)
+        .start()
+        .apply { commandInput?.transferTo(outputStream) }
+        .inputStream
 }.onFailure { it.printStackTrace() }.getOrNull()
 
 private fun String.splitCommand(): List<String> {

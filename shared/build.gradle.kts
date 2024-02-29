@@ -18,6 +18,7 @@ dependencies {
     implementation("com.mchange:c3p0:0.9.5.5")
     implementation("org.mariadb.jdbc:mariadb-java-client:3.3.2")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.0")
+    implementation("software.amazon.awssdk:s3:2.24.12")
 
     testImplementation("org.jetbrains.kotlin:kotlin-test")
 }

@@ -12,3 +12,9 @@ db:
   url: $DB_URL
   user: $DB_USER
   password: $DB_PASSWORD
+
+s3:
+  access: $S3_ACCESS_KEY
+  secret: $S3_SECRET_KEY
+  region: $S3_REGION
+  url: $S3_URL

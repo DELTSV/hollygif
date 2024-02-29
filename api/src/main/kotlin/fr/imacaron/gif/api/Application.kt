@@ -28,11 +28,11 @@ fun Application.module() = runBlocking {
 
 	val gifRepository = GifRepository(db)
 	val sceneRepository = SceneRepository(db)
-	val episodeRepository = EpisodeRepository(db, sceneRepository)
-	val seasonRepository = SeasonRepository(db, episodeRepository)
-	val seriesRepository = SeriesRepository(db, seasonRepository, episodeRepository)
-	FileRoute(gifRepository,this@module)
-	GifRoute(seriesRepository, gifRepository, kord, this@module)
+	val episodeRepository = EpisodeRepository(db)
+	val seasonRepository = SeasonRepository(db)
+	val seriesRepository = SeriesRepository(db)
+	FileRoute(this@module)
+	GifRoute(seriesRepository, gifRepository, seasonRepository, episodeRepository, sceneRepository, kord, this@module)
 	SeasonsRoute(this@module, seriesRepository, seasonRepository)
 	SeriesRoute(this@module, seriesRepository)
 }

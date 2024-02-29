@@ -1,6 +1,7 @@
 package fr.imacaron.gif.shared
 
 import java.io.File
+import java.io.InputStream
 
 object FFMPEG {
 	fun getFileMetadata(path: String): Metadata {
@@ -90,13 +91,11 @@ object FFMPEG {
 		}
 	}
 
-	fun convertToGif(meme: String, output: String, duration: Double) {
+	fun convertToGif(meme: String, duration: Double): InputStream? {
 		logger.debug("Converting $meme to gif")
-		val name = meme.substring(meme.lastIndexOf('/')).removeSuffix(".mp4")
-		"ffmpeg -y -i $meme -r 15 -vf scale=512:-1,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse -ss 00:00:00 -to $duration $output".runCommand().apply {
-			logger.debug(this)
+		return "ffmpeg -loglevel error -y -i $meme -r 15 -vf scale=512:-1,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse -ss 00:00:00 -to $duration -f gif -".runCommandStream().apply {
+			logger.debug("Gif created")
 		}
-		logger.debug("Gif 'gif/$name.gif' created")
 	}
 
 	data class Metadata(

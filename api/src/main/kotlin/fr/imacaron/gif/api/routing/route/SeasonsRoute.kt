@@ -30,7 +30,7 @@ class SeasonsRoute(
 	private fun Route.getSeriesSeasons() {
 		get<API.Series.Name.Seasons> {
 			seriesRepository.getSeries(it.parent.name).onSuccess {  series ->
-				seasonsRepository.getSeriesSeasons(series.entity).onSuccess { seasons ->
+				seasonsRepository.getSeriesSeasons(series).onSuccess { seasons ->
 					call.respond(Response.Ok(seasons.map { s -> Season(s) }))
 				}.onFailure {
 					call.respond(Response.ServerError)

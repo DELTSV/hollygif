@@ -3,11 +3,37 @@ services:
     image: "mariadb:11"
     restart: always
     ports:
-      - '3306:3306'
+      - "3306:3306"
     environment:
       MARIADB_ROOT_PASSWORD: password
       MARIADB_DATABASE: kaamelott-gif
     volumes:
       - db-volume:/var/lib/mysql
+  s3:
+    image: "minio/minio"
+    restart: always
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - "minio-volume:/data"
+      - "minio-config-volume:/root/.minio"
+    environment:
+      MINIO_ROOT_USER: gif
+      MINIO_ROOT_PASSWORD: gifsecret
+    command:
+      - "server"
+      - "/data"
+      - "--console-address"
+      - ":9001"
+  s3-setup:
+    image: "minio/mc"
+    depends_on:
+      - s3
+    volumes:
+      - "./setup.sh:/setup.sh"
+    entrypoint: "/setup.sh"
 volumes:
   db-volume:
+  minio-volume:
+  minio-config-volume:

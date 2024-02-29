@@ -1,18 +1,16 @@
 package fr.imacaron.gif.shared.entity
 
-import fr.imacaron.gif.shared.ErrorWhileDrawingText
-import fr.imacaron.gif.shared.FFMPEG
-import fr.imacaron.gif.shared.NotEnoughTimeException
-import fr.imacaron.gif.shared.logger
-import fr.imacaron.gif.shared.repository.EpisodeEntity
+import fr.imacaron.gif.shared.*
 import fr.imacaron.gif.shared.repository.SceneEntity
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.withContext
 import java.io.File
 
 class Scene(
 	val entity: SceneEntity,
-	private val ep: EpisodeEntity
+	private val ep: Episode
 ) {
 	val start
 		get() = entity.start
@@ -36,6 +34,7 @@ class Scene(
 	)
 
 	fun createMeme(text: String, textSize: Int = 156): Flow<Status> = flow {
+		this@Scene.ep.season.series.s3
 		logger.debug("Create meme")
 		if(duration < 0) {
 			emit(Status(error = NotEnoughTimeException()))
@@ -75,9 +74,17 @@ class Scene(
 		}
 		FFMPEG.writeText(scene, "./tmp/$name.mp4", lines, textSize)
 		emit(Status(scene = true, textLength = true, text = true))
-		FFMPEG.convertToGif("./tmp/$name.mp4", "./gif/$name.gif", duration)
-		emit(Status(scene = true, textLength = true, text = true, gif = true))
-		logger.debug("Meme created")
-		emit(Status(scene = true, textLength = true, text = true, gif = true, result = "$name.gif"))
+		val gif = FFMPEG.convertToGif("./tmp/$name.mp4", duration)
+		if (gif != null) {
+			emit(Status(scene = true, textLength = true, text = true, gif = true))
+			logger.debug("Meme created")
+			withContext(Dispatchers.IO) {
+				this@Scene.ep.season.series.s3.putFile("gif", "$name.gif", gif.readAllBytes())
+				logger.debug("Meme uploaded")
+			}
+			emit(Status(scene = true, textLength = true, text = true, gif = true, result = "$name.gif"))
+		} else {
+			emit(Status(scene = true, textLength = true, text = true, error = CannotUploadToBucket()))
+		}
 	}
 }

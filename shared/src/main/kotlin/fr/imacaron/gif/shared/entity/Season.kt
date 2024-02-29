@@ -1,11 +1,14 @@
 package fr.imacaron.gif.shared.entity
 
 import fr.imacaron.gif.shared.repository.EpisodeRepository
+import fr.imacaron.gif.shared.repository.SceneRepository
 import fr.imacaron.gif.shared.repository.SeasonEntity
 
 class Season(
 	private val episodeRepository: EpisodeRepository,
-	val entity: SeasonEntity
+	private val sceneRepository: SceneRepository,
+	val entity: SeasonEntity,
+	val series: Series
 ) {
 	var id
 		get() = entity.id
@@ -27,7 +30,7 @@ class Season(
 		operator fun get(i: Int): Episode {
 			return episodeRepository.getSeasonEpisode(entity, i).getOrElse {
 				throw IndexOutOfBoundsException()
-			}
+			}.let { Episode(sceneRepository, it, this@Season) }
 		}
 
 		val size by lazy {

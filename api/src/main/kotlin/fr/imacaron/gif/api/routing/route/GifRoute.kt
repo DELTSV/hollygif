@@ -10,8 +10,7 @@ import fr.imacaron.gif.api.types.Gif
 import fr.imacaron.gif.api.types.Response
 import fr.imacaron.gif.shared.NotFoundException
 import fr.imacaron.gif.shared.entity.Series
-import fr.imacaron.gif.shared.repository.GifRepository
-import fr.imacaron.gif.shared.repository.SeriesRepository
+import fr.imacaron.gif.shared.repository.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.request.*
@@ -25,6 +24,9 @@ import kotlinx.coroutines.withContext
 class GifRoute(
 	seriesRepository: SeriesRepository,
 	private val gifRepository: GifRepository,
+	seasonRepository: SeasonRepository,
+	episodeRepository: EpisodeRepository,
+	sceneRepository: SceneRepository,
 	private val kord: Kord,
 	application: Application
 ) {
@@ -39,7 +41,7 @@ class GifRoute(
 		seriesRepository.getSeries("kaamelott").onFailure {
 			throw NotFoundException("Kaamelott not found")
 		}.onSuccess {
-			kaamelott = it
+			kaamelott = Series(seasonRepository, episodeRepository, sceneRepository, it)
 		}
 	}
 

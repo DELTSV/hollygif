@@ -17,13 +17,13 @@ class Loader(
 
 	fun loadSeries(name: String) {
 		seriesRepository.getSeries(name).onSuccess {
-			series = it
+			series = Series(seasonRepository, episodeRepository, sceneRepository, it)
 			return
 		}
 		seriesRepository.addSeries(SeriesEntity{
 			this.name = name
 		}).onSuccess {
-			series = Series(seasonRepository, episodeRepository, it)
+			series = Series(seasonRepository, episodeRepository, sceneRepository, it)
 		}.onFailure {
 			logger.error("Cannot load series $name", it)
 		}

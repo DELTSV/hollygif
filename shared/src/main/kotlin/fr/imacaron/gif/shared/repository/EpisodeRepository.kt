@@ -12,8 +12,7 @@ import org.ktorm.schema.int
 import org.ktorm.schema.varchar
 
 class EpisodeRepository(
-	private val db: Database,
-	private val sceneRepository: SceneRepository
+	private val db: Database
 ) {
 	fun getSeasonEpisodes(season: SeasonEntity): Result<List<EpisodeEntity>> =
 		Result.success(db.episodes.filter { EpisodeTable.season eq season.id }.map { it })
@@ -21,9 +20,9 @@ class EpisodeRepository(
 	fun getSeasonEpisodesCount(season: SeasonEntity): Result<Int> =
 		Result.success(db.episodes.count { EpisodeTable.season eq season.id })
 
-	fun getSeasonEpisode(season: SeasonEntity, number: Int): Result<Episode> =
+	fun getSeasonEpisode(season: SeasonEntity, number: Int): Result<EpisodeEntity> =
 		db.episodes.find { (EpisodeTable.season eq season.id) and (EpisodeTable.number eq number) }?.let {
-			Result.success(Episode(sceneRepository, it, season))
+			Result.success(it)
 		} ?: Result.failure(NotFoundException("Episode not found"))
 
 	fun addEpisode(episode: EpisodeEntity): Result<EpisodeEntity> {

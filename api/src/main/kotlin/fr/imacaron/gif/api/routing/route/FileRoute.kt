@@ -1,17 +1,17 @@
 package fr.imacaron.gif.api.routing.route
 
-import fr.imacaron.gif.api.respond as respondAPI
+import fr.imacaron.gif.api.plugins.buildS3
+import fr.imacaron.gif.api.respond
 import fr.imacaron.gif.api.routing.resources.API
 import fr.imacaron.gif.api.types.Response
-import fr.imacaron.gif.shared.repository.GifRepository
+import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.resources.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import java.io.File
+import software.amazon.awssdk.services.s3.model.NoSuchKeyException
 
 class FileRoute(
-	val gifRepository: GifRepository,
 	application: Application
 ) {
 	init {
@@ -19,14 +19,15 @@ class FileRoute(
 	}
 
 	private fun Application.route() {
+		val s3s = mutableMapOf("kaamelott" to buildS3("kaamelott"))
 		routing {
 			get<API.Gif.File> {
-				val f = File("./gif/${it.file}")
-				if(!f.exists()) {
-					call.respondAPI(Response.NotFound)
-					return@get
+				try {
+					val gif = s3s["kaamelott"]!!.getFile("gif", it.file)
+					call.respondBytes(gif, ContentType.Any, HttpStatusCode.OK)
+				}catch (_: NoSuchKeyException) {
+					call.respond(Response.NotFound)
 				}
-				call.respondFile(f)
 			}
 		}
 	}

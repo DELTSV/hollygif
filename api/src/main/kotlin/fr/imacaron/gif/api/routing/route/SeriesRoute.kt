@@ -31,7 +31,7 @@ class SeriesRoute(
 	private fun Route.getSeries() {
 		get<API.Series> {
 			seriesRepository.getSeries().onSuccess {series ->
-				call.respond(Response.Ok(series.map { Series(it.entity) }))
+				call.respond(Response.Ok(series.map { Series(it) }))
 			}.onFailure {
 				logger.error(it)
 				call.respond(Response.ServerError)
@@ -42,7 +42,7 @@ class SeriesRoute(
 	private fun Route.getOneSeries() {
 		get<API.Series.Name> {
 			seriesRepository.getSeries(it.name).onSuccess { series ->
-				call.respond(Response.Ok(Series(series.entity)))
+				call.respond(Response.Ok(Series(series)))
 			}.onFailure { e ->
 				when(e) {
 					is NotFoundException -> call.respond(Response.NotFound)

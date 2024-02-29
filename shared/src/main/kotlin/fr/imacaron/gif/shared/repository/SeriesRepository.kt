@@ -11,14 +11,12 @@ import org.ktorm.schema.int
 import org.ktorm.schema.varchar
 
 class SeriesRepository(
-	private val db: Database,
-	private val seasonRepository: SeasonRepository,
-	private val episodeRepository: EpisodeRepository
+	private val db: Database
 ) {
-	fun getSeries(): Result<List<Series>> = Result.success(db.series.map { Series(seasonRepository, episodeRepository, it) })
+	fun getSeries(): Result<List<SeriesEntity>> = Result.success(db.series.toList())
 
-	fun getSeries(name: String): Result<Series> = db.series.find { SeriesTable.name eq name }?.let {
-		Result.success(Series(seasonRepository, episodeRepository, it))
+	fun getSeries(name: String): Result<SeriesEntity> = db.series.find { SeriesTable.name eq name }?.let {
+		Result.success(it)
 	} ?: Result.failure(NotFoundException("Series not found"))
 
 	fun addSeries(series: SeriesEntity): Result<SeriesEntity>{

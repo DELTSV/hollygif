@@ -28,9 +28,9 @@ class SceneRepository(
 		} ?: Result.failure(NotFoundException("Cannot found scene"))
 	}
 
-	fun getEpisodeSceneAt(episode: EpisodeEntity, at: Double): Result<Scene> {
+	fun getEpisodeSceneAt(episode: EpisodeEntity, at: Double): Result<SceneEntity> {
 		return db.scenes.find { (SceneTable.start lte at) and (SceneTable.end gte at) and (SceneTable.episode eq episode.id) }?.let {
-			Result.success(Scene(it, episode))
+			Result.success(it)
 		} ?: Result.failure(NotFoundException("Cannot find scene with this timecode"))
 	}
 
