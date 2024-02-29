@@ -79,12 +79,6 @@ suspend fun main(args: Array<String>) {
         Series(seasonRepository, episodeRepository, sceneRepository, it)
     }
 
-    if(args.isNotEmpty() && args[0] == "LOAD") {
-        File("./gif").listFiles()?.forEach { f ->
-            kaamelott.s3.putFile("gif", f.name, f.readBytes())
-        }
-    }
-
     val kord = Kord(token)
 
     val episodeNumbers = kaamelott.seasons.associate {
