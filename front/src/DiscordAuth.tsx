@@ -55,7 +55,7 @@ export default function DiscordAuth(props: DiscordAuthProps) {
 				responseType={"token"}
 				clientId={props.clientId}
 				redirectUri={props.redirectUri}
-				className={"border-2 border-neutral-400 hover:text-black hover:bg-neutral-400 px-4 py-2 mx-2 rounded-lg hover:scale-110 transition"}
+				className={"border-2 border-yellow-500 hover:text-black hover:bg-yellow-500 px-4 py-2 mx-2 rounded-lg hover:scale-110 transition"}
 				onSuccess={(r) => {
 					setToken(r["access_token"]);
 					localStorage.setItem("token", r["access_token"]);
