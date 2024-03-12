@@ -41,6 +41,8 @@ bin/
 ### Mac OS ###
 .DS_Store
 
+node_modules/
+
 episodes
 info
 tmp
