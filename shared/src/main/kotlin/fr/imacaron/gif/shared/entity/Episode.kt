@@ -30,6 +30,9 @@ class Episode(
 
 	val scenes = SceneList()
 
+	val script: String
+		get() = entity.script
+
 	inner class SceneList {
 		operator fun get(i: Int): Scene = sceneRepository.getEpisodeScene(entity, i).getOrThrow().let { Scene(it, this@Episode) }
 

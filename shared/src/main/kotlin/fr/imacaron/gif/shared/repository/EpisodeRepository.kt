@@ -6,10 +6,7 @@ import org.ktorm.database.Database
 import org.ktorm.dsl.and
 import org.ktorm.dsl.eq
 import org.ktorm.entity.*
-import org.ktorm.schema.Table
-import org.ktorm.schema.double
-import org.ktorm.schema.int
-import org.ktorm.schema.varchar
+import org.ktorm.schema.*
 
 class EpisodeRepository(
 	private val db: Database
@@ -44,6 +41,7 @@ open class EpisodeTable(alias: String?): Table<EpisodeEntity>("EPISODES", alias)
 	val title = varchar("title").bindTo { it.title }
 	val duration = double("duration").bindTo { it.duration }
 	val season = int("season").references(SeasonTable) { it.season }
+	val script = text("script").bindTo { it.script }
 
 	val seasons: SeasonTable get() = season.referenceTable as SeasonTable
 }
@@ -57,6 +55,7 @@ interface EpisodeEntity: Entity<EpisodeEntity> {
 	var title: String
 	var duration: Double
 	var season: SeasonEntity
+	var script: String
 
 	companion object: Entity.Factory<EpisodeEntity>()
 }

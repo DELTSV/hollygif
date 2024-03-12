@@ -72,3 +72,8 @@ ALTER TABLE GIFS ADD status INT DEFAULT 1 NOT NULL;
 -- changeset macaron:1709133086251-1
 ALTER TABLE SERIES ADD logo TEXT NOT NULL;
 
+-- liquibase formatted sql
+
+-- changeset macaron:1710235966567-1
+ALTER TABLE EPISODES ADD script MEDIUMTEXT DEFAULT '' NOT NULL;
+
