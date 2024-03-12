@@ -1,39 +1,24 @@
 package fr.imacaron.gif.bot
 
 import com.mchange.v2.c3p0.ComboPooledDataSource
-import dev.kord.common.entity.Choice
-import dev.kord.common.entity.optional.Optional
-import dev.kord.common.entity.optional.value
 import dev.kord.core.Kord
-import dev.kord.core.behavior.interaction.response.respond
-import dev.kord.core.behavior.interaction.suggest
 import dev.kord.core.event.interaction.AutoCompleteInteractionCreateEvent
 import dev.kord.core.event.interaction.GuildChatInputCommandInteractionCreateEvent
 import dev.kord.core.on
-import dev.kord.rest.builder.interaction.integer
-import dev.kord.rest.builder.interaction.string
-import dev.kord.rest.builder.message.addFile
-import dev.kord.rest.builder.message.embed
-import dev.kord.rest.request.KtorRequestException
-import fr.imacaron.gif.shared.ErrorWhileDrawingText
-import fr.imacaron.gif.shared.NotEnoughTimeException
 import fr.imacaron.gif.bot.commands.Archives
-import fr.imacaron.gif.bot.commands.Gif
+import fr.imacaron.gif.bot.commands.GifCommand
 import fr.imacaron.gif.shared.entity.Series
 import fr.imacaron.gif.shared.repository.*
-import io.ktor.util.logging.*
-import kotlinx.datetime.Clock
 import org.ktorm.database.Database
 import org.ktorm.support.mysql.MySqlDialect
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.io.File
-import java.util.*
-import kotlin.io.path.Path
 
 val logger: Logger = LoggerFactory.getLogger("fr.imacaron.kaamelott.gif.bot")
 
-val API = System.getenv("API")
+val API: String = System.getenv("API")
+val APP: String = System.getenv("APP")
 
 suspend fun main(args: Array<String>) {
     val token = System.getenv("TOKEN") ?: run {
@@ -86,7 +71,7 @@ suspend fun main(args: Array<String>) {
     }
 
     val archives = Archives(kord, gifRepository).apply { init() }
-    val gif = Gif(kord, episodeNumbers, kaamelott, gifRepository).apply { init() }
+    val gifCommand = GifCommand(kord, episodeNumbers, kaamelott, gifRepository).apply { init() }
 
 
     if(episodeNumbers.size != 6) {
@@ -96,14 +81,14 @@ suspend fun main(args: Array<String>) {
 
     kord.on<AutoCompleteInteractionCreateEvent> {
         when(interaction.command.data.name.value) {
-            "kaagif" -> gif.autoCompleteEpisode(interaction)
+            "kaagif" -> gifCommand.autoCompleteEpisode(interaction)
         }
     }
 
     kord.on<GuildChatInputCommandInteractionCreateEvent> {
         when(interaction.command.rootName) {
             "archives" -> archives(interaction)
-            "kaagif" -> gif(interaction)
+            "kaagif" -> gifCommand(interaction)
         }
     }
 

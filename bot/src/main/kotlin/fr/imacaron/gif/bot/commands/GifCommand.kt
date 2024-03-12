@@ -24,7 +24,7 @@ import kotlinx.datetime.Clock
 import java.io.File
 import java.util.*
 
-class Gif(
+class GifCommand(
 	private val kord: Kord,
 	private val episodeNumbers: Map<Int, Int>,
 	private val kaamelott: Series,
@@ -162,14 +162,15 @@ class Gif(
 					return@collect
 				}
 				if(it.result != null) {
-					gifRepository.addGif(GifEntity {
+					val gifEntity = GifEntity {
 						this.scene = scene.entity
 						this.date = Clock.System.now()
 						this.text = text
 						this.user = user.id.toString()
 						this.timecode = timecode
 						this.status = GifStatus.SUCCESS
-					})
+					}
+					gifRepository.addGif(gifEntity)
 					resp.respond {
 						embed {
 							title = "Gif créé"
@@ -207,7 +208,7 @@ class Gif(
 							}
 							logger.debug("IMAGE URL = $API/api/gif/file/${it.result}")
 							image = "$API/api/gif/file/${it.result}"
-							url = "$API/api/gif/file/${it.result}"
+							url = "$APP/gif/${gifEntity.id}"
 						}
 					}
 				} else if(it.gif) {
