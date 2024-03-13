@@ -53,4 +53,9 @@ export default class API {
 		const rep = await this.request<Season[]>(`/api/series/${name}/seasons`);
 		return rep.data;
 	}
+
+	async episodes(series: string, season: number, page: number): Promise<Episode[]> {
+		const rep = await this.request<Episode[]>(`/api/series/${series}/seasons/${season}/episodes?page=${page}&page_size=10`);
+		return rep.data;
+	}
 }
