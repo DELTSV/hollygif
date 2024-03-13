@@ -47,3 +47,5 @@ episodes
 info
 tmp
 /gif
+
+.env
