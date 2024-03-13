@@ -1,8 +1,7 @@
 import OAuth2Login from "react-simple-oauth2-login";
 import React, { useCallback, useEffect, useState } from "react";
-import Spinner from "./Components/Spinner.tsx";
+import { Spinner, Button } from "./Components";
 import API from "./Api/Api.ts";
-import Button from "./Components/Button.tsx";
 
 interface DiscordAuthProps {
 	token: string | null,

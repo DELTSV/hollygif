@@ -2,8 +2,7 @@ import { useCallback, useMemo, useState } from "react";
 import API from "../../Api/Api";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { RouterLayout } from "./RouterLayout";
-import { GifList } from "..";
-import Gif from "../../Pages/Gif";
+import { GifList, GifDetails } from "..";
 import UserGifs from "../../Pages/UserGifs";
 import Series from "../../Pages/Series";
 import Seasons from "../../Pages/Seasons";
@@ -31,7 +30,7 @@ export function Router() {
                 },
                 {
                     path: "gif/:id",
-                    element: <Gif api={api} />
+                    element: <GifDetails api={api} />
                 },
                 {
                     path: "gif/me",

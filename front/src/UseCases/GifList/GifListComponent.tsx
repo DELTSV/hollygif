@@ -1,13 +1,13 @@
-import GifCard from "../Components/GifCard.tsx";
-import API from "../Api/Api.ts";
+import API from "../../Api/Api.ts";
 import { useEffect, useState } from "react";
+import { GifCard } from "../../Components";
 
-interface HomeProps {
+interface GifListProps {
 	api: API,
 	bottom: boolean
 }
 
-export default function Home(props: HomeProps) {
+export function GifList({ api, bottom }: GifListProps) {
 	const [gifs, setGifs] = useState<Gif[] | null>(null);
 	const [page, setPage] = useState(0);
 	const [done, setDone] = useState(false);
@@ -16,7 +16,7 @@ export default function Home(props: HomeProps) {
 		if (done) {
 			return;
 		}
-		props.api.gifs(page).then(res => {
+		api.gifs(page).then(res => {
 			if (res.length < 12) {
 				setDone(true);
 			}
@@ -28,20 +28,20 @@ export default function Home(props: HomeProps) {
 				return [...new Set(tmp)];
 			});
 		});
-	}, [props.api, page, done]);
+	}, [api, page, done]);
 
 	useEffect(() => {
-		if (props.bottom) {
+		if (bottom) {
 			setPage(prev => prev + 1);
 		}
-	}, [props.bottom]);
+	}, [bottom]);
 
-	return (
-		<div className={"w-11/12 2xl:w-10/12 flex flex-col items-center"}>
-			<h1 className={"text-4xl text-yellow-500"}>Les derniers gif</h1>
-			<div className={"grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4"}>
-				{gifs?.map((gif, index) => <GifCard key={index} gif={gif} redirect={true} width={"min-w-72 max-w-72"} />)}
-			</div>
-		</div>
-	)
+	return <section className={"w-11/12 2xl:w-10/12 flex flex-col items-center"}>
+		<h1 className={"text-4xl text-yellow-500"}>Les derniers gif</h1>
+		<ul className={"grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4"}>
+			{gifs?.map((gif, index) =>
+				<GifCard key={index} gif={gif} redirect={true} width={"min-w-72 max-w-72"} />
+			)}
+		</ul>
+	</section>;
 }

@@ -1,7 +1,7 @@
 import API from "../Api/Api.ts";
 import { Link, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import Card from "../Components/Card.tsx";
+import { Card } from "../Components";
 
 interface SeasonsProps {
 	api: API

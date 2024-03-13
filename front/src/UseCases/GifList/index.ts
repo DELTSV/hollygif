@@ -1,1 +1,1 @@
-export * from "./GifList";
+export * from "./GifListComponent";

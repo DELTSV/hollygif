@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import API from "../Api/Api.ts";
-import GifCard from "../Components/GifCard.tsx";
+import { GifCard } from "../Components";
 import { useNavigate } from "react-router-dom";
 
 interface UserGifsProps {

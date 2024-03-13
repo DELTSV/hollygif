@@ -1,25 +1,22 @@
 import { useParams, Link } from "react-router-dom";
-import API from "../Api/Api.ts";
+import API from "../../Api/Api.ts";
 import { useEffect, useRef, useState } from "react";
 import { Clipboard } from "react-feather";
-import Button from "../Components/Button.tsx";
-import GifCard from "../Components/GifCard.tsx";
-import Card from "../Components/Card.tsx";
+import { Button, GifCard, Card } from "../../Components";
 
 interface GifProps {
 	api: API
 }
 
-export default function Gif(props: GifProps) {
+export function GifDetails({ api }: GifProps) {
 	const { id } = useParams();
-
 	const [gif, setGif] = useState<Gif | null>(null);
 
 	useEffect(() => {
-		props.api.gif(parseInt(id ?? "0")).then(r => {
+		api.gif(parseInt(id ?? "0")).then(r => {
 			setGif(r);
 		})
-	}, [id, props.api]);
+	}, [id, api]);
 
 	const input = useRef<HTMLInputElement>(null);
 

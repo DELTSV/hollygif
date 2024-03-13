@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import API from "../Api/Api.ts";
-import Card from "../Components/Card.tsx";
+import { Card } from "../Components";
 import { Link } from "react-router-dom";
 
 interface SeriesProps {
