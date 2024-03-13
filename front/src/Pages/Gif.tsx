@@ -1,4 +1,4 @@
-import {useParams} from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 import API from "../api/api.ts";
 import {useEffect, useRef, useState} from "react";
 import {Clipboard} from "react-feather";
@@ -30,8 +30,16 @@ export default function Gif(props: GifProps) {
 				<p>Créateur: {gif?.creator.global_name}</p>
 				<p>Date: {(new Date(gif?.createdAt ?? "")).toLocaleString()}</p>
 				<p>Timecode: {gif?.timecode}</p>
-				<p>Épisode: {gif?.scene.episode.number}</p>
-				<p>Livre: {gif?.scene.episode.season.number}</p>
+				<p>
+					<Link to={`/series/${gif?.scene?.episode?.season?.series?.name}/${gif?.scene?.episode?.season?.number}`}>
+						Livre: {gif?.scene.episode.season.number}
+					</Link>
+				</p>
+				<p>
+					<Link to={`/series/${gif?.scene?.episode?.season?.series.name}/${gif?.scene?.episode?.season?.number}/${gif?.scene?.episode.number}`}>
+						Épisode: {gif?.scene.episode.number}
+					</Link>
+				</p>
 				<div>
 					<p>Commande discord:</p>
 					<div className={"flex"}>
