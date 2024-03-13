@@ -1,14 +1,14 @@
 import OAuth2Login from "react-simple-oauth2-login";
-import React, {useCallback, useEffect, useState} from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Spinner from "./Components/Spinner.tsx";
-import API from "./api/api.ts";
+import API from "./Api/Api.ts";
 import Button from "./Components/Button.tsx";
 
 interface DiscordAuthProps {
-	token: string|null,
-	setToken: React.Dispatch<React.SetStateAction<string|null>>
-	user: User|null
-	setUser: React.Dispatch<React.SetStateAction<User|null>>
+	token: string | null,
+	setToken: React.Dispatch<React.SetStateAction<string | null>>
+	user: User | null
+	setUser: React.Dispatch<React.SetStateAction<User | null>>
 	redirectUri: string,
 	clientId: string,
 	scope: string,
@@ -16,12 +16,12 @@ interface DiscordAuthProps {
 }
 
 export default function DiscordAuth(props: DiscordAuthProps) {
-	const {token, setToken, user, setUser} = props;
+	const { token, setToken, user, setUser } = props;
 
 	const getUser = useCallback((token: string) => {
 		const h = new Headers();
 		h.append("Authorization", "Bearer " + token);
-		fetch("https://discord.com/api/v10/users/@me", {headers: h}).then(async (r) => {
+		fetch("https://discord.com/api/v10/users/@me", { headers: h }).then(async (r) => {
 			setUser(await r.json());
 		}).catch(() => {
 			setToken(null);
@@ -33,7 +33,7 @@ export default function DiscordAuth(props: DiscordAuthProps) {
 	const [loading, setLoading] = useState(true);
 	useEffect(() => {
 		const t = localStorage.getItem("token");
-		if(t === null) {
+		if (t === null) {
 			setLoading(false);
 			props.api.refreshToken();
 		} else {
@@ -43,12 +43,12 @@ export default function DiscordAuth(props: DiscordAuthProps) {
 			props.api.refreshToken();
 		}
 	}, [props.api, setToken, getUser]);
-	if(loading) {
+	if (loading) {
 		return (
-			<Spinner/>
+			<Spinner />
 		)
 	}
-	if(token === null) {
+	if (token === null) {
 		return (
 			<OAuth2Login
 				authorizationUrl={"https://discord.com/oauth2/authorize"}
@@ -70,7 +70,7 @@ export default function DiscordAuth(props: DiscordAuthProps) {
 		return (
 			<div className={"flex items-center gap-4"}>
 				<p className={"text-xl"}>{user?.global_name}</p>
-				<img src={`https://cdn.discordapp.com/avatars/${user?.id}/${user?.avatar}.png`} alt={"Profile picture"} className={"rounded-full h-12"}/>
+				<img src={`https://cdn.discordapp.com/avatars/${user?.id}/${user?.avatar}.png`} alt={"Profile picture"} className={"rounded-full h-12"} />
 				<Button onClick={() => {
 					setUser(null);
 					setToken(null);

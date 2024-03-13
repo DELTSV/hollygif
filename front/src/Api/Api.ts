@@ -1,4 +1,4 @@
-import APIResponse from "../types/APIResponse.ts";
+import APIResponse from "../Types/APIResponse.ts";
 
 export default class API {
 
@@ -19,7 +19,7 @@ export default class API {
 	private async request<T>(uri: string, method: "GET" | "POST" | "PUT" | "DELETE" = "GET"): Promise<APIResponse<T>> {
 		const headers = new Headers();
 		headers.append("Authorization", "Bearer " + this.token);
-		const rep = await fetch(`${this.baseURL}${uri}`, {method: method, headers: headers});
+		const rep = await fetch(`${this.baseURL}${uri}`, { method: method, headers: headers });
 		this.status = rep.status;
 		return await rep.json();
 	}
@@ -29,8 +29,8 @@ export default class API {
 		return rep.data;
 	}
 
-	async gif(id: number): Promise<Gif|null> {
-		const rep = await this.request<Gif|null>("/api/gif/" + id);
+	async gif(id: number): Promise<Gif | null> {
+		const rep = await this.request<Gif | null>("/api/gif/" + id);
 		return rep.data
 	}
 
