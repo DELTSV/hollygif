@@ -31,7 +31,6 @@ export default function UserGifs(props: UserGifsProps) {
 					return seen.hasOwnProperty(g.id) ? false : (seen[g.id] = true);
 				}).sort((a, b) => (new Date(b.createdAt)).getTime() - (new Date(a.createdAt)).getTime());
 				return [...new Set(tmp)];
-
 			});
 		});
 	}, [props.api, done, page]);
