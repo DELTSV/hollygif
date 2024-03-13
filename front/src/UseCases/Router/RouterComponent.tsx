@@ -2,7 +2,7 @@ import { useCallback, useMemo, useState } from "react";
 import API from "../../Api/Api";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { RouterLayout } from "./RouterLayout";
-import Home from "../Home";
+import { GifList } from "..";
 import Gif from "../../Pages/Gif";
 import UserGifs from "../../Pages/UserGifs";
 import Series from "../../Pages/Series";
@@ -27,7 +27,7 @@ export function Router() {
             children: [
                 {
                     path: "/",
-                    element: <Home api={api} bottom={bottom} />,
+                    element: <GifList api={api} bottom={bottom} />,
                 },
                 {
                     path: "gif/:id",
