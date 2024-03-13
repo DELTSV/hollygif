@@ -1,4 +1,4 @@
-import FooterContributors from "./Footer.contributors";
+import FooterContributors from "./RouterFooterContributors";
 
 export function Footer() {
     return <footer className={"bg-black flex justify-center px-8 py-2 drop-shadow-footer gap-3"}>
