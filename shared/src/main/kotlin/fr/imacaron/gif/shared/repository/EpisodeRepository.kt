@@ -11,8 +11,8 @@ import org.ktorm.schema.*
 class EpisodeRepository(
 	private val db: Database
 ) {
-	fun getSeasonEpisodes(season: SeasonEntity): Result<List<EpisodeEntity>> =
-		Result.success(db.episodes.filter { EpisodeTable.season eq season.id }.map { it })
+	fun getSeasonEpisodes(season: SeasonEntity, page: Int, pageSize: Int): Result<List<EpisodeEntity>> =
+		Result.success(db.episodes.filter { EpisodeTable.season eq season.id }.sortedBy { it.number }.drop(page * pageSize).take(pageSize).map { it })
 
 	fun getSeasonEpisodesCount(season: SeasonEntity): Result<Int> =
 		Result.success(db.episodes.count { EpisodeTable.season eq season.id })

@@ -24,6 +24,7 @@ class SeasonsRoute(
 	private fun Application.route() {
 		routing {
 			getSeriesSeasons()
+			getOneSeriesSeason()
 		}
 	}
 
@@ -32,6 +33,23 @@ class SeasonsRoute(
 			seriesRepository.getSeries(it.parent.name).onSuccess {  series ->
 				seasonsRepository.getSeriesSeasons(series).onSuccess { seasons ->
 					call.respond(Response.Ok(seasons.map { s -> Season(s) }))
+				}.onFailure {
+					call.respond(Response.ServerError)
+				}
+			}.onFailure { e ->
+				when(e) {
+					is NotFoundException -> call.respond(Response.NotFound)
+					else -> call.respond(Response.ServerError)
+				}
+			}
+		}
+	}
+
+	private fun Route.getOneSeriesSeason() {
+		get<API.Series.Name.Seasons.Number> {
+			seriesRepository.getSeries(it.parent.parent.name).onSuccess { series ->
+				seasonsRepository.getSeriesSeason(series, it.number).onSuccess { season ->
+					call.respond(Response.Ok(Season(season)))
 				}.onFailure {
 					call.respond(Response.ServerError)
 				}

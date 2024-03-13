@@ -21,7 +21,16 @@ class API {
 		@Resource("/{name}")
 		class Name(val parent: Series = Series(), val name: String) {
 			@Resource("/seasons")
-			class Seasons(val parent: Name)
+			class Seasons(val parent: Name) {
+				@Resource("/{number}")
+				class Number(val parent: Seasons, val number: Int) {
+					@Resource("/episodes")
+					class Episodes(val parent: Number) {
+						@Resource("/{index}")
+						class Index(val parent: Episodes, val index: Int)
+					}
+				}
+			}
 		}
 	}
 }
