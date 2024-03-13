@@ -1,6 +1,6 @@
 import API from "../api/api.ts";
 import {useEffect, useState} from "react";
-import {useParams} from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 import Card from "../Components/Card.tsx";
 
 interface EpisodesProps {
@@ -38,12 +38,14 @@ export default function Episodes(props: EpisodesProps) {
 	return (
 		<div className={"flex flex-col gap-4"}>
 			{episodes?.map((e) =>
-				<Card horizontal key={e.id}>
-					<div>
-						<p>Épisode {e.number}</p>
-						<p>{e.title.replaceAll("_", " ")}</p>
-					</div>
-				</Card>
+				<Link to={`/series/${name}/${season}/${e.number}`}>
+					<Card horizontal key={e.id}>
+						<div>
+							<p>Épisode {e.number}</p>
+							<p>{e.title.replaceAll("_", " ")}</p>
+						</div>
+					</Card>
+				</Link>
 			)}
 		</div>
 	)

@@ -9,6 +9,7 @@ import UserGifs from "./Pages/UserGifs.tsx";
 import Series from "./Pages/Series.tsx";
 import Seasons from "./Pages/Seasons.tsx";
 import Episodes from "./Pages/Episodes.tsx";
+import EpisodePage from "./Pages/EpisodePage.tsx";
 
 function App() {
     const [bottom, setBottom] = useState(false);
@@ -50,6 +51,10 @@ function App() {
                 {
                     path: "series/:name/:season",
                     element: <Episodes api={api} bottom={bottom}/>
+                },
+                {
+                    path: "series/:name/:season/:episode",
+                    element: <EpisodePage api={api}/>
                 }
             ]
         }
