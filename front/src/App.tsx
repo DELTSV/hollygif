@@ -1,6 +1,6 @@
-import React, {UIEventHandler, useCallback, useMemo, useState} from 'react';
+import React, { UIEventHandler, useCallback, useMemo, useState } from 'react';
 import DiscordAuth from "./DiscordAuth.tsx";
-import {createBrowserRouter, Link, Outlet, RouterProvider} from "react-router-dom";
+import { createBrowserRouter, Link, Outlet, RouterProvider } from "react-router-dom";
 import Gif from "./Pages/Gif.tsx";
 import Home from "./Pages/Home.tsx";
 import "./App.css"
@@ -10,13 +10,14 @@ import Series from "./Pages/Series.tsx";
 import Seasons from "./Pages/Seasons.tsx";
 import Episodes from "./Pages/Episodes.tsx";
 import EpisodePage from "./Pages/EpisodePage.tsx";
+import { Footer } from './Components/Footer';
 
 function App() {
     const [bottom, setBottom] = useState(false);
     const api = useMemo(() => new API(import.meta.env.VITE_API), []);
     const handleScroll = useCallback((e: React.UIEvent<HTMLDivElement>) => {
         const target = e.currentTarget;
-        if(target.scrollHeight - target.scrollTop === target.clientHeight) {
+        if (target.scrollHeight - target.scrollTop === target.clientHeight) {
             setBottom(true)
         } else {
             setBottom(false);
@@ -26,42 +27,42 @@ function App() {
     const router = createBrowserRouter([
         {
             path: "/",
-            element: <Root handleScroll={handleScroll} setBottom={setBottom} api={api}/>,
+            element: <Root handleScroll={handleScroll} setBottom={setBottom} api={api} />,
             children: [
                 {
                     path: "/",
-                    element: <Home api={api} bottom={bottom}/>,
+                    element: <Home api={api} bottom={bottom} />,
                 },
                 {
                     path: "gif/:id",
-                    element: <Gif api={api}/>
+                    element: <Gif api={api} />
                 },
                 {
                     path: "gif/me",
-                    element: <UserGifs api={api} bottom={bottom}/>
+                    element: <UserGifs api={api} bottom={bottom} />
                 },
                 {
                     path: "series",
-                    element: <Series api={api}/>
+                    element: <Series api={api} />
                 },
                 {
                     path: "series/:name",
-                    element: <Seasons api={api}/>
+                    element: <Seasons api={api} />
                 },
                 {
                     path: "series/:name/:season",
-                    element: <Episodes api={api} bottom={bottom}/>
+                    element: <Episodes api={api} bottom={bottom} />
                 },
                 {
                     path: "series/:name/:season/:episode",
-                    element: <EpisodePage api={api}/>
+                    element: <EpisodePage api={api} />
                 }
             ]
         }
     ]);
 
     return (
-        <RouterProvider router={router}/>
+        <RouterProvider router={router} />
     )
 }
 
@@ -72,8 +73,8 @@ interface RootProps {
 }
 
 function Root(props: RootProps) {
-    const [user, setUser] = useState<User|null>(null);
-    const [userToken, setUserToken] = useState<string|null>(null);
+    const [user, setUser] = useState<User | null>(null);
+    const [userToken, setUserToken] = useState<string | null>(null);
 
     return (
         <>
@@ -102,18 +103,16 @@ function Root(props: RootProps) {
                     </div>
                 </div>
                 <div className={"grow bg-neutral-600 py-4 relative overflow-auto"} onScroll={props.handleScroll} onLoad={e => {
-                    if(e.currentTarget.scrollHeight === e.currentTarget.clientHeight) {
+                    if (e.currentTarget.scrollHeight === e.currentTarget.clientHeight) {
                         props.setBottom(true);
                     }
                 }}>
-                    <div className={"absolute top-0 left-0 w-full h-full bg-logo z-0"}/>
+                    <div className={"absolute top-0 left-0 w-full h-full bg-logo z-0"} />
                     <div className={"relative z-10 w-full flex flex-col items-center"}>
-                        <Outlet/>
+                        <Outlet />
                     </div>
                 </div>
-                <div className={"bg-black flex justify-center px-8 py-2 drop-shadow-footer"}>
-                    Fait avec <span className={"text-red-600 px-1"}>♥</span> par imacaron
-                </div>
+                <Footer />
             </div>
         </>
     )
