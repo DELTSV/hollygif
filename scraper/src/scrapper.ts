@@ -8,21 +8,52 @@ const headers = {
   "User-Agent": "PostmanRuntime/7.36.1",
 };
 
+const toTitleCase = (str: string): string => {
+  return str.replace(
+    /\w\S*/g,
+    (txt) => txt.charAt(0).toUpperCase() + txt.substring(1).toLowerCase(),
+  );
+};
+
+const truncateData = (links: Data[]): Data[] => {
+  return links.filter((data) => data.seasonIndex === 5);
+};
+
 export const scrap = async (): Promise<Data[]> => {
   const episodeLinks = await getEpisodesLinks();
-  const lines = await getEpisodeTranscript(episodeLinks[0][0]);
 
-  return [
-    {
-      seasonIndex: 1,
-      episodes: [
-        {
-          episodeIndex: 1,
-          lines,
-        },
-      ],
-    },
-  ];
+  const data = await Promise.all(
+    episodeLinks.map(async (seasonLinks, seasonIndex) => {
+      // if (seasonIndex === 4) {
+      //   return {
+      //     seasonIndex: seasonIndex + 1,
+      //     episodes: await Promise.all(
+      //       seasonLinks.map(async (episodeLink, episodeIndex) => {
+      //         const lines = await getEpisodeTranscript(episodeLink);
+      //         return { episodeIndex: episodeIndex + 1, lines };
+      //       }),
+      //     ),
+      //   };
+      // } else {
+      //   return {
+      //     seasonIndex: seasonIndex + 1,
+      //     episodes: [],
+      //   };
+      // }
+
+      return {
+        seasonIndex: seasonIndex + 1,
+        episodes: await Promise.all(
+          seasonLinks.map(async (episodeLink, episodeIndex) => {
+            const lines = await getEpisodeTranscript(episodeLink);
+            return { episodeIndex: episodeIndex + 1, lines };
+          }),
+        ),
+      };
+    }),
+  );
+
+  return data;
 };
 
 export const getEpisodesLinks = async (): Promise<string[][]> => {
@@ -42,13 +73,22 @@ export const getEpisodeTranscript = async (
 ): Promise<Line[]> => {
   const document = await fetchDocument(episodeLink);
 
-  const transcript = document.getElementById("script_vo");
+  const transcript =
+    document.getElementById("script_vo") ??
+    document.getElementById("script_vf");
+
+  if (transcript == null) {
+    console.error(`No transcript found for episode ${episodeLink}`);
+    return [];
+  }
 
   const dom = new JSDOM(transcript?.innerHTML.replace(/<br>/g, "\n") ?? "");
 
   const divInnerText = dom.window.document.body.textContent;
 
-  return (divInnerText?.match(/.+ ?:.+/g) ?? []).map((line, index) => {
+  console.log(`Processing episode ${episodeLink}`);
+
+  return (divInnerText?.match(/.+ ?:.+/g) ?? []).reduce((acc, line, index) => {
     const [rawName, text] = line
       .split(":")
       .map((s) => s.trim().replace(/\s|&nbsp;/g, " "));
@@ -57,8 +97,27 @@ export const getEpisodeTranscript = async (
     const name = emote != null ? emote[1] : rawName;
     const emotion = emote != null ? emote[2] : undefined;
 
-    return { name, text, info: emotion, index };
-  });
+    if (
+      name.length > 50 ||
+      text.length > 1000 ||
+      (emotion ?? "").length > 100
+    ) {
+      console.error(
+        `Line ${index} from episode ${episodeLink} is too long, skipping`,
+      );
+      return acc;
+    }
+
+    return [
+      ...acc,
+      {
+        index,
+        name: toTitleCase(name),
+        text,
+        info: emotion,
+      },
+    ];
+  }, [] as Line[]);
 };
 
 const fetchDocument = async (url: string): Promise<Document> => {
