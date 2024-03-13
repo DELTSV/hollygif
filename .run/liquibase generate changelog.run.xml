@@ -3,12 +3,12 @@
     <ExternalSystemSettings>
       <option name="env">
         <map>
-          <entry key="DB_PASSWORD" value="password" />
-          <entry key="DB_URL" value="jdbc:mysql://localhost:3306/kaamelott-gif" />
-          <entry key="DB_USER" value="root" />
-          <entry key="REF_DB_PASSWORD" value="" />
-          <entry key="REF_DB_URL" value="jdbc:mysql://localhost:3306/kaamelott-gif" />
-          <entry key="REF_DB_USER" value="" />
+          <entry key="DB_PASSWORD" value="" />
+          <entry key="DB_URL" value="jdbc:mariadb://151.80.58.137:1653/kaamelott-gif" />
+          <entry key="DB_USER" value="" />
+          <entry key="REF_DB_PASSWORD" value="password" />
+          <entry key="REF_DB_URL" value="jdbc:mariadb://localhost:3306/kaamelott-gif" />
+          <entry key="REF_DB_USER" value="root" />
         </map>
       </option>
       <option name="executionName" />
