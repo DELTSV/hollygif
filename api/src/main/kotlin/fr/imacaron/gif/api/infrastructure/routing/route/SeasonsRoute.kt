@@ -2,8 +2,8 @@ package fr.imacaron.gif.api.infrastructure.routing.route
 
 import fr.imacaron.gif.api.respond
 import fr.imacaron.gif.api.infrastructure.routing.resources.API
-import fr.imacaron.gif.api.models.Response
-import fr.imacaron.gif.api.models.Season
+import fr.imacaron.gif.api.models.search.Response
+import fr.imacaron.gif.api.models.search.Season
 import fr.imacaron.gif.shared.NotFoundException
 import fr.imacaron.gif.shared.infrastrucutre.repository.DbSeasonRepository
 import fr.imacaron.gif.shared.infrastrucutre.repository.DbSeriesRepository

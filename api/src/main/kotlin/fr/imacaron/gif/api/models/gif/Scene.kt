@@ -1,5 +1,6 @@
-package fr.imacaron.gif.api.models
+package fr.imacaron.gif.api.models.gif
 
+import fr.imacaron.gif.api.models.search.Episode
 import fr.imacaron.gif.shared.infrastrucutre.repository.DbSceneEntity
 import kotlinx.serialization.Serializable
 

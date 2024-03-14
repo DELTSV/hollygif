@@ -3,8 +3,9 @@ package fr.imacaron.gif.api.infrastructure.routing.route
 import fr.imacaron.gif.api.int
 import fr.imacaron.gif.api.respond
 import fr.imacaron.gif.api.infrastructure.routing.resources.API
-import fr.imacaron.gif.api.models.Episode
-import fr.imacaron.gif.api.models.Response
+import fr.imacaron.gif.api.models.search.Episode
+import fr.imacaron.gif.api.models.search.Response
+import fr.imacaron.gif.api.usecases.search.SearchEpisode
 import fr.imacaron.gif.shared.NotFoundException
 import fr.imacaron.gif.shared.infrastrucutre.repository.DbEpisodeRepository
 import fr.imacaron.gif.shared.infrastrucutre.repository.DbSeasonRepository
@@ -60,23 +61,14 @@ class EpisodesRoute(
 	}
 
 	private fun Route.getOneSeasonEpisode() {
+		val searchEpisode = SearchEpisode(seriesRepository, seasonsRepository, episodeRepository)
 		get<API.Series.Name.Seasons.Number.Episodes.Index> {
-			seriesRepository.getSeries(it.parent.parent.parent.parent.name).onSuccess { series ->
-				seasonsRepository.getSeriesSeason(series, it.parent.parent.number).onSuccess { season ->
-					episodeRepository.getSeasonEpisode(season, it.index).onSuccess { episode ->
-						call.respond(Response.Ok(Episode(episode)))
-					}.onFailure { e ->
-						when(e) {
-							is NotFoundException -> call.respond(Response.NotFound)
-							else -> call.respond(Response.ServerError)
-						}
-					}
-				}.onFailure { e ->
-					when(e) {
-						is NotFoundException -> call.respond(Response.NotFound)
-						else -> call.respond(Response.ServerError)
-					}
-				}
+			searchEpisode(
+					it.parent.parent.parent.parent.name,
+					it.parent.parent.number,
+					it.index
+			).onSuccess { ep ->
+				call.respond(Response.Ok(ep))
 			}.onFailure { e ->
 				when(e) {
 					is NotFoundException -> call.respond(Response.NotFound)

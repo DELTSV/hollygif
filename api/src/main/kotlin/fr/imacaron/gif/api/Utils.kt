@@ -1,6 +1,6 @@
 package fr.imacaron.gif.api
 
-import fr.imacaron.gif.api.models.Response
+import fr.imacaron.gif.api.models.search.Response
 import fr.imacaron.gif.shared.InvalidParamException
 import io.ktor.http.*
 import io.ktor.server.application.*

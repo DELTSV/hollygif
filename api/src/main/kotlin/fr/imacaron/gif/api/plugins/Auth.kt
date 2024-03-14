@@ -1,6 +1,6 @@
 package fr.imacaron.gif.api.plugins
 
-import fr.imacaron.gif.api.models.DiscordOAuth2
+import fr.imacaron.gif.api.models.discord.DiscordOAuth2
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.engine.cio.*

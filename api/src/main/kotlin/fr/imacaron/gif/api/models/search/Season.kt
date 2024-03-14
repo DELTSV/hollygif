@@ -1,4 +1,4 @@
-package fr.imacaron.gif.api.models
+package fr.imacaron.gif.api.models.search
 
 import fr.imacaron.gif.shared.infrastrucutre.repository.SeasonEntity
 import kotlinx.serialization.Serializable

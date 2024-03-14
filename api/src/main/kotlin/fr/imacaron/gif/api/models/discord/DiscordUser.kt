@@ -1,4 +1,4 @@
-package fr.imacaron.gif.api.models
+package fr.imacaron.gif.api.models.discord
 
 import dev.kord.core.entity.User
 import kotlinx.serialization.SerialName

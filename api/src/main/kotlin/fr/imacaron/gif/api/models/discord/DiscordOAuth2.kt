@@ -1,4 +1,4 @@
-package fr.imacaron.gif.api.models
+package fr.imacaron.gif.api.models.discord
 
 import kotlinx.datetime.Instant
 import kotlinx.serialization.SerialName
@@ -6,10 +6,10 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class DiscordOAuth2(
-	val application: Application,
-	val scopes: List<String>,
-	val expires: Instant,
-	val user: DiscordUser
+		val application: Application,
+		val scopes: List<String>,
+		val expires: Instant,
+		val user: DiscordUser
 )
 
 @Serializable

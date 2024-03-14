@@ -1,4 +1,4 @@
-package fr.imacaron.gif.api.models
+package fr.imacaron.gif.api.models.search
 
 import kotlinx.serialization.Serializable
 
