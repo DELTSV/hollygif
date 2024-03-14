@@ -6,8 +6,8 @@ import dev.kord.core.entity.interaction.GuildChatInputCommandInteraction
 import dev.kord.rest.builder.interaction.integer
 import dev.kord.rest.builder.message.embed
 import fr.imacaron.gif.shared.PAGE_SIZE
-import fr.imacaron.gif.shared.repository.GifRepository
-import fr.imacaron.gif.shared.repository.GifStatus
+import fr.imacaron.gif.shared.gif.GifRepository
+import fr.imacaron.gif.shared.gif.GifStatus
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toJavaLocalDateTime
 import kotlinx.datetime.toLocalDateTime

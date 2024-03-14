@@ -1,7 +1,6 @@
-package fr.imacaron.gif.shared.repository
+package fr.imacaron.gif.shared.search
 
 import fr.imacaron.gif.shared.NotFoundException
-import fr.imacaron.gif.shared.entity.Season
 import org.ktorm.database.Database
 import org.ktorm.dsl.and
 import org.ktorm.dsl.eq
@@ -24,7 +23,7 @@ class SeasonRepository(
 		db.seasons.count { SeasonTable.series eq series.id }
 
 	fun addSeriesSeason(series: String, season: SeasonEntity): Result<SeasonEntity> {
-		val dbSeries = db.series.find { it.name eq series } ?: return Result.failure(NotFoundException("Series not found"))
+		val dbSeries = db.series.find { SeriesTable.name eq series } ?: return Result.failure(NotFoundException("Series not found"))
 		season.series = dbSeries
 		db.seasons.add(season)
 		return Result.success(season)

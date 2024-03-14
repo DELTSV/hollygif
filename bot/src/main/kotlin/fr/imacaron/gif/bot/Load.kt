@@ -1,8 +1,9 @@
 package fr.imacaron.gif.bot
 
 import fr.imacaron.gif.shared.FFMPEG
-import fr.imacaron.gif.shared.entity.Series
-import fr.imacaron.gif.shared.repository.*
+import fr.imacaron.gif.shared.gif.DbSceneEntity
+import fr.imacaron.gif.shared.gif.SceneRepository
+import fr.imacaron.gif.shared.search.*
 import java.io.File
 
 
@@ -71,7 +72,7 @@ class Loader(
 			}).onSuccess {
 				metadata.scenes.add(0, .0)
 				metadata.scenes.forEachIndexed { index, d ->
-					sceneRepository.addEpisodeScene(SceneEntity {
+					sceneRepository.addEpisodeScene(DbSceneEntity {
 						this.start = d
 						this.end = metadata.scenes.getOrNull(index + 1) ?: metadata.duration
 						this.index = index

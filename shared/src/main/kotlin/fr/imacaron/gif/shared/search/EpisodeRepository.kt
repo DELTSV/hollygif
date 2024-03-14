@@ -1,7 +1,6 @@
-package fr.imacaron.gif.shared.repository
+package fr.imacaron.gif.shared.search
 
 import fr.imacaron.gif.shared.NotFoundException
-import fr.imacaron.gif.shared.entity.Episode
 import org.ktorm.database.Database
 import org.ktorm.dsl.and
 import org.ktorm.dsl.eq

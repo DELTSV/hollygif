@@ -1,7 +1,8 @@
-package fr.imacaron.gif.shared.repository
+package fr.imacaron.gif.shared.gif
 
 import fr.imacaron.gif.shared.NotFoundException
-import fr.imacaron.gif.shared.entity.Scene
+import fr.imacaron.gif.shared.search.EpisodeEntity
+import fr.imacaron.gif.shared.search.EpisodeTable
 import org.ktorm.database.Database
 import org.ktorm.dsl.and
 import org.ktorm.dsl.eq
@@ -18,29 +19,29 @@ import org.ktorm.schema.int
 class SceneRepository(
 	private val db: Database
 ) {
-	fun getEpisodeScenes(episode: EpisodeEntity): Result<List<SceneEntity>> {
+	fun getEpisodeScenes(episode: EpisodeEntity): Result<List<DbSceneEntity>> {
 		TODO("Not yet implemented")
 	}
 
-	fun getEpisodeScene(episode: EpisodeEntity, index: Int): Result<SceneEntity> {
+	fun getEpisodeScene(episode: EpisodeEntity, index: Int): Result<DbSceneEntity> {
 		return db.scenes.find { (SceneTable.episode eq episode.id) and (SceneTable.index eq index) }?.let {
 			Result.success(it)
 		} ?: Result.failure(NotFoundException("Cannot found scene"))
 	}
 
-	fun getEpisodeSceneAt(episode: EpisodeEntity, at: Double): Result<SceneEntity> {
+	fun getEpisodeSceneAt(episode: EpisodeEntity, at: Double): Result<DbSceneEntity> {
 		return db.scenes.find { (SceneTable.start lte at) and (SceneTable.end gte at) and (SceneTable.episode eq episode.id) }?.let {
 			Result.success(it)
 		} ?: Result.failure(NotFoundException("Cannot find scene with this timecode"))
 	}
 
-	fun addEpisodeScene(info: SceneEntity): Result<SceneEntity> {
+	fun addEpisodeScene(info: DbSceneEntity): Result<DbSceneEntity> {
 		db.scenes.add(info)
 		return Result.success(info)
 	}
 }
 
-open class SceneTable(alias: String?): Table<SceneEntity>("SCENES", alias) {
+open class SceneTable(alias: String?): Table<DbSceneEntity>("SCENES", alias) {
 	companion object: SceneTable(null)
 	override fun aliased(alias: String) = SceneTable(alias)
 
@@ -53,14 +54,14 @@ open class SceneTable(alias: String?): Table<SceneEntity>("SCENES", alias) {
 	val episodes: EpisodeTable get() = episode.referenceTable as EpisodeTable
 }
 
-interface SceneEntity: Entity<SceneEntity> {
+interface DbSceneEntity: Entity<DbSceneEntity> {
 	var id: Int
 	var start: Double
 	var end: Double
 	var index: Int
 	var episode: EpisodeEntity
 
-	companion object: Entity.Factory<SceneEntity>()
+	companion object: Entity.Factory<DbSceneEntity>()
 }
 
 internal val Database.scenes get() = this.sequenceOf(SceneTable)

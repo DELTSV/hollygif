@@ -1,7 +1,7 @@
 package fr.imacaron.gif.api.types
 
 import dev.kord.core.entity.User
-import fr.imacaron.gif.shared.repository.GifEntity
+import fr.imacaron.gif.shared.gif.DbGifEntity
 import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
 
@@ -15,7 +15,7 @@ data class Gif(
 	val timecode: String,
 	val text: String
 ) {
-	constructor(entity: GifEntity, user: User?): this(
+	constructor(entity: DbGifEntity, user: User?): this(
 		entity.id,
 		DiscordUser(user),
 		"${entity.scene.episode.season.number}_${entity.scene.episode.number}_${entity.scene.index}_${entity.text.hashCode()}.gif",

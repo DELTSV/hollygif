@@ -9,11 +9,14 @@ import fr.imacaron.gif.api.routing.resources.API
 import fr.imacaron.gif.api.types.Gif
 import fr.imacaron.gif.api.types.Response
 import fr.imacaron.gif.shared.NotFoundException
-import fr.imacaron.gif.shared.entity.Series
-import fr.imacaron.gif.shared.repository.*
+import fr.imacaron.gif.shared.search.Series
+import fr.imacaron.gif.shared.gif.GifRepository
+import fr.imacaron.gif.shared.gif.SceneRepository
+import fr.imacaron.gif.shared.search.EpisodeRepository
+import fr.imacaron.gif.shared.search.SeasonRepository
+import fr.imacaron.gif.shared.search.SeriesRepository
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
-import io.ktor.server.request.*
 import io.ktor.server.resources.*
 import io.ktor.server.routing.*
 import kotlinx.coroutines.DelicateCoroutinesApi

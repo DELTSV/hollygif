@@ -15,10 +15,10 @@ import dev.kord.rest.request.KtorRequestException
 import fr.imacaron.gif.bot.*
 import fr.imacaron.gif.shared.ErrorWhileDrawingText
 import fr.imacaron.gif.shared.NotEnoughTimeException
-import fr.imacaron.gif.shared.entity.Series
-import fr.imacaron.gif.shared.repository.GifEntity
-import fr.imacaron.gif.shared.repository.GifRepository
-import fr.imacaron.gif.shared.repository.GifStatus
+import fr.imacaron.gif.shared.search.Series
+import fr.imacaron.gif.shared.gif.DbGifEntity
+import fr.imacaron.gif.shared.gif.GifRepository
+import fr.imacaron.gif.shared.gif.GifStatus
 import io.ktor.util.logging.*
 import kotlinx.datetime.Clock
 import java.io.File
@@ -162,7 +162,7 @@ class GifCommand(
 					return@collect
 				}
 				if(it.result != null) {
-					val gifEntity = GifEntity {
+					val gifEntity = DbGifEntity {
 						this.scene = scene.entity
 						this.date = Clock.System.now()
 						this.text = text

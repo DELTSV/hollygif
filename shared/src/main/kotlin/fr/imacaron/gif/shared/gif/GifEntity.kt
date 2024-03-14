@@ -1,10 +1,12 @@
-package fr.imacaron.gif.shared.entity
+package fr.imacaron.gif.shared.gif
 
-import fr.imacaron.gif.shared.repository.*
+import fr.imacaron.gif.shared.search.EpisodeEntity
+import fr.imacaron.gif.shared.search.SeasonEntity
+import fr.imacaron.gif.shared.search.SeriesEntity
 import kotlinx.datetime.Instant
 
-class Gif(
-	val entity: GifEntity
+class GifEntity(
+	val entity: DbGifEntity
 ) {
 	val user: String
 		get() = entity.user

@@ -7,8 +7,12 @@ import dev.kord.core.event.interaction.GuildChatInputCommandInteractionCreateEve
 import dev.kord.core.on
 import fr.imacaron.gif.bot.commands.Archives
 import fr.imacaron.gif.bot.commands.GifCommand
-import fr.imacaron.gif.shared.entity.Series
-import fr.imacaron.gif.shared.repository.*
+import fr.imacaron.gif.shared.search.Series
+import fr.imacaron.gif.shared.gif.GifRepository
+import fr.imacaron.gif.shared.gif.SceneRepository
+import fr.imacaron.gif.shared.search.EpisodeRepository
+import fr.imacaron.gif.shared.search.SeasonRepository
+import fr.imacaron.gif.shared.search.SeriesRepository
 import org.ktorm.database.Database
 import org.ktorm.support.mysql.MySqlDialect
 import org.slf4j.Logger

@@ -5,17 +5,16 @@ import fr.imacaron.gif.api.routing.resources.API
 import fr.imacaron.gif.api.types.Response
 import fr.imacaron.gif.api.types.Season
 import fr.imacaron.gif.shared.NotFoundException
-import fr.imacaron.gif.shared.repository.SeasonRepository
-import fr.imacaron.gif.shared.repository.SeriesRepository
+import fr.imacaron.gif.shared.search.SeasonRepository
+import fr.imacaron.gif.shared.search.SeriesRepository
 import io.ktor.server.application.*
 import io.ktor.server.resources.*
 import io.ktor.server.routing.*
-import io.ktor.server.routing.get
 
 class SeasonsRoute(
-	application: Application,
-	private val seriesRepository: SeriesRepository,
-	private val seasonsRepository: SeasonRepository
+    application: Application,
+    private val seriesRepository: SeriesRepository,
+    private val seasonsRepository: SeasonRepository
 ) {
 	init {
 		application.route()

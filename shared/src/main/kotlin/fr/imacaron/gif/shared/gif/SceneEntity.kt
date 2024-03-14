@@ -1,15 +1,15 @@
-package fr.imacaron.gif.shared.entity
+package fr.imacaron.gif.shared.gif
 
 import fr.imacaron.gif.shared.*
-import fr.imacaron.gif.shared.repository.SceneEntity
+import fr.imacaron.gif.shared.search.Episode
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.withContext
 import java.io.File
 
-class Scene(
-	val entity: SceneEntity,
+class SceneEntity(
+	val entity: DbSceneEntity,
 	private val ep: Episode
 ) {
 	val start
@@ -34,7 +34,7 @@ class Scene(
 	)
 
 	fun createMeme(text: String, textSize: Int = 156): Flow<Status> = flow {
-		this@Scene.ep.season.series.s3
+		this@SceneEntity.ep.season.series.s3
 		logger.debug("Create meme")
 		if(duration < 0) {
 			emit(Status(error = NotEnoughTimeException()))
@@ -79,7 +79,7 @@ class Scene(
 			emit(Status(scene = true, textLength = true, text = true, gif = true))
 			logger.debug("Meme created")
 			withContext(Dispatchers.IO) {
-				this@Scene.ep.season.series.s3.putFile("gif", "$name.gif", gif.readAllBytes())
+				this@SceneEntity.ep.season.series.s3.putFile("gif", "$name.gif", gif.readAllBytes())
 				logger.debug("Meme uploaded")
 			}
 			emit(Status(scene = true, textLength = true, text = true, gif = true, result = "$name.gif"))

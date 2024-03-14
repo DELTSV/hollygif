@@ -4,7 +4,11 @@ import dev.kord.core.Kord
 import fr.imacaron.gif.api.plugins.*
 import fr.imacaron.gif.api.routing.configureRouting
 import fr.imacaron.gif.api.routing.route.*
-import fr.imacaron.gif.shared.repository.*
+import fr.imacaron.gif.shared.gif.GifRepository
+import fr.imacaron.gif.shared.gif.SceneRepository
+import fr.imacaron.gif.shared.search.EpisodeRepository
+import fr.imacaron.gif.shared.search.SeasonRepository
+import fr.imacaron.gif.shared.search.SeriesRepository
 import io.ktor.server.application.*
 import kotlinx.coroutines.runBlocking
 

@@ -1,6 +1,6 @@
 package fr.imacaron.gif.api.types
 
-import fr.imacaron.gif.shared.repository.SeasonEntity
+import fr.imacaron.gif.shared.search.SeasonEntity
 import kotlinx.serialization.Serializable
 
 @Serializable

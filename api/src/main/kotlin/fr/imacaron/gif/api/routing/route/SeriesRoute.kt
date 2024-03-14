@@ -6,11 +6,10 @@ import fr.imacaron.gif.api.types.Response
 import fr.imacaron.gif.api.types.Series
 import fr.imacaron.gif.shared.NotFoundException
 import fr.imacaron.gif.shared.logger
-import fr.imacaron.gif.shared.repository.SeriesRepository
+import fr.imacaron.gif.shared.search.SeriesRepository
 import io.ktor.server.application.*
 import io.ktor.server.resources.*
 import io.ktor.server.routing.*
-import io.ktor.util.Identity.encode
 import io.ktor.util.logging.*
 
 class SeriesRoute(

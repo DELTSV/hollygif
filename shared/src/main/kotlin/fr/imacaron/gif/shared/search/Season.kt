@@ -1,8 +1,6 @@
-package fr.imacaron.gif.shared.entity
+package fr.imacaron.gif.shared.search
 
-import fr.imacaron.gif.shared.repository.EpisodeRepository
-import fr.imacaron.gif.shared.repository.SceneRepository
-import fr.imacaron.gif.shared.repository.SeasonEntity
+import fr.imacaron.gif.shared.gif.SceneRepository
 
 class Season(
 	private val episodeRepository: EpisodeRepository,
