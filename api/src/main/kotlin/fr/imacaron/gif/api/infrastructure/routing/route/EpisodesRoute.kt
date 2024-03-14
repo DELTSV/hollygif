@@ -21,11 +21,7 @@ class EpisodesRoute(
 		private val episodeRepository: DbEpisodeRepository
 ) {
 	init {
-		application.route()
-	}
-
-	private fun Application.route() {
-		routing {
+		application.routing {
 			getSeasonEpisodes()
 			getOneSeasonEpisode()
 		}
