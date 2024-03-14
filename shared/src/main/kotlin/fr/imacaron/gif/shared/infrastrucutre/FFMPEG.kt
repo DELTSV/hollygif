@@ -1,5 +1,6 @@
-package fr.imacaron.gif.shared
+package fr.imacaron.gif.shared.infrastrucutre
 
+import fr.imacaron.gif.shared.logger
 import java.io.File
 import java.io.InputStream
 

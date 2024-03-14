@@ -1,17 +1,16 @@
 package fr.imacaron.gif.bot
 
-import fr.imacaron.gif.shared.FFMPEG
-import fr.imacaron.gif.shared.gif.DbSceneEntity
-import fr.imacaron.gif.shared.gif.SceneRepository
+import fr.imacaron.gif.shared.infrastrucutre.FFMPEG
+import fr.imacaron.gif.shared.infrastrucutre.repository.*
 import fr.imacaron.gif.shared.search.*
 import java.io.File
 
 
 class Loader(
-	private val sceneRepository: SceneRepository,
-	private val episodeRepository: EpisodeRepository,
-	private val seasonRepository: SeasonRepository,
-	private val seriesRepository: SeriesRepository
+		private val sceneRepository: DbSceneRepository,
+		private val episodeRepository: EpisodeRepository,
+		private val seasonRepository: DbSeasonRepository,
+		private val seriesRepository: DbSeriesRepository
 ) {
 
 	lateinit var series: Series

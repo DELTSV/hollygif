@@ -1,20 +1,20 @@
-package fr.imacaron.gif.api.routing.route
+package fr.imacaron.gif.api.infrastructure.routing.route
 
 import dev.kord.common.entity.Snowflake
 import dev.kord.core.Kord
 import dev.kord.core.entity.User
 import fr.imacaron.gif.api.int
 import fr.imacaron.gif.api.respond
-import fr.imacaron.gif.api.routing.resources.API
-import fr.imacaron.gif.api.types.Gif
-import fr.imacaron.gif.api.types.Response
+import fr.imacaron.gif.api.infrastructure.routing.resources.API
+import fr.imacaron.gif.api.models.Gif
+import fr.imacaron.gif.api.models.Response
 import fr.imacaron.gif.shared.NotFoundException
 import fr.imacaron.gif.shared.search.Series
-import fr.imacaron.gif.shared.gif.GifRepository
-import fr.imacaron.gif.shared.gif.SceneRepository
-import fr.imacaron.gif.shared.search.EpisodeRepository
-import fr.imacaron.gif.shared.search.SeasonRepository
-import fr.imacaron.gif.shared.search.SeriesRepository
+import fr.imacaron.gif.shared.infrastrucutre.repository.DbGifRepository
+import fr.imacaron.gif.shared.infrastrucutre.repository.DbSceneRepository
+import fr.imacaron.gif.shared.infrastrucutre.repository.DbEpisodeRepository
+import fr.imacaron.gif.shared.infrastrucutre.repository.DbSeasonRepository
+import fr.imacaron.gif.shared.infrastrucutre.repository.DbSeriesRepository
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.resources.*
@@ -25,13 +25,13 @@ import kotlinx.coroutines.newSingleThreadContext
 import kotlinx.coroutines.withContext
 
 class GifRoute(
-	seriesRepository: SeriesRepository,
-	private val gifRepository: GifRepository,
-	seasonRepository: SeasonRepository,
-	episodeRepository: EpisodeRepository,
-	sceneRepository: SceneRepository,
-	private val kord: Kord,
-	application: Application
+		seriesRepository: DbSeriesRepository,
+		private val gifRepository: DbGifRepository,
+		seasonRepository: DbSeasonRepository,
+		episodeRepository: DbEpisodeRepository,
+		sceneRepository: DbSceneRepository,
+		private val kord: Kord,
+		application: Application
 ) {
 	private lateinit var kaamelott: Series
 

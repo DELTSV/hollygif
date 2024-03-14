@@ -1,4 +1,4 @@
-package fr.imacaron.gif.api.routing.resources
+package fr.imacaron.gif.api.infrastructure.routing.resources
 
 import io.ktor.resources.*
 

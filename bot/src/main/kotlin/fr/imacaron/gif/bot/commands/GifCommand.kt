@@ -16,9 +16,9 @@ import fr.imacaron.gif.bot.*
 import fr.imacaron.gif.shared.ErrorWhileDrawingText
 import fr.imacaron.gif.shared.NotEnoughTimeException
 import fr.imacaron.gif.shared.search.Series
-import fr.imacaron.gif.shared.gif.DbGifEntity
-import fr.imacaron.gif.shared.gif.GifRepository
-import fr.imacaron.gif.shared.gif.GifStatus
+import fr.imacaron.gif.shared.infrastrucutre.repository.DbGifEntity
+import fr.imacaron.gif.shared.infrastrucutre.repository.DbGifRepository
+import fr.imacaron.gif.shared.infrastrucutre.repository.GifStatus
 import io.ktor.util.logging.*
 import kotlinx.datetime.Clock
 import java.io.File
@@ -28,7 +28,7 @@ class GifCommand(
 	private val kord: Kord,
 	private val episodeNumbers: Map<Int, Int>,
 	private val kaamelott: Series,
-	private val gifRepository: GifRepository
+	private val gifRepository: DbGifRepository
 ) {
 	suspend fun init() {
 		kord.createGlobalChatInputCommand("kaagif", "Une commande pour créer des gif kaamelott") {

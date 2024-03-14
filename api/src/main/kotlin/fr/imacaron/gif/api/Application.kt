@@ -2,13 +2,13 @@ package fr.imacaron.gif.api
 
 import dev.kord.core.Kord
 import fr.imacaron.gif.api.plugins.*
-import fr.imacaron.gif.api.routing.configureRouting
-import fr.imacaron.gif.api.routing.route.*
-import fr.imacaron.gif.shared.gif.GifRepository
-import fr.imacaron.gif.shared.gif.SceneRepository
-import fr.imacaron.gif.shared.search.EpisodeRepository
-import fr.imacaron.gif.shared.search.SeasonRepository
-import fr.imacaron.gif.shared.search.SeriesRepository
+import fr.imacaron.gif.api.infrastructure.routing.configureRouting
+import fr.imacaron.gif.api.infrastructure.routing.route.*
+import fr.imacaron.gif.shared.infrastrucutre.repository.DbGifRepository
+import fr.imacaron.gif.shared.infrastrucutre.repository.DbSceneRepository
+import fr.imacaron.gif.shared.infrastrucutre.repository.DbEpisodeRepository
+import fr.imacaron.gif.shared.infrastrucutre.repository.DbSeasonRepository
+import fr.imacaron.gif.shared.infrastrucutre.repository.DbSeriesRepository
 import io.ktor.server.application.*
 import kotlinx.coroutines.runBlocking
 
@@ -27,11 +27,11 @@ fun Application.module() = runBlocking {
 
 	val db = configureDatabase()
 
-	val gifRepository = GifRepository(db)
-	val sceneRepository = SceneRepository(db)
-	val episodeRepository = EpisodeRepository(db)
-	val seasonRepository = SeasonRepository(db)
-	val seriesRepository = SeriesRepository(db)
+	val gifRepository = DbGifRepository(db)
+	val sceneRepository = DbSceneRepository(db)
+	val episodeRepository = DbEpisodeRepository(db)
+	val seasonRepository = DbSeasonRepository(db)
+	val seriesRepository = DbSeriesRepository(db)
 	FileRoute(this@module)
 	GifRoute(seriesRepository, gifRepository, seasonRepository, episodeRepository, sceneRepository, kord, this@module)
 	EpisodesRoute(this@module, seriesRepository, seasonRepository, episodeRepository)

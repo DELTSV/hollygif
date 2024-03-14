@@ -1,6 +1,8 @@
 package fr.imacaron.gif.shared.gif
 
 import fr.imacaron.gif.shared.*
+import fr.imacaron.gif.shared.infrastrucutre.FFMPEG
+import fr.imacaron.gif.shared.infrastrucutre.repository.DbSceneEntity
 import fr.imacaron.gif.shared.search.Episode
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -9,8 +11,8 @@ import kotlinx.coroutines.withContext
 import java.io.File
 
 class SceneEntity(
-	val entity: DbSceneEntity,
-	private val ep: Episode
+        val entity: DbSceneEntity,
+        private val ep: Episode
 ) {
 	val start
 		get() = entity.start

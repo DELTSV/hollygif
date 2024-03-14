@@ -1,20 +1,20 @@
-package fr.imacaron.gif.api.routing.route
+package fr.imacaron.gif.api.infrastructure.routing.route
 
 import fr.imacaron.gif.api.respond
-import fr.imacaron.gif.api.routing.resources.API
-import fr.imacaron.gif.api.types.Response
-import fr.imacaron.gif.api.types.Season
+import fr.imacaron.gif.api.infrastructure.routing.resources.API
+import fr.imacaron.gif.api.models.Response
+import fr.imacaron.gif.api.models.Season
 import fr.imacaron.gif.shared.NotFoundException
-import fr.imacaron.gif.shared.search.SeasonRepository
-import fr.imacaron.gif.shared.search.SeriesRepository
+import fr.imacaron.gif.shared.infrastrucutre.repository.DbSeasonRepository
+import fr.imacaron.gif.shared.infrastrucutre.repository.DbSeriesRepository
 import io.ktor.server.application.*
 import io.ktor.server.resources.*
 import io.ktor.server.routing.*
 
 class SeasonsRoute(
-    application: Application,
-    private val seriesRepository: SeriesRepository,
-    private val seasonsRepository: SeasonRepository
+		application: Application,
+		private val seriesRepository: DbSeriesRepository,
+		private val seasonsRepository: DbSeasonRepository
 ) {
 	init {
 		application.route()

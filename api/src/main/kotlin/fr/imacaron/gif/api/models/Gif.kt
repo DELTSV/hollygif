@@ -1,7 +1,7 @@
-package fr.imacaron.gif.api.types
+package fr.imacaron.gif.api.models
 
 import dev.kord.core.entity.User
-import fr.imacaron.gif.shared.gif.DbGifEntity
+import fr.imacaron.gif.shared.infrastrucutre.repository.DbGifEntity
 import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
 

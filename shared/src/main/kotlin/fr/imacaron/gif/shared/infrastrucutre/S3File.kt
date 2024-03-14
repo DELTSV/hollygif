@@ -1,8 +1,7 @@
-package fr.imacaron.gif.shared
+package fr.imacaron.gif.shared.infrastrucutre
 
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials
 import software.amazon.awssdk.core.sync.RequestBody
-import software.amazon.awssdk.http.ContentStreamProvider
 import software.amazon.awssdk.regions.Region
 import software.amazon.awssdk.services.s3.S3Client
 import software.amazon.awssdk.services.s3.model.DeleteObjectRequest

@@ -1,4 +1,4 @@
-package fr.imacaron.gif.shared.enums
+package fr.imacaron.gif.shared.infrastrucutre.enums
 
 import org.ktorm.schema.BaseTable
 import org.ktorm.schema.Column

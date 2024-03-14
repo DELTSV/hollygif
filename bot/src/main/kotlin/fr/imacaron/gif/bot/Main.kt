@@ -8,11 +8,11 @@ import dev.kord.core.on
 import fr.imacaron.gif.bot.commands.Archives
 import fr.imacaron.gif.bot.commands.GifCommand
 import fr.imacaron.gif.shared.search.Series
-import fr.imacaron.gif.shared.gif.GifRepository
-import fr.imacaron.gif.shared.gif.SceneRepository
-import fr.imacaron.gif.shared.search.EpisodeRepository
-import fr.imacaron.gif.shared.search.SeasonRepository
-import fr.imacaron.gif.shared.search.SeriesRepository
+import fr.imacaron.gif.shared.infrastrucutre.repository.DbGifRepository
+import fr.imacaron.gif.shared.infrastrucutre.repository.DbSceneRepository
+import fr.imacaron.gif.shared.infrastrucutre.repository.DbEpisodeRepository
+import fr.imacaron.gif.shared.infrastrucutre.repository.DbSeasonRepository
+import fr.imacaron.gif.shared.infrastrucutre.repository.DbSeriesRepository
 import org.ktorm.database.Database
 import org.ktorm.support.mysql.MySqlDialect
 import org.slf4j.Logger
@@ -44,11 +44,11 @@ suspend fun main(args: Array<String>) {
 
     val db = Database.connect(cpds, dialect = MySqlDialect())
 
-    val gifRepository = GifRepository(db)
-    val sceneRepository = SceneRepository(db)
-    val episodeRepository = EpisodeRepository(db)
-    val seasonRepository = SeasonRepository(db)
-    val seriesRepository = SeriesRepository(db)
+    val gifRepository = DbGifRepository(db)
+    val sceneRepository = DbSceneRepository(db)
+    val episodeRepository = DbEpisodeRepository(db)
+    val seasonRepository = DbSeasonRepository(db)
+    val seriesRepository = DbSeriesRepository(db)
 
     if(args.size > 1 && args[0] != "LOAD") {
         val loader = Loader(sceneRepository, episodeRepository, seasonRepository, seriesRepository)

@@ -2,12 +2,13 @@ package fr.imacaron.gif.shared.search
 
 import fr.imacaron.gif.shared.NotFoundException
 import fr.imacaron.gif.shared.gif.SceneEntity
-import fr.imacaron.gif.shared.gif.SceneRepository
+import fr.imacaron.gif.shared.infrastrucutre.repository.EpisodeEntity
+import fr.imacaron.gif.shared.infrastrucutre.repository.DbSceneRepository
 
 class Episode(
-	private val sceneRepository: SceneRepository,
-	val entity: EpisodeEntity,
-	val season: Season
+		private val sceneRepository: DbSceneRepository,
+		val entity: EpisodeEntity,
+		val season: Season
 ) {
 	val title: String
 		get() = entity.title

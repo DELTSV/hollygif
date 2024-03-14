@@ -6,8 +6,8 @@ import dev.kord.core.entity.interaction.GuildChatInputCommandInteraction
 import dev.kord.rest.builder.interaction.integer
 import dev.kord.rest.builder.message.embed
 import fr.imacaron.gif.shared.PAGE_SIZE
-import fr.imacaron.gif.shared.gif.GifRepository
-import fr.imacaron.gif.shared.gif.GifStatus
+import fr.imacaron.gif.shared.infrastrucutre.repository.DbGifRepository
+import fr.imacaron.gif.shared.infrastrucutre.repository.GifStatus
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toJavaLocalDateTime
 import kotlinx.datetime.toLocalDateTime
@@ -16,7 +16,7 @@ import java.time.format.FormatStyle
 
 class Archives(
 	private val kord: Kord,
-	private val gifRepository: GifRepository
+	private val gifRepository: DbGifRepository
 ) {
 	suspend fun init(){
 		kord.createGlobalChatInputCommand("archives", "Commande pour récupérer son historique d'utilisation du bot") {

@@ -1,14 +1,17 @@
 package fr.imacaron.gif.shared.search
 
-import fr.imacaron.gif.shared.S3File
+import fr.imacaron.gif.shared.infrastrucutre.S3File
+import fr.imacaron.gif.shared.infrastrucutre.repository.DbEpisodeRepository
 import fr.imacaron.gif.shared.logger
-import fr.imacaron.gif.shared.gif.SceneRepository
+import fr.imacaron.gif.shared.infrastrucutre.repository.DbSceneRepository
+import fr.imacaron.gif.shared.infrastrucutre.repository.DbSeasonRepository
+import fr.imacaron.gif.shared.infrastrucutre.repository.SeriesEntity
 
 class Series(
-	private val seasonsRepository: SeasonRepository,
-	private val episodeRepository: EpisodeRepository,
-	private val sceneRepository: SceneRepository,
-	val entity: SeriesEntity
+		private val seasonsRepository: DbSeasonRepository,
+		private val episodeRepository: DbEpisodeRepository,
+		private val sceneRepository: DbSceneRepository,
+		val entity: SeriesEntity
 ) {
 
 	val s3 = S3File(

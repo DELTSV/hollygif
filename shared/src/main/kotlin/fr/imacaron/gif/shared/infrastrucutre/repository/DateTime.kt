@@ -1,4 +1,4 @@
-package fr.imacaron.gif.shared.repository
+package fr.imacaron.gif.shared.infrastrucutre.repository
 
 import kotlinx.datetime.*
 import org.ktorm.schema.BaseTable

@@ -1,12 +1,12 @@
-package fr.imacaron.gif.api.routing.route
+package fr.imacaron.gif.api.infrastructure.routing.route
 
 import fr.imacaron.gif.api.respond
-import fr.imacaron.gif.api.routing.resources.API
-import fr.imacaron.gif.api.types.Response
-import fr.imacaron.gif.api.types.Series
+import fr.imacaron.gif.api.infrastructure.routing.resources.API
+import fr.imacaron.gif.api.models.Response
+import fr.imacaron.gif.api.models.Series
 import fr.imacaron.gif.shared.NotFoundException
 import fr.imacaron.gif.shared.logger
-import fr.imacaron.gif.shared.search.SeriesRepository
+import fr.imacaron.gif.shared.infrastrucutre.repository.DbSeriesRepository
 import io.ktor.server.application.*
 import io.ktor.server.resources.*
 import io.ktor.server.routing.*
@@ -14,7 +14,7 @@ import io.ktor.util.logging.*
 
 class SeriesRoute(
 	application: Application,
-	private val seriesRepository: SeriesRepository
+	private val seriesRepository: DbSeriesRepository
 ) {
 	init {
 		application.route()

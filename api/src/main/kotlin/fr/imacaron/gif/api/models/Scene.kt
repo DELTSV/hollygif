@@ -1,6 +1,6 @@
-package fr.imacaron.gif.api.types
+package fr.imacaron.gif.api.models
 
-import fr.imacaron.gif.shared.gif.DbSceneEntity
+import fr.imacaron.gif.shared.infrastrucutre.repository.DbSceneEntity
 import kotlinx.serialization.Serializable
 
 @Serializable

@@ -1,8 +1,10 @@
 package fr.imacaron.gif.shared.gif
 
-import fr.imacaron.gif.shared.search.EpisodeEntity
-import fr.imacaron.gif.shared.search.SeasonEntity
-import fr.imacaron.gif.shared.search.SeriesEntity
+import fr.imacaron.gif.shared.infrastrucutre.repository.DbGifEntity
+import fr.imacaron.gif.shared.infrastrucutre.repository.GifStatus
+import fr.imacaron.gif.shared.infrastrucutre.repository.EpisodeEntity
+import fr.imacaron.gif.shared.infrastrucutre.repository.SeasonEntity
+import fr.imacaron.gif.shared.infrastrucutre.repository.SeriesEntity
 import kotlinx.datetime.Instant
 
 class GifEntity(

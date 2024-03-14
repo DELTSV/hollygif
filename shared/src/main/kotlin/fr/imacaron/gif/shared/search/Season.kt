@@ -1,12 +1,14 @@
 package fr.imacaron.gif.shared.search
 
-import fr.imacaron.gif.shared.gif.SceneRepository
+import fr.imacaron.gif.shared.infrastrucutre.repository.DbEpisodeRepository
+import fr.imacaron.gif.shared.infrastrucutre.repository.DbSceneRepository
+import fr.imacaron.gif.shared.infrastrucutre.repository.SeasonEntity
 
 class Season(
-	private val episodeRepository: EpisodeRepository,
-	private val sceneRepository: SceneRepository,
-	val entity: SeasonEntity,
-	val series: Series
+		private val episodeRepository: DbEpisodeRepository,
+		private val sceneRepository: DbSceneRepository,
+		val entity: SeasonEntity,
+		val series: Series
 ) {
 	var id
 		get() = entity.id
