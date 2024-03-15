@@ -80,6 +80,7 @@ class CreateGifTest {
 		every { fileManager.createFile(any(), any()) } returns Unit
 		every { FFMPEG.getTextLength(any(), any()) } returns 150.0
 		every { FFMPEG.writeText(any(), any(), any()) } returns Unit
+		every { FFMPEG.convertToGif(any(), any()) } returns mockk()
 
 		val gifCreation = GifCreation(
 			series,
