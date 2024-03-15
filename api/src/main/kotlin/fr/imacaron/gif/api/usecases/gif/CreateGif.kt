@@ -1,11 +1,9 @@
 package fr.imacaron.gif.api.usecases.gif
 
-import fr.imacaron.gif.shared.CannotUploadToBucket
+import fr.imacaron.gif.api.models.gif.GifCreation
 import fr.imacaron.gif.shared.ErrorWhileDrawingText
 import fr.imacaron.gif.shared.NotEnoughTimeException
-import fr.imacaron.gif.shared.gif.SceneEntity
 import fr.imacaron.gif.shared.gif.SceneRepository
-import fr.imacaron.gif.shared.gif.Status
 import fr.imacaron.gif.shared.infrastrucutre.FFMPEG
 import fr.imacaron.gif.shared.infrastrucutre.FileManager
 import fr.imacaron.gif.shared.logger
@@ -14,10 +12,6 @@ import fr.imacaron.gif.shared.search.SeasonRepository
 import fr.imacaron.gif.shared.search.SeriesRepository
 import io.ktor.server.plugins.*
 import io.ktor.utils.io.charsets.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.withContext
 
 class CreateGif(
 	private val fileManager: FileManager,

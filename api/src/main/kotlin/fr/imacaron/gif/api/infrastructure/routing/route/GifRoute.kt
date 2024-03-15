@@ -9,7 +9,7 @@ import fr.imacaron.gif.api.infrastructure.routing.resources.API
 import fr.imacaron.gif.api.models.gif.Gif
 import fr.imacaron.gif.api.models.search.Response
 import fr.imacaron.gif.api.usecases.gif.CreateGif
-import fr.imacaron.gif.api.usecases.gif.GifCreation
+import fr.imacaron.gif.api.models.gif.GifCreation
 import fr.imacaron.gif.shared.NotFoundException
 import fr.imacaron.gif.shared.infrastrucutre.FileManager
 import fr.imacaron.gif.shared.search.Series

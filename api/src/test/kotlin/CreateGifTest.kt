@@ -1,5 +1,5 @@
 import fr.imacaron.gif.api.usecases.gif.CreateGif
-import fr.imacaron.gif.api.usecases.gif.GifCreation
+import fr.imacaron.gif.api.models.gif.GifCreation
 import fr.imacaron.gif.shared.gif.SceneRepository
 import fr.imacaron.gif.shared.infrastrucutre.FFMPEG
 import fr.imacaron.gif.shared.infrastrucutre.FileManager

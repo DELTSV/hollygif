@@ -1,0 +1,142 @@
+2024-03-15 15:54:12,767 DEBUG [Test worker] i.m.i.i.AbstractMockFactory [Slf4jLogger.kt:15] -- Creating mockk for FileManager name=#1
+2024-03-15 15:54:13,295 DEBUG [Test worker] i.m.i.i.AbstractMockFactory [Slf4jLogger.kt:15] -- Creating mockk for SeriesRepository name=#2
+2024-03-15 15:54:13,625 DEBUG [Test worker] i.m.i.i.AbstractMockFactory [Slf4jLogger.kt:15] -- Creating mockk for SeasonRepository name=#3
+2024-03-15 15:54:13,660 DEBUG [Test worker] i.m.i.i.AbstractMockFactory [Slf4jLogger.kt:15] -- Creating mockk for EpisodeRepository name=#4
+2024-03-15 15:54:13,697 DEBUG [Test worker] i.m.i.i.AbstractMockFactory [Slf4jLogger.kt:15] -- Creating mockk for SceneRepository name=#5
+2024-03-15 15:54:13,743 DEBUG [Test worker] i.m.i.i.AbstractMockFactory [Slf4jLogger.kt:15] -- Creating mockk for SeriesEntity name=#6
+2024-03-15 15:54:14,055 DEBUG [Test worker] i.m.i.i.AbstractMockFactory [Slf4jLogger.kt:15] -- Creating mockk for SeasonEntity name=#7
+2024-03-15 15:54:14,113 DEBUG [Test worker] i.m.i.i.AbstractMockFactory [Slf4jLogger.kt:15] -- Creating mockk for SeriesEntity name=child of #7#8
+2024-03-15 15:54:14,115 DEBUG [Test worker] i.m.i.i.AbstractMockFactory [Slf4jLogger.kt:15] -- Creating mockk for EpisodeEntity name=#9
+2024-03-15 15:54:14,178 DEBUG [Test worker] i.m.i.i.AbstractMockFactory [Slf4jLogger.kt:15] -- Creating mockk for SeasonEntity name=child of #9#10
+2024-03-15 15:54:14,179 DEBUG [Test worker] i.m.i.i.AbstractMockFactory [Slf4jLogger.kt:15] -- Creating mockk for SceneEntity name=#11
+2024-03-15 15:54:14,238 DEBUG [Test worker] i.m.i.i.AbstractMockFactory [Slf4jLogger.kt:15] -- Creating mockk for EpisodeEntity name=child of #11#12
+2024-03-15 15:54:14,241 DEBUG [Test worker] i.m.i.i.JvmStaticMockFactory [Slf4jLogger.kt:15] -- Creating object mockk for FFMPEG
+2024-03-15 15:54:14,276 DEBUG [Test worker] i.m.i.s.CommonClearer [Slf4jLogger.kt:15] -- Clearing [FFMPEG(object FFMPEG)] mocks ClearOptions(answers=true, recordedCalls=true, childMocks=true, verificationMarks=true, exclusionRules=true)
+2024-03-15 15:54:14,306 DEBUG [Test worker] i.m.i.i.AbstractMockFactory [Slf4jLogger.kt:15] -- Creating mockk for Any name=child of #2#13
+2024-03-15 15:54:14,311 DEBUG [Test worker] i.m.i.i.AbstractMockFactory [Slf4jLogger.kt:15] -- Creating mockk for Any name=child of #3#14
+2024-03-15 15:54:14,316 DEBUG [Test worker] i.m.i.i.AbstractMockFactory [Slf4jLogger.kt:15] -- Creating mockk for Any name=child of #4#15
+2024-03-15 15:54:14,321 DEBUG [Test worker] i.m.i.i.AbstractMockFactory [Slf4jLogger.kt:15] -- Creating mockk for Any name=child of #5#16
+2024-03-15 15:54:14,375 DEBUG [Test worker] i.m.i.i.AbstractMockFactory [Slf4jLogger.kt:15] -- Creating mockk for Unit name=child of #1#17
+2024-03-15 15:54:14,386 DEBUG [Test worker] i.m.i.i.AbstractMockFactory [Slf4jLogger.kt:15] -- Creating mockk for Unit name=child of object FFMPEG#18
+2024-03-15 15:54:14,388 DEBUG [Test worker] i.m.i.r.s.AnsweringState [Slf4jLogger.kt:15] -- Answering Success(SeriesEntity(#6)) on SeriesRepository(#2).getSeries-IoAF18A(kaamelott)
+2024-03-15 15:54:14,388 DEBUG [Test worker] i.m.i.r.s.AnsweringState [Slf4jLogger.kt:15] -- Answering Success(SeasonEntity(#7)) on SeasonRepository(#3).getSeriesSeason-gIAlu-s(SeriesEntity(#6), 1)
+2024-03-15 15:54:14,389 DEBUG [Test worker] i.m.i.r.s.AnsweringState [Slf4jLogger.kt:15] -- Answering Success(EpisodeEntity(#9)) on EpisodeRepository(#4).getSeasonEpisode-gIAlu-s(SeasonEntity(#7), 1)
+2024-03-15 15:54:14,389 DEBUG [Test worker] i.m.i.r.s.AnsweringState [Slf4jLogger.kt:15] -- Answering Success(SceneEntity(#11)) on SceneRepository(#5).getEpisodeSceneAt-gIAlu-s(EpisodeEntity(#9), 70.0)
+2024-03-15 15:54:14,390 DEBUG [Test worker] i.m.i.r.s.AnsweringState [Slf4jLogger.kt:15] -- Answering 10.0 on SceneEntity(#11).getEnd()
+2024-03-15 15:54:14,390 DEBUG [Test worker] i.m.i.r.s.AnsweringState [Slf4jLogger.kt:15] -- Answering 0.0 on SceneEntity(#11).getStart()
+2024-03-15 15:54:14,391 DEBUG [Test worker] f.i.k.gif [CreateGif.kt:48] -- Create meme
+2024-03-15 15:54:14,391 DEBUG [Test worker] i.m.i.r.s.AnsweringState [Slf4jLogger.kt:15] -- Answering 1 on SeasonEntity(#7).getNumber()
+2024-03-15 15:54:14,391 DEBUG [Test worker] i.m.i.r.s.AnsweringState [Slf4jLogger.kt:15] -- Answering 1 on EpisodeEntity(#9).getNumber()
+2024-03-15 15:54:14,392 DEBUG [Test worker] i.m.i.r.s.AnsweringState [Slf4jLogger.kt:15] -- Answering 1 on SceneEntity(#11).getIndex()
+2024-03-15 15:54:14,412 DEBUG [Test worker] i.m.i.r.s.AnsweringState [Slf4jLogger.kt:15] -- Answering 1 on SeasonEntity(#7).getNumber()
+2024-03-15 15:54:14,413 DEBUG [Test worker] i.m.i.r.s.AnsweringState [Slf4jLogger.kt:15] -- Answering 1 on EpisodeEntity(#9).getNumber()
+2024-03-15 15:54:14,413 DEBUG [Test worker] i.m.i.r.s.AnsweringState [Slf4jLogger.kt:15] -- Answering 1 on SceneEntity(#11).getIndex()
+2024-03-15 15:54:14,435 DEBUG [Test worker] i.m.i.r.s.AnsweringState [Slf4jLogger.kt:15] -- Answering true on FileManager(#1).fileExist(./out/1_1_1.mp4)
+2024-03-15 15:54:14,436 DEBUG [Test worker] i.m.i.r.s.AnsweringState [Slf4jLogger.kt:15] -- Answering 150.0 on FFMPEG(object FFMPEG).getTextLength(./out/1_1_1.mp4, Bonjour, 156)
+2024-03-15 15:54:14,437 DEBUG [Test worker] i.m.i.r.s.AnsweringState [Slf4jLogger.kt:15] -- Answering 1920 on EpisodeEntity(#9).getWidth()
+2024-03-15 15:54:14,458 DEBUG [Test worker] i.m.i.r.s.AnsweringState [Slf4jLogger.kt:15] -- Answering kotlin.Unit on FFMPEG(object FFMPEG).writeText(./out/1_1_1.mp4, ./tmp/1_1_1_1728392131.mp4, [ Bonjour], 156)
+2024-03-15 15:54:14,460 DEBUG [Test worker] f.i.k.gif [FFMPEG.kt:96] -- Converting ./tmp/1_1_1_1728392131.mp4 to gif
+2024-03-15 15:54:14,497 DEBUG [Test worker] f.i.k.gif [FFMPEG.kt:98] -- Gif created
+2024-03-15 15:54:14,500 DEBUG [Test worker] i.m.i.r.s.AnsweringState [Slf4jLogger.kt:15] -- Answering null on FFMPEG(object FFMPEG).convertToGif(./tmp/1_1_1_1728392131.mp4, 10.0)
+2024-03-15 15:54:14,521 DEBUG [Test worker] i.m.i.i.AbstractMockFactory [Slf4jLogger.kt:15] -- Creating mockk for FileManager name=#19
+2024-03-15 15:54:14,522 DEBUG [Test worker] i.m.i.i.AbstractMockFactory [Slf4jLogger.kt:15] -- Creating mockk for SeriesRepository name=#20
+2024-03-15 15:54:14,524 DEBUG [Test worker] i.m.i.i.AbstractMockFactory [Slf4jLogger.kt:15] -- Creating mockk for SeasonRepository name=#21
+2024-03-15 15:54:14,526 DEBUG [Test worker] i.m.i.i.AbstractMockFactory [Slf4jLogger.kt:15] -- Creating mockk for EpisodeRepository name=#22
+2024-03-15 15:54:14,526 DEBUG [Test worker] i.m.i.i.AbstractMockFactory [Slf4jLogger.kt:15] -- Creating mockk for SceneRepository name=#23
+2024-03-15 15:54:14,528 DEBUG [Test worker] i.m.i.i.AbstractMockFactory [Slf4jLogger.kt:15] -- Creating mockk for SeriesEntity name=#24
+2024-03-15 15:54:14,529 DEBUG [Test worker] i.m.i.i.AbstractMockFactory [Slf4jLogger.kt:15] -- Creating mockk for SeasonEntity name=#25
+2024-03-15 15:54:14,531 DEBUG [Test worker] i.m.i.i.AbstractMockFactory [Slf4jLogger.kt:15] -- Creating mockk for SeriesEntity name=child of #25#26
+2024-03-15 15:54:14,533 DEBUG [Test worker] i.m.i.i.AbstractMockFactory [Slf4jLogger.kt:15] -- Creating mockk for EpisodeEntity name=#27
+2024-03-15 15:54:14,535 DEBUG [Test worker] i.m.i.i.AbstractMockFactory [Slf4jLogger.kt:15] -- Creating mockk for SeasonEntity name=child of #27#28
+2024-03-15 15:54:14,536 DEBUG [Test worker] i.m.i.i.AbstractMockFactory [Slf4jLogger.kt:15] -- Creating mockk for SceneEntity name=#29
+2024-03-15 15:54:14,538 DEBUG [Test worker] i.m.i.i.AbstractMockFactory [Slf4jLogger.kt:15] -- Creating mockk for EpisodeEntity name=child of #29#30
+2024-03-15 15:54:14,539 DEBUG [Test worker] i.m.i.s.CommonClearer [Slf4jLogger.kt:15] -- Clearing [FFMPEG(object FFMPEG)] mocks ClearOptions(answers=true, recordedCalls=true, childMocks=true, verificationMarks=true, exclusionRules=true)
+2024-03-15 15:54:14,542 DEBUG [Test worker] i.m.i.i.AbstractMockFactory [Slf4jLogger.kt:15] -- Creating mockk for Any name=child of #20#31
+2024-03-15 15:54:14,561 DEBUG [Test worker] i.m.i.i.AbstractMockFactory [Slf4jLogger.kt:15] -- Creating mockk for Any name=child of #21#32
+2024-03-15 15:54:14,567 DEBUG [Test worker] i.m.i.i.AbstractMockFactory [Slf4jLogger.kt:15] -- Creating mockk for Any name=child of #22#33
+2024-03-15 15:54:14,573 DEBUG [Test worker] i.m.i.i.AbstractMockFactory [Slf4jLogger.kt:15] -- Creating mockk for Any name=child of #23#34
+2024-03-15 15:54:14,578 DEBUG [Test worker] i.m.i.i.AbstractMockFactory [Slf4jLogger.kt:15] -- Creating mockk for Unit name=child of #19#35
+2024-03-15 15:54:14,584 DEBUG [Test worker] i.m.i.i.AbstractMockFactory [Slf4jLogger.kt:15] -- Creating mockk for Unit name=child of object FFMPEG#36
+2024-03-15 15:54:14,585 DEBUG [Test worker] i.m.i.r.s.AnsweringState [Slf4jLogger.kt:15] -- Answering Success(SeriesEntity(#24)) on SeriesRepository(#20).getSeries-IoAF18A(kaamelott)
+2024-03-15 15:54:14,586 DEBUG [Test worker] i.m.i.r.s.AnsweringState [Slf4jLogger.kt:15] -- Answering Success(SeasonEntity(#25)) on SeasonRepository(#21).getSeriesSeason-gIAlu-s(SeriesEntity(#24), 1)
+2024-03-15 15:54:14,588 DEBUG [Test worker] i.m.i.r.s.AnsweringState [Slf4jLogger.kt:15] -- Answering Success(EpisodeEntity(#27)) on EpisodeRepository(#22).getSeasonEpisode-gIAlu-s(SeasonEntity(#25), 1)
+2024-03-15 15:54:14,591 DEBUG [Test worker] i.m.i.i.JvmStaticMockFactory [Slf4jLogger.kt:15] -- Disposing object mockk for FFMPEG hashcode=1c7f9861
+2024-03-15 15:54:14,635 DEBUG [Test worker] i.m.i.i.AbstractMockFactory [Slf4jLogger.kt:15] -- Creating mockk for FileManager name=#37
+2024-03-15 15:54:14,636 DEBUG [Test worker] i.m.i.i.AbstractMockFactory [Slf4jLogger.kt:15] -- Creating mockk for SeriesRepository name=#38
+2024-03-15 15:54:14,637 DEBUG [Test worker] i.m.i.i.AbstractMockFactory [Slf4jLogger.kt:15] -- Creating mockk for SeasonRepository name=#39
+2024-03-15 15:54:14,638 DEBUG [Test worker] i.m.i.i.AbstractMockFactory [Slf4jLogger.kt:15] -- Creating mockk for EpisodeRepository name=#40
+2024-03-15 15:54:14,639 DEBUG [Test worker] i.m.i.i.AbstractMockFactory [Slf4jLogger.kt:15] -- Creating mockk for SceneRepository name=#41
+2024-03-15 15:54:14,640 DEBUG [Test worker] i.m.i.i.AbstractMockFactory [Slf4jLogger.kt:15] -- Creating mockk for SeriesEntity name=#42
+2024-03-15 15:54:14,642 DEBUG [Test worker] i.m.i.i.AbstractMockFactory [Slf4jLogger.kt:15] -- Creating mockk for SeasonEntity name=#43
+2024-03-15 15:54:14,645 DEBUG [Test worker] i.m.i.i.AbstractMockFactory [Slf4jLogger.kt:15] -- Creating mockk for SeriesEntity name=child of #43#44
+2024-03-15 15:54:14,646 DEBUG [Test worker] i.m.i.i.AbstractMockFactory [Slf4jLogger.kt:15] -- Creating mockk for EpisodeEntity name=#45
+2024-03-15 15:54:14,650 DEBUG [Test worker] i.m.i.i.AbstractMockFactory [Slf4jLogger.kt:15] -- Creating mockk for SeasonEntity name=child of #45#46
+2024-03-15 15:54:14,651 DEBUG [Test worker] i.m.i.i.AbstractMockFactory [Slf4jLogger.kt:15] -- Creating mockk for SceneEntity name=#47
+2024-03-15 15:54:14,652 DEBUG [Test worker] i.m.i.i.AbstractMockFactory [Slf4jLogger.kt:15] -- Creating mockk for EpisodeEntity name=child of #47#48
+2024-03-15 15:54:14,654 DEBUG [Test worker] i.m.i.i.JvmStaticMockFactory [Slf4jLogger.kt:15] -- Creating object mockk for FFMPEG
+2024-03-15 15:54:14,727 DEBUG [Test worker] i.m.i.s.CommonClearer [Slf4jLogger.kt:15] -- Clearing [FFMPEG(object FFMPEG)] mocks ClearOptions(answers=true, recordedCalls=true, childMocks=true, verificationMarks=true, exclusionRules=true)
+2024-03-15 15:54:14,730 DEBUG [Test worker] i.m.i.i.AbstractMockFactory [Slf4jLogger.kt:15] -- Creating mockk for Any name=child of #38#49
+2024-03-15 15:54:14,734 DEBUG [Test worker] i.m.i.i.AbstractMockFactory [Slf4jLogger.kt:15] -- Creating mockk for Any name=child of #39#50
+2024-03-15 15:54:14,740 DEBUG [Test worker] i.m.i.i.AbstractMockFactory [Slf4jLogger.kt:15] -- Creating mockk for Any name=child of #40#51
+2024-03-15 15:54:14,745 DEBUG [Test worker] i.m.i.i.AbstractMockFactory [Slf4jLogger.kt:15] -- Creating mockk for Any name=child of #41#52
+2024-03-15 15:54:14,753 DEBUG [Test worker] i.m.i.i.AbstractMockFactory [Slf4jLogger.kt:15] -- Creating mockk for Unit name=child of #37#53
+2024-03-15 15:54:14,760 DEBUG [Test worker] i.m.i.i.AbstractMockFactory [Slf4jLogger.kt:15] -- Creating mockk for Unit name=child of object FFMPEG#54
+2024-03-15 15:54:14,763 DEBUG [Test worker] i.m.i.r.s.AnsweringState [Slf4jLogger.kt:15] -- Answering Success(SeriesEntity(#42)) on SeriesRepository(#38).getSeries-IoAF18A(kaamelott)
+2024-03-15 15:54:14,765 DEBUG [Test worker] i.m.i.r.s.AnsweringState [Slf4jLogger.kt:15] -- Answering Success(SeasonEntity(#43)) on SeasonRepository(#39).getSeriesSeason-gIAlu-s(SeriesEntity(#42), 1)
+2024-03-15 15:54:14,766 DEBUG [Test worker] i.m.i.r.s.AnsweringState [Slf4jLogger.kt:15] -- Answering Success(EpisodeEntity(#45)) on EpisodeRepository(#40).getSeasonEpisode-gIAlu-s(SeasonEntity(#43), 1)
+2024-03-15 15:54:14,767 DEBUG [Test worker] i.m.i.i.JvmStaticMockFactory [Slf4jLogger.kt:15] -- Disposing object mockk for FFMPEG hashcode=1c7f9861
+2024-03-15 15:54:14,819 DEBUG [Test worker] i.m.i.i.AbstractMockFactory [Slf4jLogger.kt:15] -- Creating mockk for SeriesRepository name=#55
+2024-03-15 15:54:14,820 DEBUG [Test worker] i.m.i.i.AbstractMockFactory [Slf4jLogger.kt:15] -- Creating mockk for SeasonRepository name=#56
+2024-03-15 15:54:14,821 DEBUG [Test worker] i.m.i.i.AbstractMockFactory [Slf4jLogger.kt:15] -- Creating mockk for EpisodeRepository name=#57
+2024-03-15 15:54:14,821 DEBUG [Test worker] i.m.i.i.AbstractMockFactory [Slf4jLogger.kt:15] -- Creating mockk for SeriesEntity name=#58
+2024-03-15 15:54:14,826 DEBUG [Test worker] i.m.i.i.AbstractMockFactory [Slf4jLogger.kt:15] -- Creating mockk for SeasonEntity name=#59
+2024-03-15 15:54:14,829 DEBUG [Test worker] i.m.i.i.AbstractMockFactory [Slf4jLogger.kt:15] -- Creating mockk for SeriesEntity name=child of #59#60
+2024-03-15 15:54:14,830 DEBUG [Test worker] i.m.i.i.AbstractMockFactory [Slf4jLogger.kt:15] -- Creating mockk for EpisodeEntity name=#61
+2024-03-15 15:54:14,833 DEBUG [Test worker] i.m.i.i.AbstractMockFactory [Slf4jLogger.kt:15] -- Creating mockk for SeasonEntity name=child of #61#62
+2024-03-15 15:54:14,835 DEBUG [Test worker] i.m.i.i.AbstractMockFactory [Slf4jLogger.kt:15] -- Creating mockk for Any name=child of #55#63
+2024-03-15 15:54:14,837 DEBUG [Test worker] i.m.i.i.AbstractMockFactory [Slf4jLogger.kt:15] -- Creating mockk for Any name=child of #56#64
+2024-03-15 15:54:14,840 DEBUG [Test worker] i.m.i.i.AbstractMockFactory [Slf4jLogger.kt:15] -- Creating mockk for Any name=child of #57#65
+2024-03-15 15:54:14,840 DEBUG [Test worker] i.m.i.r.s.AnsweringState [Slf4jLogger.kt:15] -- Answering Success(SeriesEntity(#58)) on SeriesRepository(#55).getSeries-IoAF18A(kaamelott)
+2024-03-15 15:54:14,840 DEBUG [Test worker] i.m.i.r.s.AnsweringState [Slf4jLogger.kt:15] -- Answering Success(SeasonEntity(#59)) on SeasonRepository(#56).getSeriesSeason-gIAlu-s(SeriesEntity(#58), 1)
+2024-03-15 15:54:14,840 DEBUG [Test worker] i.m.i.r.s.AnsweringState [Slf4jLogger.kt:15] -- Answering Success(EpisodeEntity(#61)) on EpisodeRepository(#57).getSeasonEpisode-gIAlu-s(SeasonEntity(#59), 1)
+2024-03-15 15:54:14,842 DEBUG [Test worker] i.m.i.r.s.AnsweringState [Slf4jLogger.kt:15] -- Answering 1 on EpisodeEntity(#61).getId()
+2024-03-15 15:54:14,842 DEBUG [Test worker] i.m.i.r.s.AnsweringState [Slf4jLogger.kt:15] -- Answering 1 on EpisodeEntity(#61).getNumber()
+2024-03-15 15:54:14,842 DEBUG [Test worker] i.m.i.r.s.AnsweringState [Slf4jLogger.kt:15] -- Answering 1920 on EpisodeEntity(#61).getWidth()
+2024-03-15 15:54:14,842 DEBUG [Test worker] i.m.i.r.s.AnsweringState [Slf4jLogger.kt:15] -- Answering 1080 on EpisodeEntity(#61).getHeight()
+2024-03-15 15:54:14,842 DEBUG [Test worker] i.m.i.r.s.AnsweringState [Slf4jLogger.kt:15] -- Answering 25 on EpisodeEntity(#61).getFps()
+2024-03-15 15:54:14,843 DEBUG [Test worker] i.m.i.r.s.AnsweringState [Slf4jLogger.kt:15] -- Answering Heat on EpisodeEntity(#61).getTitle()
+2024-03-15 15:54:14,844 DEBUG [Test worker] i.m.i.r.s.AnsweringState [Slf4jLogger.kt:15] -- Answering SeasonEntity(#59) on EpisodeEntity(#61).getSeason()
+2024-03-15 15:54:14,844 DEBUG [Test worker] i.m.i.r.s.AnsweringState [Slf4jLogger.kt:15] -- Answering 1 on SeasonEntity(#59).getId()
+2024-03-15 15:54:14,844 DEBUG [Test worker] i.m.i.r.s.AnsweringState [Slf4jLogger.kt:15] -- Answering 1 on SeasonEntity(#59).getNumber()
+2024-03-15 15:54:14,846 DEBUG [Test worker] i.m.i.r.s.AnsweringState [Slf4jLogger.kt:15] -- Answering SeriesEntity(#58) on SeasonEntity(#59).getSeries()
+2024-03-15 15:54:14,846 DEBUG [Test worker] i.m.i.r.s.AnsweringState [Slf4jLogger.kt:15] -- Answering 1 on SeriesEntity(#58).getId()
+2024-03-15 15:54:14,846 DEBUG [Test worker] i.m.i.r.s.AnsweringState [Slf4jLogger.kt:15] -- Answering kaamelott on SeriesEntity(#58).getName()
+2024-03-15 15:54:14,846 DEBUG [Test worker] i.m.i.r.s.AnsweringState [Slf4jLogger.kt:15] -- Answering logo on SeriesEntity(#58).getLogo()
+2024-03-15 15:54:14,847 DEBUG [Test worker] i.m.i.r.s.AnsweringState [Slf4jLogger.kt:15] -- Answering 257.25 on EpisodeEntity(#61).getDuration()
+2024-03-15 15:54:14,847 DEBUG [Test worker] i.m.i.i.AbstractMockFactory [Slf4jLogger.kt:15] -- Creating mockk for SeriesRepository name=#66
+2024-03-15 15:54:14,848 DEBUG [Test worker] i.m.i.i.AbstractMockFactory [Slf4jLogger.kt:15] -- Creating mockk for SeasonRepository name=#67
+2024-03-15 15:54:14,848 DEBUG [Test worker] i.m.i.i.AbstractMockFactory [Slf4jLogger.kt:15] -- Creating mockk for EpisodeRepository name=#68
+2024-03-15 15:54:14,848 DEBUG [Test worker] i.m.i.i.AbstractMockFactory [Slf4jLogger.kt:15] -- Creating mockk for SeriesEntity name=#69
+2024-03-15 15:54:14,849 DEBUG [Test worker] i.m.i.i.AbstractMockFactory [Slf4jLogger.kt:15] -- Creating mockk for SeasonEntity name=#70
+2024-03-15 15:54:14,850 DEBUG [Test worker] i.m.i.i.AbstractMockFactory [Slf4jLogger.kt:15] -- Creating mockk for SeriesEntity name=child of #70#71
+2024-03-15 15:54:14,850 DEBUG [Test worker] i.m.i.i.AbstractMockFactory [Slf4jLogger.kt:15] -- Creating mockk for EpisodeEntity name=#72
+2024-03-15 15:54:14,851 DEBUG [Test worker] i.m.i.i.AbstractMockFactory [Slf4jLogger.kt:15] -- Creating mockk for SeasonEntity name=child of #72#73
+2024-03-15 15:54:14,853 DEBUG [Test worker] i.m.i.i.AbstractMockFactory [Slf4jLogger.kt:15] -- Creating mockk for Any name=child of #66#74
+2024-03-15 15:54:14,855 DEBUG [Test worker] i.m.i.i.AbstractMockFactory [Slf4jLogger.kt:15] -- Creating mockk for Any name=child of #67#75
+2024-03-15 15:54:14,857 DEBUG [Test worker] i.m.i.i.AbstractMockFactory [Slf4jLogger.kt:15] -- Creating mockk for Any name=child of #68#76
+2024-03-15 15:54:14,859 DEBUG [Test worker] i.m.i.r.s.AnsweringState [Slf4jLogger.kt:15] -- Answering Success(SeriesEntity(#69)) on SeriesRepository(#66).getSeries-IoAF18A(kaamelott)
+2024-03-15 15:54:14,860 DEBUG [Test worker] i.m.i.r.s.AnsweringState [Slf4jLogger.kt:15] -- Answering Success(SeasonEntity(#70)) on SeasonRepository(#67).getSeriesSeason-gIAlu-s(SeriesEntity(#69), 1)
+2024-03-15 15:54:14,860 DEBUG [Test worker] i.m.i.r.s.AnsweringState [Slf4jLogger.kt:15] -- Answering Failure(io.ktor.server.plugins.NotFoundException: Resource not found) on EpisodeRepository(#68).getSeasonEpisode-gIAlu-s(SeasonEntity(#70), -1)
+2024-03-15 15:54:14,862 DEBUG [Test worker] i.m.i.i.AbstractMockFactory [Slf4jLogger.kt:15] -- Creating mockk for SeriesRepository name=#77
+2024-03-15 15:54:14,862 DEBUG [Test worker] i.m.i.i.AbstractMockFactory [Slf4jLogger.kt:15] -- Creating mockk for SeasonRepository name=#78
+2024-03-15 15:54:14,862 DEBUG [Test worker] i.m.i.i.AbstractMockFactory [Slf4jLogger.kt:15] -- Creating mockk for EpisodeRepository name=#79
+2024-03-15 15:54:14,862 DEBUG [Test worker] i.m.i.i.AbstractMockFactory [Slf4jLogger.kt:15] -- Creating mockk for SeriesEntity name=#80
+2024-03-15 15:54:14,863 DEBUG [Test worker] i.m.i.i.AbstractMockFactory [Slf4jLogger.kt:15] -- Creating mockk for SeasonEntity name=#81
+2024-03-15 15:54:14,864 DEBUG [Test worker] i.m.i.i.AbstractMockFactory [Slf4jLogger.kt:15] -- Creating mockk for SeriesEntity name=child of #81#82
+2024-03-15 15:54:14,864 DEBUG [Test worker] i.m.i.i.AbstractMockFactory [Slf4jLogger.kt:15] -- Creating mockk for EpisodeEntity name=#83
+2024-03-15 15:54:14,865 DEBUG [Test worker] i.m.i.i.AbstractMockFactory [Slf4jLogger.kt:15] -- Creating mockk for SeasonEntity name=child of #83#84
+2024-03-15 15:54:14,867 DEBUG [Test worker] i.m.i.i.AbstractMockFactory [Slf4jLogger.kt:15] -- Creating mockk for Any name=child of #77#85
+2024-03-15 15:54:14,868 DEBUG [Test worker] i.m.i.i.AbstractMockFactory [Slf4jLogger.kt:15] -- Creating mockk for Any name=child of #78#86
+2024-03-15 15:54:14,869 DEBUG [Test worker] i.m.i.i.AbstractMockFactory [Slf4jLogger.kt:15] -- Creating mockk for Any name=child of #79#87
+2024-03-15 15:54:14,869 DEBUG [Test worker] i.m.i.r.s.AnsweringState [Slf4jLogger.kt:15] -- Answering Success(SeriesEntity(#80)) on SeriesRepository(#77).getSeries-IoAF18A(kaamelott)
+2024-03-15 15:54:14,870 DEBUG [Test worker] i.m.i.r.s.AnsweringState [Slf4jLogger.kt:15] -- Answering Failure(io.ktor.server.plugins.NotFoundException: Resource not found) on SeasonRepository(#78).getSeriesSeason-gIAlu-s(SeriesEntity(#80), -1)

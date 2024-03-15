@@ -1,4 +1,4 @@
-package fr.imacaron.gif.api.usecases.gif
+package fr.imacaron.gif.api.models.gif
 
 data class GifCreation(
 	val series: String,
