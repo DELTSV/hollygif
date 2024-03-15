@@ -1,4 +1,4 @@
-package fr.imacaron.gif.api.plugins
+package fr.imacaron.gif.api.infrastructure.plugins
 
 import fr.imacaron.gif.shared.infrastrucutre.S3File
 import io.ktor.server.application.*

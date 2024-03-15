@@ -1,9 +1,10 @@
 package fr.imacaron.gif.api
 
 import dev.kord.core.Kord
-import fr.imacaron.gif.api.plugins.*
+import fr.imacaron.gif.api.infrastructure.plugins.*
 import fr.imacaron.gif.api.infrastructure.routing.configureRouting
 import fr.imacaron.gif.api.infrastructure.routing.route.*
+import fr.imacaron.gif.shared.infrastrucutre.FileManager
 import fr.imacaron.gif.shared.infrastrucutre.repository.DbGifRepository
 import fr.imacaron.gif.shared.infrastrucutre.repository.DbSceneRepository
 import fr.imacaron.gif.shared.infrastrucutre.repository.DbEpisodeRepository
@@ -32,8 +33,9 @@ fun Application.module() = runBlocking {
 	val episodeRepository = DbEpisodeRepository(db)
 	val seasonRepository = DbSeasonRepository(db)
 	val seriesRepository = DbSeriesRepository(db)
+	val fileManager = FileManager()
 	FileRoute(this@module)
-	GifRoute(seriesRepository, gifRepository, seasonRepository, episodeRepository, sceneRepository, kord, this@module)
+	GifRoute(seriesRepository, gifRepository, seasonRepository, episodeRepository, sceneRepository, kord, fileManager, this@module)
 	EpisodesRoute(this@module, seriesRepository, seasonRepository, episodeRepository)
 	SeasonsRoute(this@module, seriesRepository, seasonRepository)
 	SeriesRoute(this@module, seriesRepository)

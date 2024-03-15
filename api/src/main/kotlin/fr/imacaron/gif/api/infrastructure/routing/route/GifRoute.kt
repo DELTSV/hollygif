@@ -8,16 +8,17 @@ import fr.imacaron.gif.api.respond
 import fr.imacaron.gif.api.infrastructure.routing.resources.API
 import fr.imacaron.gif.api.models.gif.Gif
 import fr.imacaron.gif.api.models.search.Response
+import fr.imacaron.gif.api.usecases.gif.CreateGif
+import fr.imacaron.gif.api.usecases.gif.GifCreation
 import fr.imacaron.gif.shared.NotFoundException
+import fr.imacaron.gif.shared.infrastrucutre.FileManager
 import fr.imacaron.gif.shared.search.Series
-import fr.imacaron.gif.shared.infrastrucutre.repository.DbGifRepository
-import fr.imacaron.gif.shared.infrastrucutre.repository.DbSceneRepository
-import fr.imacaron.gif.shared.infrastrucutre.repository.DbEpisodeRepository
-import fr.imacaron.gif.shared.infrastrucutre.repository.DbSeasonRepository
-import fr.imacaron.gif.shared.infrastrucutre.repository.DbSeriesRepository
+import fr.imacaron.gif.shared.infrastrucutre.repository.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
+import io.ktor.server.request.*
 import io.ktor.server.resources.*
+import io.ktor.server.resources.post
 import io.ktor.server.routing.*
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -25,12 +26,13 @@ import kotlinx.coroutines.newSingleThreadContext
 import kotlinx.coroutines.withContext
 
 class GifRoute(
-		seriesRepository: DbSeriesRepository,
+		private val seriesRepository: DbSeriesRepository,
 		private val gifRepository: DbGifRepository,
-		seasonRepository: DbSeasonRepository,
-		episodeRepository: DbEpisodeRepository,
-		sceneRepository: DbSceneRepository,
+		private val seasonRepository: DbSeasonRepository,
+		private val episodeRepository: DbEpisodeRepository,
+		private val sceneRepository: DbSceneRepository,
 		private val kord: Kord,
+		private val fileManager: FileManager,
 		application: Application
 ) {
 	private lateinit var kaamelott: Series
@@ -54,6 +56,7 @@ class GifRoute(
 			getGif()
 			authenticate("discord-token") {
 				getMyGif()
+				createGif()
 			}
 		}
 	}
@@ -108,6 +111,14 @@ class GifRoute(
 				Gif(it.entity, user)
 			}
 			call.respond(Response.Ok(gifs))
+		}
+	}
+
+	private fun Route.createGif() {
+		val createGif = CreateGif(fileManager, seriesRepository, seasonRepository, episodeRepository, sceneRepository)
+		post<API.Gif> {
+			val gifCreate: GifCreation = call.receive()
+			createGif(gifCreate, 156)
 		}
 	}
 }

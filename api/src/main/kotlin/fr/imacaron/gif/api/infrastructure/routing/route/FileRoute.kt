@@ -1,6 +1,6 @@
 package fr.imacaron.gif.api.infrastructure.routing.route
 
-import fr.imacaron.gif.api.plugins.buildS3
+import fr.imacaron.gif.api.infrastructure.plugins.buildS3
 import fr.imacaron.gif.api.respond
 import fr.imacaron.gif.api.infrastructure.routing.resources.API
 import fr.imacaron.gif.api.models.search.Response

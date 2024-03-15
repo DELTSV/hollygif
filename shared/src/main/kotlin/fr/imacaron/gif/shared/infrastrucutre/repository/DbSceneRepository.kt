@@ -18,29 +18,29 @@ import org.ktorm.schema.int
 class DbSceneRepository(
 	private val db: Database
 ) : SceneRepository {
-	override fun getEpisodeScenes(episode: EpisodeEntity): Result<List<DbSceneEntity>> {
+	override fun getEpisodeScenes(episode: EpisodeEntity): Result<List<SceneEntity>> {
 		TODO("Not yet implemented")
 	}
 
-	override fun getEpisodeScene(episode: EpisodeEntity, index: Int): Result<DbSceneEntity> {
+	override fun getEpisodeScene(episode: EpisodeEntity, index: Int): Result<SceneEntity> {
 		return db.scenes.find { (SceneTable.episode eq episode.id) and (SceneTable.index eq index) }?.let {
 			Result.success(it)
 		} ?: Result.failure(NotFoundException("Cannot found scene"))
 	}
 
-	override fun getEpisodeSceneAt(episode: EpisodeEntity, at: Double): Result<DbSceneEntity> {
+	override fun getEpisodeSceneAt(episode: EpisodeEntity, at: Double): Result<SceneEntity> {
 		return db.scenes.find { (SceneTable.start lte at) and (SceneTable.end gte at) and (SceneTable.episode eq episode.id) }?.let {
 			Result.success(it)
 		} ?: Result.failure(NotFoundException("Cannot find scene with this timecode"))
 	}
 
-	override fun addEpisodeScene(info: DbSceneEntity): Result<DbSceneEntity> {
+	override fun addEpisodeScene(info: SceneEntity): Result<SceneEntity> {
 		db.scenes.add(info)
 		return Result.success(info)
 	}
 }
 
-open class SceneTable(alias: String?): Table<DbSceneEntity>("SCENES", alias) {
+open class SceneTable(alias: String?): Table<SceneEntity>("SCENES", alias) {
 	companion object: SceneTable(null)
 	override fun aliased(alias: String) = SceneTable(alias)
 
@@ -53,14 +53,14 @@ open class SceneTable(alias: String?): Table<DbSceneEntity>("SCENES", alias) {
 	val episodes: EpisodeTable get() = episode.referenceTable as EpisodeTable
 }
 
-interface DbSceneEntity: Entity<DbSceneEntity> {
+interface SceneEntity: Entity<SceneEntity> {
 	var id: Int
 	var start: Double
 	var end: Double
 	var index: Int
 	var episode: EpisodeEntity
 
-	companion object: Entity.Factory<DbSceneEntity>()
+	companion object: Entity.Factory<SceneEntity>()
 }
 
 internal val Database.scenes get() = this.sequenceOf(SceneTable)

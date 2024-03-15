@@ -2,7 +2,7 @@ package fr.imacaron.gif.shared.gif
 
 import fr.imacaron.gif.shared.*
 import fr.imacaron.gif.shared.infrastrucutre.FFMPEG
-import fr.imacaron.gif.shared.infrastrucutre.repository.DbSceneEntity
+import fr.imacaron.gif.shared.infrastrucutre.repository.SceneEntity
 import fr.imacaron.gif.shared.search.Episode
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -11,8 +11,8 @@ import kotlinx.coroutines.withContext
 import java.io.File
 
 class SceneEntity(
-        val entity: DbSceneEntity,
-        private val ep: Episode
+	val entity: SceneEntity,
+	val ep: Episode
 ) {
 	val start
 		get() = entity.start
@@ -25,15 +25,6 @@ class SceneEntity(
 
 	val duration
 		get() = end - start - (2.0 / ep.fps)
-
-	data class Status(
-		val scene: Boolean = false,
-		val textLength: Boolean = false,
-		val text: Boolean = false,
-		val gif: Boolean = false,
-		val result: String? = null,
-		val error: Exception? = null
-	)
 
 	fun createMeme(text: String, textSize: Int = 156): Flow<Status> = flow {
 		this@SceneEntity.ep.season.series.s3

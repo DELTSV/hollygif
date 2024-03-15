@@ -1,4 +1,4 @@
-package fr.imacaron.gif.api.plugins
+package fr.imacaron.gif.api.infrastructure.plugins
 
 import com.mchange.v2.c3p0.ComboPooledDataSource
 import io.ktor.server.application.*

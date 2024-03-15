@@ -71,7 +71,7 @@ class Loader(
 			}).onSuccess {
 				metadata.scenes.add(0, .0)
 				metadata.scenes.forEachIndexed { index, d ->
-					sceneRepository.addEpisodeScene(DbSceneEntity {
+					sceneRepository.addEpisodeScene(SceneEntity {
 						this.start = d
 						this.end = metadata.scenes.getOrNull(index + 1) ?: metadata.duration
 						this.index = index

@@ -27,7 +27,7 @@ class DbGifRepository(
 			.drop(page * pageSize).take(pageSize)
 			.map { GifEntity(it) }
 
-	override fun getSceneGifs(sceneEntity: DbSceneEntity, page: Int, pageSize: Int): List<GifEntity> =
+	override fun getSceneGifs(sceneEntity: SceneEntity, page: Int, pageSize: Int): List<GifEntity> =
 		db.gifs.filter { GifsTable.scene eq sceneEntity.id }.drop(page * pageSize).take(pageSize).map { GifEntity(it) }
 
 	override fun getEpisodeGifs(episodeEntity: EpisodeEntity, page: Int, pageSize: Int): List<GifEntity> =
@@ -71,7 +71,7 @@ interface DbGifEntity : Entity<DbGifEntity> {
 	var timecode: String
 	var text: String
 	var date: Instant
-	var scene: DbSceneEntity
+	var scene: SceneEntity
 	var status: GifStatus
 
 	companion object: Entity.Factory<DbGifEntity>()

@@ -1,4 +1,4 @@
-package fr.imacaron.gif.api.plugins
+package fr.imacaron.gif.api.infrastructure.plugins
 
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*

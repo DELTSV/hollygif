@@ -1,7 +1,7 @@
 package fr.imacaron.gif.api.models.gif
 
 import fr.imacaron.gif.api.models.search.Episode
-import fr.imacaron.gif.shared.infrastrucutre.repository.DbSceneEntity
+import fr.imacaron.gif.shared.infrastrucutre.repository.SceneEntity
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -12,7 +12,7 @@ data class Scene(
 	val end: Double,
 	val episode: Episode
 ) {
-	constructor(entity: DbSceneEntity): this(
+	constructor(entity: SceneEntity): this(
 		entity.id,
 		entity.index,
 		entity.start,
