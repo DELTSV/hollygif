@@ -1,17 +1,17 @@
-import API from "../api/api.ts";
-import {Link, useParams} from "react-router-dom";
-import {useEffect, useState} from "react";
-import Card from "../Components/Card.tsx";
+import API from "../../Api/Api.ts";
+import { Link, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Card } from "../../Components";
 
 interface SeasonsProps {
 	api: API
 }
 
-export default function Seasons(props: SeasonsProps) {
+export function SeasonsList(props: SeasonsProps) {
 	const { name } = useParams();
 
-	const [series, setSeries] = useState<Series|null>(null);
-	const [seasons, setSeasons] = useState<Season[]|null>(null)
+	const [series, setSeries] = useState<Series | null>(null);
+	const [seasons, setSeasons] = useState<Season[] | null>(null)
 
 	useEffect(() => {
 		props.api.oneSeries(name ?? "").then(res => setSeries(res));

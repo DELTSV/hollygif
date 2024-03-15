@@ -1,13 +1,13 @@
-import React, {ReactNode} from "react";
-import {clsx} from "clsx";
+import React, { ReactNode } from "react";
+import { clsx } from "clsx";
 
-export interface ButtonProps {
+interface ButtonProps {
 	onClick?: React.MouseEventHandler<HTMLButtonElement>
 	children: ReactNode,
 	className?: string
 }
 
-export default function Button(props: ButtonProps) {
+export function Button(props: ButtonProps) {
 	return (
 		<button
 			onClick={props.onClick}
