@@ -1,0 +1,40 @@
+@keyframes background-scroll {
+    from {
+        background-position-y: 0;
+    }
+
+    to {
+        background-position-y: 1350px;
+    }
+}
+
+body {
+    background: #232323;
+}
+
+#background {
+    rotate: 25deg;
+    translate: -50vh -50vw;
+    height: 300vh;
+    width: 200vw;
+}
+
+#background,
+#background>div {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+#background>div {
+    height: 100%;
+    width: 100%;
+    background-image: url("background.png");
+    filter: contrast(0) brightness(0.2);
+    animation: 50s background-scroll infinite linear;
+}
+
+#background>div:first-of-type {
+    animation-direction: reverse;
+    translate: 165px;
+}
