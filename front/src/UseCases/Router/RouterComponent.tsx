@@ -2,9 +2,7 @@ import { useCallback, useMemo, useState } from "react";
 import API from "../../Api/Api";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { RouterLayout } from "./RouterLayout";
-import { GifList, GifDetails, UserGifs } from "..";
-import Series from "../../Pages/Series";
-import Seasons from "../../Pages/Seasons";
+import { GifList, GifDetails, UserGifs, SeasonsList, SeriesList } from "..";
 
 export function Router() {
     const [bottom, setBottom] = useState(false);
@@ -37,11 +35,11 @@ export function Router() {
                 },
                 {
                     path: "series",
-                    element: <Series api={api} />
+                    element: <SeriesList api={api} />
                 },
                 {
                     path: "series/:name",
-                    element: <Seasons api={api} />
+                    element: <SeasonsList api={api} />
                 },
                 {
                     path: "series/:name/:season",
