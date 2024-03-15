@@ -2,8 +2,7 @@ import { useCallback, useMemo, useState } from "react";
 import API from "../../Api/Api";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { RouterLayout } from "./RouterLayout";
-import { GifList, GifDetails } from "..";
-import UserGifs from "../../Pages/UserGifs";
+import { GifList, GifDetails, UserGifs } from "..";
 import Series from "../../Pages/Series";
 import Seasons from "../../Pages/Seasons";
 

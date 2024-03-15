@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useMemo } from "react";
-import { Card } from ".";
+import { Card } from "..";
 
 interface GifCardProps {
 	gif: Gif | null,
