@@ -7,6 +7,8 @@ import Gif from "../../Pages/Gif";
 import UserGifs from "../../Pages/UserGifs";
 import Series from "../../Pages/Series";
 import Seasons from "../../Pages/Seasons";
+import Episodes from "../../Pages/Episodes.tsx";
+import EpisodePage from "../../Pages/EpisodePage.tsx";
 
 export function Router() {
     const [bottom, setBottom] = useState(false);
@@ -47,7 +49,11 @@ export function Router() {
                 },
                 {
                     path: "series/:name/:season",
-                    element: "Pas fait"
+                    element: <Episodes api={api} bottom={bottom}/>
+                },
+                {
+                    path: "series/:name/:season/:episode",
+                    element: <EpisodePage api={api}/>
                 }
             ]
         }

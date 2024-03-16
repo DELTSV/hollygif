@@ -27,7 +27,7 @@ class TranscriptionRepository(
 }
 
 object TranscriptionsTable: Table<TranscriptionEntity>("TRANSCRIPTIONS") {
-    val episode = int("episode_id").primaryKey().references(EpisodeTable) { it.episode }
+    val episode = int("id_episode").primaryKey().references(EpisodeTable) { it.episode }
     val index = int("index").primaryKey().bindTo { it.index }
     val text = text("text").bindTo { it.text }
     val info = varchar("info").bindTo { it.info }
