@@ -23,12 +23,14 @@ fun Application.module() = runBlocking {
 
 	val db = configureDatabase()
 
+	val transcriptionRepository = TranscriptionRepository(db)
 	val gifRepository = GifRepository(db)
 	val sceneRepository = SceneRepository(db)
 	val episodeRepository = EpisodeRepository(db)
 	val seasonRepository = SeasonRepository(db)
 	val seriesRepository = SeriesRepository(db)
 	FileRoute(this@module)
+	TranscriptionRoute(seriesRepository, seasonRepository, episodeRepository, transcriptionRepository, this@module)
 	GifRoute(seriesRepository, gifRepository, seasonRepository, episodeRepository, sceneRepository, kord, this@module)
 	EpisodesRoute(this@module, seriesRepository, seasonRepository, episodeRepository)
 	SeasonsRoute(this@module, seriesRepository, seasonRepository)

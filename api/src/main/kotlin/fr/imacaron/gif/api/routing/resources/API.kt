@@ -19,15 +19,18 @@ class API {
 	@Resource("/series")
 	class Series(val parent: API = API()) {
 		@Resource("/{name}")
-		class Name(val parent: Series = Series(), val name: String) {
+		class Name(val series: Series = Series(), val name: String) {
 			@Resource("/seasons")
-			class Seasons(val parent: Name) {
+			class Seasons(val seriesName: Name) {
 				@Resource("/{number}")
-				class Number(val parent: Seasons, val number: Int) {
+				class Number(val seasons: Seasons, val number: Int) {
 					@Resource("/episodes")
-					class Episodes(val parent: Number) {
+					class Episodes(val seasonNumber: Number) {
 						@Resource("/{index}")
-						class Index(val parent: Episodes, val index: Int)
+						class Index(val episodes: Episodes, val index: Int) {
+							@Resource("/transcriptions")
+							class Transcriptions(val episodeIndex: Index)
+						}
 					}
 				}
 			}

@@ -12,7 +12,6 @@ import fr.imacaron.gif.shared.repository.SeriesRepository
 import io.ktor.server.application.*
 import io.ktor.server.resources.*
 import io.ktor.server.routing.*
-import io.ktor.server.routing.get
 
 class EpisodesRoute(
 	application: Application,
@@ -35,8 +34,8 @@ class EpisodesRoute(
 		get<API.Series.Name.Seasons.Number.Episodes> {
 			val page = call.request.queryParameters.int("page") ?: 0
 			val pageSize = call.request.queryParameters.int("page_size") ?: 12
-			seriesRepository.getSeries(it.parent.parent.parent.name).onSuccess { series ->
-				seasonsRepository.getSeriesSeason(series, it.parent.number).onSuccess { season ->
+			seriesRepository.getSeries(it.seasonNumber.seasons.seriesName.name).onSuccess { series ->
+				seasonsRepository.getSeriesSeason(series, it.seasonNumber.number).onSuccess { season ->
 					episodeRepository.getSeasonEpisodes(season, page, pageSize).onSuccess { episodes ->
 						call.respond(Response.Ok(episodes.map { e -> Episode(e) }))
 					}.onFailure { e ->
@@ -62,8 +61,8 @@ class EpisodesRoute(
 
 	private fun Route.getOneSeasonEpisode() {
 		get<API.Series.Name.Seasons.Number.Episodes.Index> {
-			seriesRepository.getSeries(it.parent.parent.parent.parent.name).onSuccess { series ->
-				seasonsRepository.getSeriesSeason(series, it.parent.parent.number).onSuccess { season ->
+			seriesRepository.getSeries(it.episodes.seasonNumber.seasons.seriesName.name).onSuccess { series ->
+				seasonsRepository.getSeriesSeason(series, it.episodes.seasonNumber.number).onSuccess { season ->
 					episodeRepository.getSeasonEpisode(season, it.index).onSuccess { episode ->
 						call.respond(Response.Ok(Episode(episode)))
 					}.onFailure { e ->

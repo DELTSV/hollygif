@@ -10,7 +10,6 @@ import fr.imacaron.gif.shared.repository.SeriesRepository
 import io.ktor.server.application.*
 import io.ktor.server.resources.*
 import io.ktor.server.routing.*
-import io.ktor.server.routing.get
 
 class SeasonsRoute(
 	application: Application,
@@ -30,7 +29,7 @@ class SeasonsRoute(
 
 	private fun Route.getSeriesSeasons() {
 		get<API.Series.Name.Seasons> {
-			seriesRepository.getSeries(it.parent.name).onSuccess {  series ->
+			seriesRepository.getSeries(it.seriesName.name).onSuccess { series ->
 				seasonsRepository.getSeriesSeasons(series).onSuccess { seasons ->
 					call.respond(Response.Ok(seasons.map { s -> Season(s) }))
 				}.onFailure {
@@ -47,7 +46,7 @@ class SeasonsRoute(
 
 	private fun Route.getOneSeriesSeason() {
 		get<API.Series.Name.Seasons.Number> {
-			seriesRepository.getSeries(it.parent.parent.name).onSuccess { series ->
+			seriesRepository.getSeries(it.seasons.seriesName.name).onSuccess { series ->
 				seasonsRepository.getSeriesSeason(series, it.number).onSuccess { season ->
 					call.respond(Response.Ok(Season(season)))
 				}.onFailure {
