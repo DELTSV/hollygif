@@ -31,7 +31,7 @@ fun Application.module() = runBlocking {
 	val seriesRepository = SeriesRepository(db)
 	FileRoute(this@module)
 	TranscriptionRoute(seriesRepository, seasonRepository, episodeRepository, transcriptionRepository, this@module)
-	GifRoute(seriesRepository, gifRepository, seasonRepository, episodeRepository, sceneRepository, kord, this@module)
+	GifRoute(seriesRepository, gifRepository, seasonRepository, episodeRepository, sceneRepository, transcriptionRepository, kord, this@module)
 	EpisodesRoute(this@module, seriesRepository, seasonRepository, episodeRepository)
 	SeasonsRoute(this@module, seriesRepository, seasonRepository)
 	SeriesRoute(this@module, seriesRepository)

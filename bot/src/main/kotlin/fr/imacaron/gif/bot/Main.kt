@@ -45,9 +45,10 @@ suspend fun main(args: Array<String>) {
     val episodeRepository = EpisodeRepository(db)
     val seasonRepository = SeasonRepository(db)
     val seriesRepository = SeriesRepository(db)
+    val transcriptionRepository = TranscriptionRepository(db)
 
     if(args.size > 1 && args[0] != "LOAD") {
-        val loader = Loader(sceneRepository, episodeRepository, seasonRepository, seriesRepository)
+        val loader = Loader(sceneRepository, episodeRepository, seasonRepository, seriesRepository, transcriptionRepository)
         loader.loadSeries(args[0])
         loader.loadSeason(args[1].toInt())
         for(i in 1..loader.series.seasons.size) {
@@ -61,7 +62,7 @@ suspend fun main(args: Array<String>) {
         logger.error("Missing kaamelott")
         return
     }.let {
-        Series(seasonRepository, episodeRepository, sceneRepository, it)
+        Series(seasonRepository, episodeRepository, sceneRepository, transcriptionRepository, it)
     }
 
     val kord = Kord(token)

@@ -2,15 +2,13 @@ package fr.imacaron.gif.shared.entity
 
 import fr.imacaron.gif.shared.S3File
 import fr.imacaron.gif.shared.logger
-import fr.imacaron.gif.shared.repository.EpisodeRepository
-import fr.imacaron.gif.shared.repository.SceneRepository
-import fr.imacaron.gif.shared.repository.SeasonRepository
-import fr.imacaron.gif.shared.repository.SeriesEntity
+import fr.imacaron.gif.shared.repository.*
 
 class Series(
 	private val seasonsRepository: SeasonRepository,
 	private val episodeRepository: EpisodeRepository,
 	private val sceneRepository: SceneRepository,
+	private val transcriptionRepository: TranscriptionRepository,
 	val entity: SeriesEntity
 ) {
 
@@ -41,12 +39,12 @@ class Series(
 		operator fun get(index: Int): Season {
 			return seasonsRepository.getSeriesSeason(entity, index).getOrElse {
 				throw IndexOutOfBoundsException()
-			}.let { Season(episodeRepository, sceneRepository, it, this@Series) }
+			}.let { Season(episodeRepository, sceneRepository, transcriptionRepository, it, this@Series) }
 		}
 
 		fun <K, V>associate(transform: (Season) -> Pair<K, V>): Map<K, V> {
 			seasonsRepository.getSeriesSeasons(entity).onSuccess {  list ->
-				return list.map { Season(episodeRepository, sceneRepository, it, this@Series) }.associate(transform)
+				return list.map { Season(episodeRepository, sceneRepository, transcriptionRepository, it, this@Series) }.associate(transform)
 			}.onFailure {
 				logger.error("Cannot retrieve series ${entity.name} seasons", it)
 			}

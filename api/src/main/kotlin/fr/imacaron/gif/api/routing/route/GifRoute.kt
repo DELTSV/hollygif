@@ -27,6 +27,7 @@ class GifRoute(
 	seasonRepository: SeasonRepository,
 	episodeRepository: EpisodeRepository,
 	sceneRepository: SceneRepository,
+	transcriptionRepository: TranscriptionRepository,
 	private val kord: Kord,
 	application: Application
 ) {
@@ -41,7 +42,7 @@ class GifRoute(
 		seriesRepository.getSeries("kaamelott").onFailure {
 			throw NotFoundException("Kaamelott not found")
 		}.onSuccess {
-			kaamelott = Series(seasonRepository, episodeRepository, sceneRepository, it)
+			kaamelott = Series(seasonRepository, episodeRepository, sceneRepository, transcriptionRepository, it)
 		}
 	}
 

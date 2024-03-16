@@ -10,20 +10,21 @@ class Loader(
 	private val sceneRepository: SceneRepository,
 	private val episodeRepository: EpisodeRepository,
 	private val seasonRepository: SeasonRepository,
-	private val seriesRepository: SeriesRepository
+	private val seriesRepository: SeriesRepository,
+	private val transcriptionRepository: TranscriptionRepository
 ) {
 
 	lateinit var series: Series
 
 	fun loadSeries(name: String) {
 		seriesRepository.getSeries(name).onSuccess {
-			series = Series(seasonRepository, episodeRepository, sceneRepository, it)
+			series = Series(seasonRepository, episodeRepository, sceneRepository, transcriptionRepository, it)
 			return
 		}
 		seriesRepository.addSeries(SeriesEntity{
 			this.name = name
 		}).onSuccess {
-			series = Series(seasonRepository, episodeRepository, sceneRepository, it)
+			series = Series(seasonRepository, episodeRepository, sceneRepository, transcriptionRepository, it)
 		}.onFailure {
 			logger.error("Cannot load series $name", it)
 		}
