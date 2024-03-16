@@ -2,6 +2,7 @@ import { useState } from "react";
 import API from "../../Api/Api";
 import { Link, Outlet } from "react-router-dom";
 import DiscordAuth from "../../DiscordAuth";
+import {Footer} from "./RouterFooter.tsx";
 
 interface RouterLayoutProps {
     handleScroll: (e: React.UIEvent<HTMLDivElement>) => void,
@@ -44,11 +45,11 @@ export function RouterLayout(props: RouterLayoutProps) {
                         props.setBottom(true);
                     }
                 }}>
-                    <div className={"absolute top-0 left-0 w-full h-full z-0"} />
                     <div className={"relative z-10 w-full flex flex-col items-center"}>
                         <Outlet />
                     </div>
                 </div>
+                <Footer/>
             </div>
         </>
     )
