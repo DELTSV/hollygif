@@ -1,6 +1,6 @@
 plugins {
     application
-    kotlin("jvm") version "1.9.22"
+    kotlin("jvm")
     id("org.liquibase.gradle") version "2.2.1"
 }
 

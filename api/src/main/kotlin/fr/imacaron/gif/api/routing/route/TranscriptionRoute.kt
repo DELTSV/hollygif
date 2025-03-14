@@ -4,8 +4,6 @@ import fr.imacaron.gif.api.respond
 import fr.imacaron.gif.api.routing.resources.API
 import fr.imacaron.gif.api.types.Response
 import fr.imacaron.gif.api.types.Transcriptions
-import fr.imacaron.gif.shared.entity.Episode
-import fr.imacaron.gif.shared.entity.Transcription
 import fr.imacaron.gif.shared.repository.EpisodeRepository
 import fr.imacaron.gif.shared.repository.SeasonRepository
 import fr.imacaron.gif.shared.repository.SeriesRepository
@@ -13,7 +11,6 @@ import fr.imacaron.gif.shared.repository.TranscriptionRepository
 import io.ktor.server.application.*
 import io.ktor.server.resources.*
 import io.ktor.server.routing.*
-import io.ktor.server.routing.get
 
 class TranscriptionRoute(
     private val seriesRepository: SeriesRepository,

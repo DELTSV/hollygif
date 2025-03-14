@@ -13,7 +13,6 @@ import fr.imacaron.gif.shared.entity.Series
 import fr.imacaron.gif.shared.repository.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
-import io.ktor.server.request.*
 import io.ktor.server.resources.*
 import io.ktor.server.routing.*
 import kotlinx.coroutines.DelicateCoroutinesApi

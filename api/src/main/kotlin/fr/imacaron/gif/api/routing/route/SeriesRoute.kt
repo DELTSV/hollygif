@@ -10,7 +10,6 @@ import fr.imacaron.gif.shared.repository.SeriesRepository
 import io.ktor.server.application.*
 import io.ktor.server.resources.*
 import io.ktor.server.routing.*
-import io.ktor.util.Identity.encode
 import io.ktor.util.logging.*
 
 class SeriesRoute(
