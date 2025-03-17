@@ -40,8 +40,8 @@ export default function Episodes(props: EpisodesProps) {
 			{episodes?.map((e) =>
 				<Link to={`/series/${name}/${season}/${e.number}`}>
 					<Card horizontal key={e.id}>
-						<div className={"p-4"}>
-							<div className={"flex justify-between"}>
+						<div className={"p-2"}>
+							<div className={"flex justify-between gap-8"}>
 								<p>Épisode {e.number}</p>
 								<p>{e.numberOfGif} gifs au total</p>
 							</div>

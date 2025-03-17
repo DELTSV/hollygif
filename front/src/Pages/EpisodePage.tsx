@@ -22,7 +22,7 @@ export default function EpisodePage(props: EpisodeProps) {
 	return (
 		<div className={"flex flex-col gap-4"}>
 			<Card className={"p-2"}>
-				<div className={"flex justify-between"}>
+				<div className={"flex justify-between gap-8"}>
 					<p>Épisode {ep?.number}</p>
 					<p>{ep?.numberOfGif} gifs au total</p>
 				</div>
