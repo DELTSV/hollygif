@@ -29,7 +29,7 @@ export default function EpisodePage(props: EpisodeProps) {
 				<p>{ep?.title.replaceAll("_", " ")}</p>
 				<p>Durée {ep?.duration}s</p>
 			</Card>
-			<Card>
+			<Card className={"p-2"}>
 				<h2>Script</h2>
 				<div className={"flex flex-col"}>
 					{transcriptions?.map(t =>
