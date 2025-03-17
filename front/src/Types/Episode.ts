@@ -6,5 +6,6 @@ interface Episode {
 	fps: number,
 	title: string,
 	duration: number,
-	season: Season
+	season: Season,
+	numberOfGif?: number
 }

@@ -40,8 +40,11 @@ export default function Episodes(props: EpisodesProps) {
 			{episodes?.map((e) =>
 				<Link to={`/series/${name}/${season}/${e.number}`}>
 					<Card horizontal key={e.id}>
-						<div>
-							<p>Épisode {e.number}</p>
+						<div className={"p-4"}>
+							<div className={"flex justify-between"}>
+								<p>Épisode {e.number}</p>
+								<p>{e.numberOfGif} gifs au total</p>
+							</div>
 							<p>{e.title.replaceAll("_", " ")}</p>
 						</div>
 					</Card>
