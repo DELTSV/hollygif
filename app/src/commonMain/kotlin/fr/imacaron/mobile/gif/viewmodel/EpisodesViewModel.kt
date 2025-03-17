@@ -4,7 +4,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import fr.imacaron.mobile.gif.types.Gif
+import fr.imacaron.mobile.gif.Json
+import fr.imacaron.mobile.gif.types.Episode
 import fr.imacaron.mobile.gif.types.Response
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
@@ -12,28 +13,28 @@ import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.request.get
 import io.ktor.serialization.kotlinx.json.json
 
-class LastGifViewModel: ViewModel() {
-	var lastGifs by mutableStateOf(setOf<Gif>())
-	private set
+class EpisodesViewModel(val seriesName: String, val seasonNumber: Int) : ViewModel() {
+	var episodes by mutableStateOf(setOf<Episode>())
+		private set
 
-	private val client = HttpClient {
+	val client = HttpClient {
 		install(ContentNegotiation) {
-			json()
+			json(Json)
 		}
 	}
 
-	var lastPage = -1
+	private var lastPage = -1
 
-	suspend fun fetch(page: Int): Boolean {
+	suspend fun fetch(page: Int) {
 		if(lastPage < page) {
 			lastPage = page
 		}
-		val response = client.get("https://gif.imacaron.fr/api/gif?page_size=12&page=$page").body<Response<List<Gif>>>()
-		return if(response.code == 200) {
-			lastGifs += response.data
-			true
+		val response = client.get("https://gif.imacaron.fr/api/series/$seriesName/seasons/$seasonNumber/episodes?page=$page&page_size=10")
+			.body<Response<List<Episode>>>()
+		if (response.code == 200) {
+			episodes += response.data
 		} else {
-			false
+			//alert
 		}
 	}
 

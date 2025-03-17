@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
+    id("kotlin-parcelize")
     id("org.jetbrains.kotlin.plugin.serialization") version "2.1.0"
 }
 
@@ -54,6 +55,8 @@ kotlin {
             implementation("io.coil-kt.coil3:coil-compose:3.0.0")
             implementation("io.coil-kt.coil3:coil-network-ktor3:3.0.0")
             implementation("io.coil-kt.coil3:coil-network-cache-control:3.0.0")
+            implementation("org.jetbrains.androidx.navigation:navigation-compose:2.8.0-alpha10")
+            implementation("io.github.final-class:webview-multiplatform-mobile:1.1.0")
         }
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)

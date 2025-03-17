@@ -1,6 +1,5 @@
 package fr.imacaron.mobile.gif.ui.page
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -24,12 +23,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import coil3.compose.AsyncImage
+import fr.imacaron.mobile.gif.Json
 import fr.imacaron.mobile.gif.types.Gif
+import fr.imacaron.mobile.gif.ui.GifView
 import fr.imacaron.mobile.gif.ui.components.GifImage
 
 @Composable
-fun GifList(data: List<Gif>, loadMore: suspend () -> Unit) {
+fun GifList(data: List<Gif>, loadMore: suspend () -> Unit, navHostController: NavHostController) {
 	val state = rememberLazyListState()
 	val bottom: Boolean by remember {
 		derivedStateOf {
@@ -54,7 +56,7 @@ fun GifList(data: List<Gif>, loadMore: suspend () -> Unit) {
 					modifier = Modifier.fillMaxWidth(),
 					colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerHighest),
 					elevation = CardDefaults.cardElevation(0.dp),
-					onClick = { println("Clicked $gif") }
+					onClick = { navHostController.navigate(GifView(Json.encodeToString(gif))) }
 				) {
 					GifImage("https://gif.imacaron.fr/api/gif/file/${gif.file}", Modifier.fillMaxWidth())
 					Row(Modifier.padding(horizontal = 16.dp, vertical = 8.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
