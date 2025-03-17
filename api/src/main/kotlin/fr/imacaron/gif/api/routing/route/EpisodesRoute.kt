@@ -37,7 +37,7 @@ class EpisodesRoute(
 			seriesRepository.getSeries(it.seasonNumber.seasons.seriesName.name).onSuccess { series ->
 				seasonsRepository.getSeriesSeason(series, it.seasonNumber.number).onSuccess { season ->
 					episodeRepository.getSeasonEpisodes(season, page, pageSize).onSuccess { episodes ->
-						call.respond(Response.Ok(episodes.map { e -> Episode(e) }))
+						call.respond(Response.Ok(episodes.map { (e, total) -> Episode(e, total) }))
 					}.onFailure { e ->
 						when(e) {
 							is NotFoundException -> call.respond(Response.NotFound)
@@ -64,7 +64,11 @@ class EpisodesRoute(
 			seriesRepository.getSeries(it.episodes.seasonNumber.seasons.seriesName.name).onSuccess { series ->
 				seasonsRepository.getSeriesSeason(series, it.episodes.seasonNumber.number).onSuccess { season ->
 					episodeRepository.getSeasonEpisode(season, it.index).onSuccess { episode ->
-						call.respond(Response.Ok(Episode(episode)))
+						episodeRepository.getEpisodeGifTotal(episode).onSuccess { total ->
+							call.respond(Response.Ok(Episode(episode, total)))
+						}.onFailure {
+							call.respond(Response.ServerError)
+						}
 					}.onFailure { e ->
 						when(e) {
 							is NotFoundException -> call.respond(Response.NotFound)

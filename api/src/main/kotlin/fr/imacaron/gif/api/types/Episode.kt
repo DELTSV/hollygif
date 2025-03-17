@@ -12,9 +12,10 @@ data class Episode(
 	val fps: Int,
 	val title: String,
 	val season: Season,
-	val duration: Double
+	val duration: Double,
+	val numberVOfScene: Int? = null
 ) {
-	constructor(entity: EpisodeEntity): this(
+	constructor(entity: EpisodeEntity, numberOfScene: Int? = null): this(
 		entity.id,
 		entity.number,
 		entity.width,
@@ -22,6 +23,7 @@ data class Episode(
 		entity.fps,
 		entity.title,
 		Season(entity.season),
-		entity.duration
+		entity.duration,
+		numberOfScene
 	)
 }

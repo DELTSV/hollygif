@@ -1,7 +1,6 @@
 package fr.imacaron.gif.shared.repository
 
 import fr.imacaron.gif.shared.NotFoundException
-import fr.imacaron.gif.shared.entity.Episode
 import org.ktorm.database.Database
 import org.ktorm.dsl.and
 import org.ktorm.dsl.eq
@@ -11,8 +10,8 @@ import org.ktorm.schema.*
 class EpisodeRepository(
 	private val db: Database
 ) {
-	fun getSeasonEpisodes(season: SeasonEntity, page: Int, pageSize: Int): Result<List<EpisodeEntity>> =
-		Result.success(db.episodes.filter { EpisodeTable.season eq season.id }.sortedBy { it.number }.drop(page * pageSize).take(pageSize).map { it })
+	fun getSeasonEpisodes(season: SeasonEntity, page: Int, pageSize: Int): Result<List<Pair<EpisodeEntity, Int>>> =
+		Result.success(db.episodes.filter { EpisodeTable.season eq season.id }.sortedBy { it.number }.drop(page * pageSize).take(pageSize).map { it to getEpisodeGifTotal(it).getOrDefault(0) })
 
 	fun getSeasonEpisodesCount(season: SeasonEntity): Result<Int> =
 		Result.success(db.episodes.count { EpisodeTable.season eq season.id })
@@ -25,6 +24,10 @@ class EpisodeRepository(
 	fun addEpisode(episode: EpisodeEntity): Result<EpisodeEntity> {
 		db.episodes.add(episode)
 		return Result.success(episode)
+	}
+
+	fun getEpisodeGifTotal(episode: EpisodeEntity): Result<Int> {
+		return Result.success(db.gifs.filter { it.scenes.episode eq episode.id }.count())
 	}
 
 }
