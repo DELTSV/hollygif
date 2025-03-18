@@ -6,6 +6,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.withContext
+import software.amazon.awssdk.services.s3.model.NoSuchKeyException
 import java.io.File
 
 class Scene(
@@ -32,6 +33,23 @@ class Scene(
 		val result: String? = null,
 		val error: Exception? = null
 	)
+
+	fun makeScene(): Result<ByteArray> {
+		val sceneName = "${ep.season.number}_${ep.number}_$index.mp4"
+		try {
+			return Result.success(this.ep.season.series.s3.getFile("scene", sceneName))
+		} catch (_: NoSuchKeyException) {
+			val stream = FFMPEG.makeSceneStream(
+				"./episodes/L${ep.season.number}_E${ep.number.toString().padStart(3, '0')}.mkv",
+				start,
+				end
+			) ?: return Result.failure(Exception("Cannot make scene"))
+			if(!this.ep.season.series.s3.putFile("scene", sceneName, stream.readAllBytes())) {
+				return Result.failure(Exception("Cannot upload scene"))
+			}
+			return Result.success(this.ep.season.series.s3.getFile("scene", sceneName))
+		}
+	}
 
 	fun createMeme(text: String, textSize: Int = 156): Flow<Status> = flow {
 		this@Scene.ep.season.series.s3

@@ -1,7 +1,6 @@
 package fr.imacaron.gif.shared.repository
 
 import fr.imacaron.gif.shared.NotFoundException
-import fr.imacaron.gif.shared.PAGE_SIZE
 import fr.imacaron.gif.shared.entity.Gif
 import fr.imacaron.gif.shared.enums.TEnum
 import fr.imacaron.gif.shared.enums.enumInt

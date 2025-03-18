@@ -41,6 +41,13 @@ object FFMPEG {
 		logger.debug("Scene created")
 	}
 
+	fun makeSceneStream(input: String, start: Double, end: Double): InputStream? {
+		val duration = end - start
+		return ("ffmpeg -ss $start -i $input -t $duration -map 0:0 -map_chapters -1 -c copy -").runCommandStream().apply {
+			logger.debug("Scene created")
+		}
+	}
+
 	fun getTextLength(scene: String, text: String, textSize: Int = 156): Double {
 		logger.debug("Getting text \"$text\" length with text size: $textSize")
 		val t = text.replace("'", "")

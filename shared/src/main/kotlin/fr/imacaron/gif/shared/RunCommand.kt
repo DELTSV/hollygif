@@ -20,7 +20,7 @@ fun String.runCommand(
 fun String.runCommandStream(
     workingDir: File = File("."),
     commandInput: InputStream? = null
-): InputStream? = kotlin.runCatching {
+): InputStream? = runCatching {
     ProcessBuilder(this.splitCommand())
         .directory(workingDir)
         .redirectInput(ProcessBuilder.Redirect.PIPE)

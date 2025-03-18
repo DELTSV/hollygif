@@ -1,7 +1,6 @@
 package fr.imacaron.gif.shared.repository
 
 import fr.imacaron.gif.shared.NotFoundException
-import fr.imacaron.gif.shared.entity.Scene
 import org.ktorm.database.Database
 import org.ktorm.dsl.and
 import org.ktorm.dsl.eq
@@ -9,7 +8,9 @@ import org.ktorm.dsl.gte
 import org.ktorm.dsl.lte
 import org.ktorm.entity.Entity
 import org.ktorm.entity.add
+import org.ktorm.entity.filter
 import org.ktorm.entity.find
+import org.ktorm.entity.map
 import org.ktorm.entity.sequenceOf
 import org.ktorm.schema.Table
 import org.ktorm.schema.double
@@ -19,7 +20,9 @@ class SceneRepository(
 	private val db: Database
 ) {
 	fun getEpisodeScenes(episode: EpisodeEntity): Result<List<SceneEntity>> {
-		TODO("Not yet implemented")
+		return db.scenes.filter { it.episode eq episode.id }.map { it }.let {
+			Result.success(it)
+		}
 	}
 
 	fun getEpisodeScene(episode: EpisodeEntity, index: Int): Result<SceneEntity> {

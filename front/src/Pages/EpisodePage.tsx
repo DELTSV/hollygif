@@ -35,6 +35,9 @@ export default function EpisodePage(props: EpisodeProps) {
 				<p>{ep?.title.replaceAll("_", " ")}</p>
 				<p>Durée {ep?.duration}s</p>
 			</Card>
+			<Card>
+				<video/>
+			</Card>
 			<Card className={"p-2"}>
 				<Carousel images={gifs?.map(g => import.meta.env.VITE_API + "/api/gif/file/" + g.file) ?? []} />
 			</Card>

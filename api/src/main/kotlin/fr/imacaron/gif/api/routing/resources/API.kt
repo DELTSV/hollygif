@@ -30,6 +30,14 @@ class API {
 						class Index(val episodes: Episodes, val index: Int) {
 							@Resource("/gif")
 							class Gif(val episodeIndex: Index)
+							@Resource("/scenes")
+							class Scenes(val episodeIndex: Index) {
+								@Resource("/{sceneIndex}")
+								class SceneIndex(val scenes: Scenes, val sceneIndex: Int) {
+									@Resource("/file")
+									class File(val sceneIndex: SceneIndex)
+								}
+							}
 							@Resource("/transcriptions")
 							class Transcriptions(val episodeIndex: Index)
 						}

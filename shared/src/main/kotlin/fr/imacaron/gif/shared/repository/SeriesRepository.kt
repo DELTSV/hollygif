@@ -2,7 +2,6 @@ package fr.imacaron.gif.shared.repository
 
 import fr.imacaron.gif.shared.CannotCreate
 import fr.imacaron.gif.shared.NotFoundException
-import fr.imacaron.gif.shared.entity.Series
 import org.ktorm.database.Database
 import org.ktorm.dsl.eq
 import org.ktorm.entity.*

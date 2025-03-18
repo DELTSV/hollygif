@@ -32,6 +32,7 @@ fun Application.module() = runBlocking {
 	FileRoute(this@module)
 	TranscriptionRoute(seriesRepository, seasonRepository, episodeRepository, transcriptionRepository, this@module)
 	GifRoute(seriesRepository, gifRepository, seasonRepository, episodeRepository, sceneRepository, transcriptionRepository, kord, this@module)
+	ScenesRoute(this@module, seriesRepository, seasonRepository, episodeRepository, sceneRepository, transcriptionRepository)
 	EpisodesRoute(this@module, seriesRepository, seasonRepository, episodeRepository)
 	SeasonsRoute(this@module, seriesRepository, seasonRepository)
 	SeriesRoute(this@module, seriesRepository)
