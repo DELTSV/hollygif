@@ -9,6 +9,7 @@ import Series from "../../Pages/Series";
 import Seasons from "../../Pages/Seasons";
 import Episodes from "../../Pages/Episodes.tsx";
 import EpisodePage from "../../Pages/EpisodePage.tsx";
+import Privacy from "../../Pages/Privacy.tsx";
 
 export function Router() {
     const [bottom, setBottom] = useState(false);
@@ -54,6 +55,10 @@ export function Router() {
                 {
                     path: "series/:name/:season/:episode",
                     element: <EpisodePage api={api}/>
+                },
+                {
+                    path: "/privacy",
+                    element: <Privacy/>
                 }
             ]
         }
