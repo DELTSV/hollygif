@@ -43,7 +43,7 @@ object FFMPEG {
 
 	fun makeSceneStream(input: String, start: Double, end: Double): InputStream? {
 		val duration = end - start
-		println("ffmpeg -ss $start -i $input -t $duration -map_chapters -1 -c copy -f mpegts -")
+		File("toto.txt").writeText("ffmpeg -ss $start -i $input -t $duration -map_chapters -1 -c copy -f mpegts -")
 		return ("ffmpeg -ss $start -i $input -t $duration -map_chapters -1 -c copy -f mpegts -").runCommandStream().apply {
 			logger.debug("Scene created")
 		}
