@@ -47,7 +47,7 @@ object FFMPEG {
 			this.createNewFile()
 			writeText("ffmpeg -ss $start -i $input -t $duration -map_chapters -1 -c copy -f mpegts -")
 		}
-		return ("ffmpeg -ss $start -i $input -t $duration -map_chapters -1 -c copy -f mpegts -").runCommandStream().apply {
+		return ("ffmpeg -nostdin -ss $start -i $input -t $duration -map_chapters -1 -c copy -f mpegts -").runCommandStream().apply {
 			logger.debug("Scene created")
 		}
 	}
