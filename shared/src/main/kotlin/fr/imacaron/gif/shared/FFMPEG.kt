@@ -43,10 +43,6 @@ object FFMPEG {
 
 	fun makeSceneStream(input: String, start: Double, end: Double): InputStream? {
 		val duration = end - start
-		File("/var/www/kaamelott-gif/toto.txt").apply {
-			this.createNewFile()
-			writeText("ffmpeg -ss $start -i $input -t $duration -map_chapters -1 -c copy -f mpegts -")
-		}
 		return ("ffmpeg -nostdin -ss $start -i $input -t $duration -map_chapters -1 -c copy -f mpegts -").runCommandStream().apply {
 			logger.debug("Scene created")
 		}

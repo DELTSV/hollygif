@@ -2,8 +2,6 @@ package fr.imacaron.gif.shared
 
 import java.io.File
 import java.io.InputStream
-import java.io.OutputStream
-import java.util.concurrent.TimeUnit
 
 fun String.runCommand(
     workingDir: File = File(".")
