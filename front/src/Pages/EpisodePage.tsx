@@ -41,9 +41,10 @@ export default function EpisodePage(props: EpisodeProps) {
 				<p>Durée {ep?.duration}s</p>
 			</Card>
 			<Card>
-				<div className={"flex justify-between gap-4 items-stretch h-80 max-h-80"}>
+				<div className={"flex justify-between gap-4 h-96"}>
+					<div/>
 					{currentScene !== null &&
-						<video src={import.meta.env.VITE_API + `/api/series/${name}/seasons/${season}/episodes/${episode}/scenes/${currentScene}/file`} controls/> || <div/>
+						<video className={"aspect-video h-96"} src={import.meta.env.VITE_API + `/api/series/${name}/seasons/${season}/episodes/${episode}/scenes/${currentScene}/file`} controls/> || <div/>
 					}
 					<div className={"overflow-y-auto h-full"}>
 						{scene?.map(s =>
