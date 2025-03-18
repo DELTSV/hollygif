@@ -41,17 +41,19 @@ export default function EpisodePage(props: EpisodeProps) {
 				<p>Durée {ep?.duration}s</p>
 			</Card>
 			<Card>
-				<div className={"flex justify-start gap-4 items-stretch"}>
-					<div className={"overflow-y-auto max-h-64"}>
+				<div className={"flex justify-between gap-4 items-stretch h-80 max-h-80"}>
+					{currentScene !== null &&
+						<video src={import.meta.env.VITE_API + `/api/series/${name}/seasons/${season}/episodes/${episode}/scenes/${currentScene}/file`} controls/> || <div/>
+					}
+					<div className={"overflow-y-auto h-full"}>
 						{scene?.map(s =>
-							<div key={s.index} onClick={() => setCurrentScene(s.index)}>
-								<p>{s.index}</p>
+							<div className={"py-2 px-8"} key={s.index} onClick={() => setCurrentScene(s.index)}>
+								<p>Scène {s.index + 1}</p>
+								<p>Début {Math.floor(s.start/60)}:{Math.floor(s.start % 60)}</p>
+								<p>Fin {Math.floor(s.end/60)}:{Math.floor(s.end % 60)}</p>
 							</div>
 						)}
 					</div>
-					{currentScene !== null &&
-						<video src={import.meta.env.VITE_API + `/api/series/${name}/seasons/${season}/episodes/${episode}/scenes/${currentScene}/file`} controls/>
-					}
 				</div>
 			</Card>
 			<Card className={"p-2"}>
