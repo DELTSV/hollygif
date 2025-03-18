@@ -25,7 +25,7 @@ interface CarouselProps {
 				<img
 					src={props.images[currentIndex]}
 					alt={`Gif ${currentIndex + 1}`}
-					className="w-full h-64 object-cover transition-all duration-500"
+					className="w-full object-cover transition-all duration-500"
 				/>
 			</div>
 			<button
