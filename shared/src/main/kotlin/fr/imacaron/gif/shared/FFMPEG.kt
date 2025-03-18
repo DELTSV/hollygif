@@ -43,7 +43,7 @@ object FFMPEG {
 
 	fun makeSceneStream(input: String, start: Double, end: Double): InputStream? {
 		val duration = end - start
-		return ("ffmpeg -ss $start -i $input -t $duration -map_chapters -1 -c copy -").runCommandStream().apply {
+		return ("ffmpeg -ss $start -i $input -t $duration -map_chapters -1 -c copy -f mp4 -").runCommandStream().apply {
 			logger.debug("Scene created")
 		}
 	}
