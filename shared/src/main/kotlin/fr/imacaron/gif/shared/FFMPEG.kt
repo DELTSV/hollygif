@@ -43,7 +43,7 @@ object FFMPEG {
 
 	fun makeSceneStream(input: String, start: Double, end: Double): InputStream? {
 		val duration = end - start
-		return ("ffmpeg -loglevel error -nostdin -ss $start -i $input -t $duration -map_chapters -1 -c:v libvpx -crf 30 -b:v 0 -c:a libvorbis -f mpegts -").runCommandStream().apply {
+		return ("ffmpeg -loglevel error -nostdin -ss $start -i $input -t $duration -map_chapters -1 -c:v libvpx-vp9 -crf 30 -b:v 0 -f webm -").runCommandStream().apply {
 			logger.debug("Scene created")
 		}
 	}
