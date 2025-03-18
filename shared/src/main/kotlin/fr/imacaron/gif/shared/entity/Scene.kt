@@ -35,7 +35,7 @@ class Scene(
 	)
 
 	fun makeScene(): Result<ByteArray> {
-		val sceneName = "${ep.season.number}_${ep.number}_$index.mp4"
+		val sceneName = "${ep.season.number}_${ep.number}_$index.webm"
 		try {
 			return Result.success(this.ep.season.series.s3.getFile("scene", sceneName))
 		} catch (_: NoSuchKeyException) {
