@@ -23,7 +23,7 @@ fun String.runCommandStream(
 ): InputStream? = runCatching {
     ProcessBuilder(this.splitCommand())
         .directory(workingDir)
-        .apply { commandInput?.let { this.redirectInput(ProcessBuilder.Redirect.PIPE) }}
+        .apply { commandInput?.let { redirectInput(ProcessBuilder.Redirect.PIPE) }}
         .redirectOutput(ProcessBuilder.Redirect.PIPE)
         .redirectErrorStream(true)
         .redirectError(ProcessBuilder.Redirect.PIPE)
