@@ -21,11 +21,11 @@ import kotlinx.coroutines.newSingleThreadContext
 import kotlinx.coroutines.withContext
 
 class GifRoute(
-	seriesRepository: SeriesRepository,
+	private val seriesRepository: SeriesRepository,
 	private val gifRepository: GifRepository,
-	seasonRepository: SeasonRepository,
-	episodeRepository: EpisodeRepository,
-	sceneRepository: SceneRepository,
+	private val seasonRepository: SeasonRepository,
+	private val episodeRepository: EpisodeRepository,
+	private val sceneRepository: SceneRepository,
 	transcriptionRepository: TranscriptionRepository,
 	private val kord: Kord,
 	application: Application
@@ -49,6 +49,7 @@ class GifRoute(
 		routing {
 			getGifList()
 			getGif()
+			getEpisodeGifs()
 			authenticate("discord-token") {
 				getMyGif()
 			}
@@ -96,6 +97,36 @@ class GifRoute(
 			val page = call.request.queryParameters.int("page") ?: 0
 			val pageSize = call.request.queryParameters.int("page_size") ?: 12
 			val gifs = gifRepository.getUserGifs(id, page, pageSize).map {
+				val user = users[it.entity.user] ?: withContext(usersContext) {
+					kord.getUser(Snowflake(it.entity.user))?.let {u ->
+						users[it.entity.user] = u
+						u
+					}
+				}
+				Gif(it.entity, user)
+			}
+			call.respond(Response.Ok(gifs))
+		}
+	}
+
+	@OptIn(ExperimentalCoroutinesApi::class)
+	private fun Route.getEpisodeGifs() {
+		get<API.Series.Name.Seasons.Number.Episodes.Index.Gif> {
+			val series = seriesRepository.getSeries(it.episodeIndex.episodes.seasonNumber.seasons.seriesName.name).getOrElse {
+				call.respond(Response.NotFound)
+				return@get
+			}
+			val season = seasonRepository.getSeriesSeason(series, it.episodeIndex.episodes.seasonNumber.number).getOrElse {
+				call.respond(Response.NotFound)
+				return@get
+			}
+			val episode = episodeRepository.getSeasonEpisode(season, it.episodeIndex.index).getOrElse {
+				call.respond(Response.NotFound)
+				return@get
+			}
+			val page = call.request.queryParameters.int("page") ?: 0
+			val pageSize = call.request.queryParameters.int("page_size") ?: 12
+			val gifs = gifRepository.getEpisodeGifs(episode, page, pageSize).map {
 				val user = users[it.entity.user] ?: withContext(usersContext) {
 					kord.getUser(Snowflake(it.entity.user))?.let {u ->
 						users[it.entity.user] = u

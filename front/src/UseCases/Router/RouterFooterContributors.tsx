@@ -6,8 +6,8 @@ export default function FooterContributors() {
     ]
 
     return <ul className="flex flex-row gap-2">
-        {contributors.map(contributor =>
-            <a className="cursor-pointer hover:underline"
+        {contributors.map((contributor, index) =>
+            <a key={index} className="cursor-pointer hover:underline"
                 href={`https://github.com/${contributor.githubId}`}
                 title={contributor.name}>
                 {contributor.name[0]}

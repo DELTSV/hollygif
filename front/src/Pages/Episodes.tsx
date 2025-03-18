@@ -38,7 +38,7 @@ export default function Episodes(props: EpisodesProps) {
 	return (
 		<div className={"flex flex-col gap-4"}>
 			{episodes?.map((e) =>
-				<Link to={`/series/${name}/${season}/${e.number}`}>
+				<Link to={`/series/${name}/${season}/${e.number}`} key={e.id}>
 					<Card horizontal key={e.id}>
 						<div className={"p-2 grow"}>
 							<div className={"flex justify-between gap-8"}>

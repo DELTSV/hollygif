@@ -19,7 +19,7 @@ export default function Series(props: SeriesProps) {
 			<h1 className={"text-4xl"}>Les séries</h1>
 			{series.map(s => {
 				return (
-					<Link to={"/series/" + s.name}>
+					<Link to={"/series/" + s.name} key={s.id}>
 						<Card image={s.logo} imageClassName={"bg-white h-24"} horizontal>
 							<div className={"p-2 flex items-center"}>
 								<p>{s.name}</p>
