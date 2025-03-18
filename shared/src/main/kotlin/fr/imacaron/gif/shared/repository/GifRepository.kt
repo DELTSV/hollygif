@@ -31,7 +31,7 @@ class GifRepository(
 		db.gifs.filter { GifsTable.scene eq sceneEntity.id }.drop(page * pageSize).take(pageSize).map { Gif(it) }
 
 	fun getEpisodeGifs(episodeEntity: EpisodeEntity, page: Int, pageSize: Int): List<Gif> =
-		db.gifs.filter { GifsTable.scenes.episode eq episodeEntity.id }.drop(page * pageSize).take(pageSize).map { Gif(it) }
+		db.gifs.filter { GifsTable.scenes.episode eq episodeEntity.id }.sortedBy { it.date.desc() }.drop(page * pageSize).take(pageSize).map { Gif(it) }
 
 	fun getSeasonGifs(seasonEntity: SeasonEntity, page: Int, pageSize: Int): List<Gif> =
 		db.gifs.filter { EpisodeTable.season eq seasonEntity.id }.drop(page * pageSize).take(pageSize).map { Gif(it) }
