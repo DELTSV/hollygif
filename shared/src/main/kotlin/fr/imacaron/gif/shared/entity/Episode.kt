@@ -48,6 +48,10 @@ class Episode(
 				throw Exception()
 			}.let { Scene(it, this@Episode) }
 		}
+
+		val size by lazy {
+			sceneRepository.getEpisodeScenesCount(entity).getOrElse { 0 }
+		}
 	}
 
 	inner class TranscriptionList {

@@ -8,6 +8,7 @@ import org.ktorm.dsl.gte
 import org.ktorm.dsl.lte
 import org.ktorm.entity.Entity
 import org.ktorm.entity.add
+import org.ktorm.entity.count
 import org.ktorm.entity.filter
 import org.ktorm.entity.find
 import org.ktorm.entity.map
@@ -21,6 +22,12 @@ class SceneRepository(
 ) {
 	fun getEpisodeScenes(episode: EpisodeEntity): Result<List<SceneEntity>> {
 		return db.scenes.filter { it.episode eq episode.id }.map { it }.let {
+			Result.success(it)
+		}
+	}
+
+	fun getEpisodeScenesCount(episode: EpisodeEntity): Result<Int> {
+		return db.scenes.count { it.episode eq episode.id }.let {
 			Result.success(it)
 		}
 	}

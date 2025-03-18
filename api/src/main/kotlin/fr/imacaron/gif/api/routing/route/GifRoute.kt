@@ -17,7 +17,11 @@ import io.ktor.server.resources.*
 import io.ktor.server.routing.*
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.newSingleThreadContext
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 
 class GifRoute(
@@ -42,6 +46,15 @@ class GifRoute(
 			throw NotFoundException("Kaamelott not found")
 		}.onSuccess {
 			kaamelott = Series(seasonRepository, episodeRepository, sceneRepository, transcriptionRepository, it)
+		}
+		GlobalScope.launch {
+			for(i in 1..kaamelott.seasons.size) {
+				for(j in 1..kaamelott.seasons[i].episodes.size) {
+					for (k in 1..kaamelott.seasons[i].episodes[j].scenes.size) {
+						kaamelott.seasons[i].episodes[j].scenes[k].makeScene()
+					}
+				}
+			}
 		}
 	}
 
