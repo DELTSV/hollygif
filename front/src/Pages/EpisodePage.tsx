@@ -14,6 +14,8 @@ export default function EpisodePage(props: EpisodeProps) {
 	const [ep, setEp] = useState<Episode | null>(null);
 	const [transcriptions, setTranscriptions] = useState<Transcription[] | null>(null);
 	const [gifs, setGifs] = useState<Gif[] | null>(null);
+	const [scene, setScene] = useState<Scene[] | null>(null);
+	const [currentScene, setCurrentScene] = useState<number | null>(null);
 	useEffect(() => {
 		props.api.episode(name!!, parseInt(season!!), parseInt(episode!!)).then(res => {
 			setEp(res);
@@ -23,6 +25,9 @@ export default function EpisodePage(props: EpisodeProps) {
 		});
 		props.api.episodeGif(name!!, parseInt(season!!), parseInt(episode!!)).then(res => {
 			setGifs(res);
+		});
+		props.api.episodeScenes(name!!, parseInt(season!!), parseInt(episode!!)).then(res => {
+			setScene(res);
 		});
 	}, [props.api, name, season, episode]);
 	return (
@@ -36,7 +41,18 @@ export default function EpisodePage(props: EpisodeProps) {
 				<p>Durée {ep?.duration}s</p>
 			</Card>
 			<Card>
-				<video src={import.meta.env.VITE_API + `/api/series/${name}/seasons/${season}/episodes/${episode}/scenes/1/file`} controls/>
+				<div className={"flex justify-start gap-4 items-stretch"}>
+					<div className={"overflow-y-auto max-h-64"}>
+						{scene?.map(s =>
+							<div key={s.index} onClick={() => setCurrentScene(s.index)}>
+								<p>{s.index}</p>
+							</div>
+						)}
+					</div>
+					{currentScene !== null &&
+						<video src={import.meta.env.VITE_API + `/api/series/${name}/seasons/${season}/episodes/${episode}/scenes/${currentScene}/file`} controls/>
+					}
+				</div>
 			</Card>
 			<Card className={"p-2"}>
 				<Carousel images={gifs?.map(g => import.meta.env.VITE_API + "/api/gif/file/" + g.file) ?? []} />

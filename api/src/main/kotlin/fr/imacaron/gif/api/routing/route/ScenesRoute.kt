@@ -77,7 +77,7 @@ class ScenesRoute(
 				val series = Series(seasonRepository, episodeRepository, sceneRepository, transcriptionRepository, it)
 				try {
 					series.seasons[seasonNumber].episodes[episodeNumber].scenes[sceneIndex].makeScene().onSuccess { scene ->
-						call.respondBytes(scene, ContentType("video", "MP2T"), HttpStatusCode.OK)
+						call.respondBytes(scene, ContentType("video", "webm"), HttpStatusCode.OK)
 					}.onFailure {
 						logger.error(it)
 						call.respond(Response.ServerError)

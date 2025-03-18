@@ -69,6 +69,11 @@ export default class API {
 		return rep.data;
 	}
 
+	async episodeScenes(series: string, season: number, episode: number): Promise<Scene[]> {
+		const rep = await this.request<Scene[]>(`/api/series/${series}/seasons/${season}/episodes/${episode}/scenes`);
+		return rep.data;
+	}
+
 	async scripts(series: string, season: number, episode: number): Promise<Transcription[]> {
 		const rep = await this.request<Transcription[]>(`/api/series/${series}/seasons/${season}/episodes/${episode}/transcriptions`);
 		return rep.data
