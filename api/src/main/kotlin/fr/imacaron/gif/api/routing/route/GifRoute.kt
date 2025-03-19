@@ -81,9 +81,8 @@ class GifRoute(
 			val pageSize = call.request.queryParameters.int("page_size") ?: 12
 			val gifs = gifRepository.getSeriesGifs(kaamelott.entity, page, pageSize).map {
 				val user = users[it.entity.user] ?: withContext(usersContext) {
-					kord.getUser(Snowflake(it.entity.user))?.let {u ->
+					kord.getUser(Snowflake(it.entity.user))?.also { u ->
 						users[it.entity.user] = u
-						u
 					}
 				}
 				Gif(it.entity, user)
