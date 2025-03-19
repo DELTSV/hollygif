@@ -11,6 +11,7 @@ import fr.imacaron.gif.api.types.Response
 import fr.imacaron.gif.shared.NotFoundException
 import fr.imacaron.gif.shared.entity.Series
 import fr.imacaron.gif.shared.repository.*
+import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.resources.*
@@ -72,6 +73,7 @@ class GifRoute(
 					}
 				}
 			}
+			call.respond(Response.Ok("Generating"))
 		}
 	}
 
