@@ -24,7 +24,7 @@
                 <category android:name="android.intent.category.BROWSABLE"/>
                 <data
                         android:scheme="https"
-                        android:host="gif.imacaron.fr"
+                        android:host="app.gif.imacaron.fr"
                 />
             </intent-filter>
         </activity>

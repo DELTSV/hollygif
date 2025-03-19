@@ -1,0 +1,15 @@
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls",
+      "delegate_permission/common.get_login_creds"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "fr.imacaron.mobile.gif",
+      "sha256_cert_fingerprints": [
+        "FE:3F:1C:F5:D5:2A:91:3C:40:D4:3F:B7:43:5A:AE:C2:46:8C:D0:0B:D2:F2:8D:92:77:AB:C5:B8:E3:85:F6:37"
+      ]
+    }
+  }
+]

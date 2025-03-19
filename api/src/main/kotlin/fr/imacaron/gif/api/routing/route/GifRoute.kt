@@ -47,15 +47,6 @@ class GifRoute(
 		}.onSuccess {
 			kaamelott = Series(seasonRepository, episodeRepository, sceneRepository, transcriptionRepository, it)
 		}
-		GlobalScope.launch {
-			for(i in 1..kaamelott.seasons.size) {
-				for(j in 1..kaamelott.seasons[i].episodes.size) {
-					for (k in 1..kaamelott.seasons[i].episodes[j].scenes.size) {
-						kaamelott.seasons[i].episodes[j].scenes[k].makeScene()
-					}
-				}
-			}
-		}
 	}
 
 	private fun Application.route() {
@@ -63,8 +54,21 @@ class GifRoute(
 			getGifList()
 			getGif()
 			getEpisodeGifs()
+			makeGifScenes()
 			authenticate("discord-token") {
 				getMyGif()
+			}
+		}
+	}
+
+	private fun Route.makeGifScenes() {
+		get("/api/gif/scenes") {
+			val season = call.request.queryParameters["season"]?.toInt() ?: 1
+			val episode = call.request.queryParameters["episode"]?.toInt() ?: 1
+			with(kaamelott.seasons[season].episodes[episode]) {
+				for(i in 1..this.scenes.size) {
+					this.scenes[i].makeScene()
+				}
 			}
 		}
 	}
