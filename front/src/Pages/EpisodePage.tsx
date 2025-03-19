@@ -1,5 +1,5 @@
 import Card from "../Components/Card.tsx";
-import {useEffect, useState} from "react";
+import {useCallback, useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
 import API from "../Api/Api.ts";
 import Accordion from "../Components/Accordion.tsx";
@@ -16,6 +16,7 @@ export default function EpisodePage(props: EpisodeProps) {
 	const [gifs, setGifs] = useState<Gif[] | null>(null);
 	const [scene, setScene] = useState<Scene[] | null>(null);
 	const [currentScene, setCurrentScene] = useState<number | null>(null);
+	const [_, setGifsPage] = useState(0);
 	useEffect(() => {
 		props.api.episode(name!!, parseInt(season!!), parseInt(episode!!)).then(res => {
 			setEp(res);
@@ -23,11 +24,21 @@ export default function EpisodePage(props: EpisodeProps) {
 		props.api.scripts(name!!, parseInt(season!!), parseInt(episode!!)).then(res => {
 			setTranscriptions(res);
 		});
-		props.api.episodeGif(name!!, parseInt(season!!), parseInt(episode!!)).then(res => {
+		props.api.episodeGif(name!!, parseInt(season!!), parseInt(episode!!), 0).then(res => {
 			setGifs(res);
 		});
 		props.api.episodeScenes(name!!, parseInt(season!!), parseInt(episode!!)).then(res => {
 			setScene(res);
+		});
+	}, [props.api, name, season, episode]);
+	const fetchMoreGif = useCallback(() => {
+		setGifsPage(prev => {
+			props.api.episodeGif(name!!, parseInt(season!!), parseInt(episode!!), prev + 1).then(res => {
+				setGifs(prev => {
+					return [...prev ?? [], ...res];
+				});
+			})
+			return prev + 1;
 		});
 	}, [props.api, name, season, episode]);
 	return (
@@ -58,7 +69,7 @@ export default function EpisodePage(props: EpisodeProps) {
 				</div>
 			</Card>
 			<Card className={"p-2"}>
-				<Carousel images={gifs?.map(g => import.meta.env.VITE_API + "/api/gif/file/" + g.file) ?? []} />
+				<Carousel images={gifs?.map(g => import.meta.env.VITE_API + "/api/gif/file/" + g.file) ?? []} fetchMore={fetchMoreGif} />
 			</Card>
 			<Accordion title={"Script"}>
 				<div className={"flex flex-col"}>

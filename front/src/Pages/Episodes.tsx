@@ -23,7 +23,7 @@ export default function Episodes(props: EpisodesProps) {
 			return;
 		}
 		props.api.episodes(name!!, parseInt(season!!), page).then((res) => {
-			if(res.length < 10) {
+			if(res.length < 20) {
 				setDone(true);
 			}
 			setEpisodes(prev => {

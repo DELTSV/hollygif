@@ -55,7 +55,7 @@ export default class API {
 	}
 
 	async episodes(series: string, season: number, page: number): Promise<Episode[]> {
-		const rep = await this.request<Episode[]>(`/api/series/${series}/seasons/${season}/episodes?page=${page}&page_size=10`);
+		const rep = await this.request<Episode[]>(`/api/series/${series}/seasons/${season}/episodes?page=${page}&page_size=20`);
 		return rep.data;
 	}
 
@@ -64,8 +64,8 @@ export default class API {
 		return rep.data;
 	}
 
-	async episodeGif(series: string, season: number, episode: number): Promise<Gif[]> {
-		const rep = await this.request<Gif[]>(`/api/series/${series}/seasons/${season}/episodes/${episode}/gif`);
+	async episodeGif(series: string, season: number, episode: number, page: number): Promise<Gif[]> {
+		const rep = await this.request<Gif[]>(`/api/series/${series}/seasons/${season}/episodes/${episode}/gif?page=${page}&page_size=10`);
 		return rep.data;
 	}
 

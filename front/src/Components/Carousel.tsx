@@ -1,57 +1,72 @@
-import {useState} from "react";
+import {useEffect, useMemo, useState} from "react";
+import {clsx} from "clsx";
 
 interface CarouselProps {
 	images: string[];
+	fetchMore: () => void;
 }
 
- export default function Carousel(props: CarouselProps) {
+const transition = "transition-[transform,opacity,filter,height,translate]"
+
+export default function Carousel(props: CarouselProps) {
 	const [currentIndex, setCurrentIndex] = useState(0);
+	const {images, fetchMore} = props;
+	const canPrev = useMemo(() => currentIndex > 0, [currentIndex]);
+	const canNext = useMemo(() => currentIndex < images.length - 1, [currentIndex, images.length]);
+
+	useEffect(() => {
+		if (currentIndex == images.length - 2) {
+			fetchMore();
+		}
+	}, [currentIndex, fetchMore, images.length])
 
 	const nextSlide = () => {
 		setCurrentIndex((prevIndex) =>
-			prevIndex === props.images.length - 1 ? 0 : prevIndex + 1
+			prevIndex === images.length - 1 ? 0 : prevIndex + 1
 		);
 	};
 
 	const prevSlide = () => {
 		setCurrentIndex((prevIndex) =>
-			prevIndex === 0 ? props.images.length - 1 : prevIndex - 1
+			prevIndex === 0 ? images.length - 1 : prevIndex - 1
 		);
 	};
 
 	return (
-		<div className="relative w-full max-w-3xl mx-auto">
-			<div className="overflow-hidden rounded-lg">
-				<img
-					src={props.images[currentIndex]}
-					alt={`Gif ${currentIndex + 1}`}
-					className="w-full object-cover transition-all duration-500"
-				/>
-			</div>
-			<button
-				className="absolute top-1/2 left-3 transform -translate-y-1/2 p-2 rounded-full bg-[#432004] bg-opacity-50 hover:bg-opacity-75"
-				onClick={prevSlide}
-			>
-				&lt;
-			</button>
-			<button
-				className="absolute top-1/2 right-3 transform -translate-y-1/2 p-2 rounded-full bg-[#432004] bg-opacity-50 hover:bg-opacity-75"
-				onClick={nextSlide}
-			>
-				&gt;
-			</button>
-			<div className="flex justify-center mt-4 space-x-2">
-				{props.images.map((_, index) => (
-					<button
-						key={index}
-						onClick={() => setCurrentIndex(index)}
-						className={`w-3 h-3 rounded-full ${
-							index === currentIndex
-								? "bg-yellow-500"
-								: "bg-[#432004] hover:bg-yellow-700"
-						}`}
-					/>
-				))}
+		<div className="relative w-3/4 mx-auto">
+			<div className="overflow-hidden rounded-lg gap-4 flex relative justify-center items-center h-96">
+				{!canPrev && <div className="w-1/4"/>}
+				{images.map((img, index) => {
+					if (index === currentIndex - 2) {
+						return (
+							<img src={img} className={"w-0 h-0"}/>
+						);
+					} else if (index === currentIndex - 1) {
+						return (
+							<div key={index}
+								 className={clsx("absolute skew-y-12 w-1/2 overflow-x-hidden origin-right scale-90 opacity-75 blur-sm -translate-x-full", transition)}>
+								<img src={img} className={"h-full object-cover object-right"} onClick={prevSlide}/>
+							</div>
+						);
+					} else if (index === currentIndex) {
+						return (
+							<div key={index} className={clsx("absolute w-1/2 translate-x-0", transition)}>
+								<img src={img} className="w-full object-cover"/>
+							</div>
+						);
+					} else if(index === currentIndex + 1) {
+						return (
+							<div className={clsx("absolute -skew-y-12 w-1/2 overflow-x-hidden origin-left scale-90 opacity-75 blur-sm translate-x-full", transition)}>
+								<img src={images[currentIndex + 1]} className={"h-full object-cover object-left"} onClick={nextSlide}/>
+							</div>
+						);
+					}else if(index === currentIndex + 2) {
+						return (
+							<img src={images[currentIndex + 1]} className={"w-0 h-0"}/>
+						);
+					}
+				})}
+				{!canNext && <div className="w-1/4"/>}
 			</div>
 		</div>
 	);
