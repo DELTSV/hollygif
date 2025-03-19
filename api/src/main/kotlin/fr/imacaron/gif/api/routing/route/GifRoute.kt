@@ -11,18 +11,13 @@ import fr.imacaron.gif.api.types.Response
 import fr.imacaron.gif.shared.NotFoundException
 import fr.imacaron.gif.shared.entity.Series
 import fr.imacaron.gif.shared.repository.*
-import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.resources.*
 import io.ktor.server.routing.*
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.newSingleThreadContext
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 
 class GifRoute(
@@ -67,10 +62,8 @@ class GifRoute(
 			val season = call.request.queryParameters["season"]?.toInt() ?: 1
 			val episode = call.request.queryParameters["episode"]?.toInt() ?: 1
 			with(kaamelott.seasons[season].episodes[episode]) {
-				for(i in 1..this.scenes.size) {
-					launch {
-						scenes[i].makeScene()
-					}
+				for(i in 0..<this.scenes.size) {
+					scenes[i].makeScene()
 				}
 			}
 			call.respond(Response.Ok("Generating"))
