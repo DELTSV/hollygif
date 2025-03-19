@@ -67,7 +67,9 @@ class GifRoute(
 			val episode = call.request.queryParameters["episode"]?.toInt() ?: 1
 			with(kaamelott.seasons[season].episodes[episode]) {
 				for(i in 1..this.scenes.size) {
-					this.scenes[i].makeScene()
+					launch {
+						scenes[i].makeScene()
+					}
 				}
 			}
 		}
