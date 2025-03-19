@@ -9,6 +9,8 @@ interface EpisodeProps {
 	api: API
 }
 
+const formatter = Intl.NumberFormat("fr-FR", {minimumIntegerDigits: 2})
+
 export default function EpisodePage(props: EpisodeProps) {
 	const {name, season, episode} = useParams();
 	const [ep, setEp] = useState<Episode | null>(null);
@@ -61,8 +63,8 @@ export default function EpisodePage(props: EpisodeProps) {
 						{scene?.map(s =>
 							<div className={"py-2 px-8"} key={s.index} onClick={() => setCurrentScene(s.index)}>
 								<p>Scène {s.index + 1}</p>
-								<p>Début {Math.floor(s.start/60)}:{Math.floor(s.start % 60)}</p>
-								<p>Fin {Math.floor(s.end/60)}:{Math.floor(s.end % 60)}</p>
+								<p>Début {Math.floor(s.start/60)}:{formatter.format(Math.floor(s.start % 60))}</p>
+								<p>Fin {Math.floor(s.end/60)}:{formatter.format(Math.floor(s.end % 60))}</p>
 							</div>
 						)}
 					</div>
