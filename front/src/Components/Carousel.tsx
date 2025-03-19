@@ -6,8 +6,6 @@ interface CarouselProps {
 	fetchMore: () => void;
 }
 
-const transition = "transition-[transform,opacity,filter,height,translate]"
-
 export default function Carousel(props: CarouselProps) {
 	const [currentIndex, setCurrentIndex] = useState(0);
 	const {images, fetchMore} = props;
@@ -37,32 +35,24 @@ export default function Carousel(props: CarouselProps) {
 			<div className="overflow-hidden rounded-lg gap-4 flex relative justify-center items-center h-96">
 				{!canPrev && <div className="w-1/4"/>}
 				{images.map((img, index) => {
-					if (index === currentIndex - 2) {
-						return (
-							<img src={img} className={"w-0 h-0"}/>
-						);
-					} else if (index === currentIndex - 1) {
+					if (index === currentIndex - 1) {
 						return (
 							<div key={index}
-								 className={clsx("absolute skew-y-12 w-1/2 overflow-x-hidden origin-right scale-90 opacity-75 blur-sm -translate-x-full", transition)}>
+								 className={clsx("absolute skew-y-12 w-1/2 overflow-x-hidden origin-right scale-90 opacity-75 blur-sm -translate-x-full transition")}>
 								<img src={img} className={"h-full object-cover object-right"} onClick={prevSlide}/>
 							</div>
 						);
 					} else if (index === currentIndex) {
 						return (
-							<div key={index} className={clsx("absolute w-1/2 translate-x-0", transition)}>
+							<div key={index} className={clsx("absolute w-1/2 translate-x-0 transition")}>
 								<img src={img} className="w-full object-cover"/>
 							</div>
 						);
 					} else if(index === currentIndex + 1) {
 						return (
-							<div className={clsx("absolute -skew-y-12 w-1/2 overflow-x-hidden origin-left scale-90 opacity-75 blur-sm translate-x-full", transition)}>
+							<div key={index} className={clsx("absolute -skew-y-12 w-1/2 overflow-x-hidden origin-left scale-90 opacity-75 blur-sm translate-x-full transition")}>
 								<img src={images[currentIndex + 1]} className={"h-full object-cover object-left"} onClick={nextSlide}/>
 							</div>
-						);
-					}else if(index === currentIndex + 2) {
-						return (
-							<img src={images[currentIndex + 1]} className={"w-0 h-0"}/>
 						);
 					}
 				})}
