@@ -1,14 +1,17 @@
 import {useEffect, useMemo, useState} from "react";
 import {clsx} from "clsx";
+import {ExternalLink} from "react-feather";
+import {Link} from "react-router-dom";
 
 interface CarouselProps {
-	images: string[];
+	gifs: Gif[];
 	fetchMore: () => void;
 }
 
 export default function Carousel(props: CarouselProps) {
 	const [currentIndex, setCurrentIndex] = useState(0);
-	const {images, fetchMore} = props;
+	const {gifs, fetchMore} = props;
+	const images = useMemo(() => gifs?.map(g => import.meta.env.VITE_API + "/api/gif/file/" + g.file), [gifs]);
 	const canPrev = useMemo(() => currentIndex > 0, [currentIndex]);
 	const canNext = useMemo(() => currentIndex < images.length - 1, [currentIndex, images.length]);
 
@@ -45,6 +48,9 @@ export default function Carousel(props: CarouselProps) {
 					} else if (index === currentIndex) {
 						return (
 							<div key={index} className={clsx("absolute w-1/2 translate-x-0 transition")}>
+								<Link to={"/gif/" + gifs[currentIndex].id} className={"w-full h-full"}>
+									<ExternalLink className={"h-8 w-8 absolute top-2 right-2"}/>
+								</Link>
 								<img src={img} className="w-full object-cover"/>
 							</div>
 						);

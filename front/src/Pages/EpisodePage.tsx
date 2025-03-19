@@ -4,6 +4,7 @@ import {useParams} from "react-router-dom";
 import API from "../Api/Api.ts";
 import Accordion from "../Components/Accordion.tsx";
 import Carousel from "../Components/Carousel.tsx";
+import {clsx} from "clsx";
 
 interface EpisodeProps {
 	api: API
@@ -47,21 +48,22 @@ export default function EpisodePage(props: EpisodeProps) {
 		<div className={"flex flex-col gap-4 px-4"}>
 			<Card className={"p-2"}>
 				<div className={"flex justify-between gap-8"}>
-					<p>Épisode {ep?.number}</p>
-					<p>{ep?.numberOfGif} gifs au total</p>
+					<p className={"text-3xl"}>Épisode {ep?.number}</p>
+					<p className={"text-2xl"}>{ep?.numberOfGif} gifs au total</p>
 				</div>
-				<p>{ep?.title.replaceAll("_", " ")}</p>
-				<p>Durée {ep?.duration}s</p>
+				<p className={"text-2xl"}>{ep?.title.replaceAll("_", " ")}</p>
+				<p className={"text-xl"}>Durée {Math.floor((ep?.duration ?? 0)/60)}:{formatter.format(Math.floor((ep?.duration ?? 0) % 60))}</p>
 			</Card>
-			<Card>
+			<Card className={"pt-2 pl-2"}>
+				<h2 className={"text-2xl"}>Scène {currentScene !== null && currentScene + 1}</h2>
 				<div className={"flex justify-between gap-4 h-96"}>
 					<div/>
 					{currentScene !== null &&
 						<video className={"aspect-video h-96 cursor-pointer"} src={import.meta.env.VITE_API + `/api/series/${name}/seasons/${season}/episodes/${episode}/scenes/${currentScene}/file`} controls /> || <div/>
 					}
-					<div className={"overflow-y-auto h-full"}>
-						{scene?.map(s =>
-							<div className={"py-2 px-8"} key={s.index} onClick={() => setCurrentScene(s.index)}>
+					<div className={"overflow-y-auto h-full cursor-pointer flex flex-col gap-4"}>
+						{scene?.map((s, index) =>
+							<div className={clsx("py-2 px-4 mr-4 rounded-lg hover:bg-neutral-900 transition", currentScene === index && "bg-neutral-800 hover:bg-neutral-800")} key={s.index} onClick={() => setCurrentScene(s.index)}>
 								<p>Scène {s.index + 1}</p>
 								<p>Début {Math.floor(s.start/60)}:{formatter.format(Math.floor(s.start % 60))}</p>
 								<p>Fin {Math.floor(s.end/60)}:{formatter.format(Math.floor(s.end % 60))}</p>
@@ -70,8 +72,8 @@ export default function EpisodePage(props: EpisodeProps) {
 					</div>
 				</div>
 			</Card>
-			<Card className={"p-2"}>
-				<Carousel images={gifs?.map(g => import.meta.env.VITE_API + "/api/gif/file/" + g.file) ?? []} fetchMore={fetchMoreGif} />
+			<Card className={"p-2 relative"}>
+				<Carousel gifs={gifs ?? []} fetchMore={fetchMoreGif} />
 			</Card>
 			<Accordion title={"Script"}>
 				<div className={"flex flex-col"}>
