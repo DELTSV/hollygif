@@ -17,16 +17,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import androidx.navigation.toRoute
 import coil3.compose.AsyncImage
 import com.final_class.webview_multiplatform_mobile.webview.WebViewPlatform
 import com.final_class.webview_multiplatform_mobile.webview.controller.rememberWebViewController
 import com.final_class.webview_multiplatform_mobile.webview.settings.android.AndroidWebViewModifier
 import com.final_class.webview_multiplatform_mobile.webview.settings.android.instantAppsEnabled
-import fr.imacaron.mobile.gif.TOKEN
 import fr.imacaron.mobile.gif.ui.Home
 import fr.imacaron.mobile.gif.ui.Series
 import fr.imacaron.mobile.gif.viewmodel.DiscordViewModel
@@ -40,12 +37,9 @@ import org.jetbrains.compose.resources.painterResource
 
 @OptIn(ExperimentalResourceApi::class)
 @Composable
-fun BottomBar(isLogged: Boolean, navController: NavHostController, pref: DataStore<Preferences>) {
+fun BottomBar(isLogged: Boolean, navController: NavHostController, discordViewModel: DiscordViewModel, onLogout: () -> Unit) {
 	val webViewController by rememberWebViewController()
 	val scope = rememberCoroutineScope()
-	val discordViewModel = viewModel {
-		DiscordViewModel(pref)
-	}
 
 	WebViewPlatform(webViewController = webViewController, androidSettings = AndroidWebViewModifier.instantAppsEnabled(true))
 	webViewController.consume()
@@ -59,7 +53,14 @@ fun BottomBar(isLogged: Boolean, navController: NavHostController, pref: DataSto
 			if(isLogged) {
 				Text("Mes gifs")
 			}
-			TextButton(onClick = { navController.navigate(Series) }) {
+			TextButton(onClick = {
+				try {
+					val series = navController.getBackStackEntry(Series)
+					navController.popBackStack(series.toRoute<Series>(), false)
+				} catch (_: Exception) {
+					navController.navigate(Series)
+				}
+			}) {
 				Text("Les séries")
 			}
 			IconButton(onClick = { navController.popBackStack(Home, false) }) {
@@ -83,15 +84,7 @@ fun BottomBar(isLogged: Boolean, navController: NavHostController, pref: DataSto
 					)
 				}
 				IconButton(
-					onClick = {
-						scope.launch {
-							pref.updateData {
-								it.toMutablePreferences().apply {
-									remove(TOKEN)
-								}
-							}
-						}
-					}
+					onClick = onLogout
 				) {
 					Image(
 						painterResource(Res.drawable.outline_logout),

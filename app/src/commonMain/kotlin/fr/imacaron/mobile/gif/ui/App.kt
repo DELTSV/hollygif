@@ -30,6 +30,7 @@ import fr.imacaron.mobile.gif.ui.page.GifViewScreen
 import fr.imacaron.mobile.gif.ui.page.SeasonsScreen
 import fr.imacaron.mobile.gif.ui.page.SeriesScreen
 import fr.imacaron.mobile.gif.ui.theme.AppTheme
+import fr.imacaron.mobile.gif.viewmodel.DiscordViewModel
 import fr.imacaron.mobile.gif.viewmodel.LastGifViewModel
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
@@ -59,6 +60,7 @@ fun App(pref: DataStore<Preferences>, navController: NavHostController = remembe
 	AppTheme {
 		var logged by remember { mutableStateOf(false) }
 		val lastGifViewModel: LastGifViewModel = viewModel { LastGifViewModel() }
+		val discordViewModel: DiscordViewModel = viewModel { DiscordViewModel(pref) }
 		val navGraph = remember(navController) {
 			navController.createGraph(startDestination = Home) {
 				composable<Home> {
@@ -101,7 +103,16 @@ fun App(pref: DataStore<Preferences>, navController: NavHostController = remembe
 		}
 		Scaffold(
 			topBar = { TopBar(navController) },
-			bottomBar = { BottomBar(logged, navController, pref) },
+			bottomBar = { BottomBar(logged, navController, discordViewModel, {
+				scope.launch {
+					pref.updateData {
+						it.toMutablePreferences().apply {
+							remove(TOKEN)
+						}
+					}
+				}
+				logged = false
+			}) },
 			contentWindowInsets = WindowInsets.statusBars
 		) {
 			Column(Modifier.fillMaxWidth().padding(it), horizontalAlignment = Alignment.CenterHorizontally) {
