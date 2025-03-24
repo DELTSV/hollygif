@@ -17,5 +17,4 @@ interface User {
 	locale?: string
 	verified?: boolean,
 	email?: string|null,
-
 }

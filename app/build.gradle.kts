@@ -52,6 +52,8 @@ kotlin {
             implementation(libs.ktor.client.negotation)
             implementation(libs.ktor.client.serialization.json)
             implementation(libs.lifecycle.viewmodel.compose)
+            implementation(libs.androidx.datastore)
+            implementation(libs.androidx.datastore.preferences)
             implementation("io.coil-kt.coil3:coil-compose:3.0.0")
             implementation("io.coil-kt.coil3:coil-network-ktor3:3.0.0")
             implementation("io.coil-kt.coil3:coil-network-cache-control:3.0.0")

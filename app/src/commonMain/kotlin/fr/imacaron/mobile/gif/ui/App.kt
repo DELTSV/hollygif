@@ -9,6 +9,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.NavHostController
@@ -17,6 +19,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.createGraph
 import androidx.navigation.toRoute
 import fr.imacaron.mobile.gif.Json
+import fr.imacaron.mobile.gif.TOKEN
 import fr.imacaron.mobile.gif.types.Gif
 import fr.imacaron.mobile.gif.ui.components.BottomBar
 import fr.imacaron.mobile.gif.ui.components.TopBar
@@ -52,7 +55,7 @@ data class EpisodeDetail(val seriesName: String, val seasonNumber: Int, val epis
 
 @Composable
 @Preview
-fun App(navController: NavHostController = rememberNavController()) {
+fun App(pref: DataStore<Preferences>, navController: NavHostController = rememberNavController()) {
 	AppTheme {
 		var logged by remember { mutableStateOf(false) }
 		val lastGifViewModel: LastGifViewModel = viewModel { LastGifViewModel() }
@@ -90,10 +93,15 @@ fun App(navController: NavHostController = rememberNavController()) {
 		val scope = rememberCoroutineScope()
 		scope.launch {
 			lastGifViewModel.fetch(0)
+			pref.data.collect {
+				if(it.contains(TOKEN)) {
+					logged = true
+				}
+			}
 		}
 		Scaffold(
 			topBar = { TopBar(navController) },
-			bottomBar = { BottomBar(logged, navController) },
+			bottomBar = { BottomBar(logged, navController, pref) },
 			contentWindowInsets = WindowInsets.statusBars
 		) {
 			Column(Modifier.fillMaxWidth().padding(it), horizontalAlignment = Alignment.CenterHorizontally) {

@@ -25,6 +25,7 @@
                 <data
                         android:scheme="https"
                         android:host="app.gif.imacaron.fr"
+                        android:path="/callback"
                 />
             </intent-filter>
         </activity>
