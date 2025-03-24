@@ -63,9 +63,10 @@ export default function EpisodePage(props: EpisodeProps) {
 			</Card>
 			<Card className={"pt-2 pl-2"}>
 				<h2 className={"text-2xl"}>Scène {currentScene !== null && currentScene + 1}</h2>
-				<div className={"flex justify-between gap-4 h-96"}>
+				<div className={"flex justify-between gap-4 relative"}>
 					<div/>
 					<Player
+						className={"w-3/5"}
 						scenes={scene ?? []}
 						onSceneClick={(s: Scene) => {
 							setCurrentScene(s.index);
@@ -76,7 +77,8 @@ export default function EpisodePage(props: EpisodeProps) {
 						season={parseInt(season ?? "0")}
 						episode={parseInt(episode ?? "0")}
 					/>
-					<div className={"overflow-y-auto h-full cursor-pointer flex flex-col gap-4"}>
+					<div/>
+					<div className={"overflow-y-auto h-full cursor-pointer flex flex-col gap-4 absolute right-0"}>
 						{scene?.map((s, index) =>
 							<div
 								id={"scene" + s.index}

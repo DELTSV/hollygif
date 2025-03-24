@@ -10,6 +10,7 @@ import Seasons from "../../Pages/Seasons";
 import Episodes from "../../Pages/Episodes.tsx";
 import EpisodePage from "../../Pages/EpisodePage.tsx";
 import Privacy from "../../Pages/Privacy.tsx";
+import ReturnToApp from "../../Pages/ReturnToApp.tsx";
 
 export function Router() {
     const [bottom, setBottom] = useState(false);
@@ -59,6 +60,10 @@ export function Router() {
                 {
                     path: "/privacy",
                     element: <Privacy/>
+                },
+                {
+                    path: "/callback",
+                    element: <ReturnToApp/>
                 }
             ]
         }

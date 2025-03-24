@@ -1,6 +1,6 @@
 import {clsx} from "clsx";
-import React, {useEffect, useRef, useState} from "react";
-import {ChevronLeft, ChevronRight, Pause, Play} from "react-feather";
+import React, {useCallback, useEffect, useRef, useState} from "react";
+import {ChevronLeft, ChevronRight, Pause, Play, Volume, Volume1, Volume2, VolumeX} from "react-feather";
 
 interface PlayerProps {
 	className?: string,
@@ -19,9 +19,12 @@ export default function Player(props: PlayerProps) {
 	const [paused, setPaused] = useState(false);
 	const [loading, setLoading] = useState(false);
 	const [sceneTime, setSceneTime] = useState(0);
+	const [volume, setVolume] = useState(1);
+	const [muted, setMuted] = useState(false);
+	const volumeContainer = useRef<HTMLDivElement>(null);
 	useEffect(() => {
 		if(paused) {
-			video.current?.play();
+			video.current?.play().catch(() => setPaused(false));
 		} else {
 			video.current?.pause();
 		}
@@ -46,10 +49,22 @@ export default function Player(props: PlayerProps) {
 			}
 		}
 	}, []);
+	useEffect(() => {
+		if(video.current) {
+			video.current.volume = volume;
+		}
+	}, [volume]);
+	useEffect(() => {
+		if(video.current) {
+			video.current.muted = muted;
+		}
+	}, [muted]);
+	const mute = useCallback(() => setMuted(prev => !prev), []);
+	const [volumeSet, setVolumeSet] = useState(false);
 	return (
 		<div className={clsx(props.className, "relative")}>
 			<video
-				className={"aspect-video h-96 cursor-pointer"}
+				className={"aspect-video cursor-pointer w-full focus:border-2 border-red-500"}
 				src={import.meta.env.VITE_API + `/api/series/${name}/seasons/${season}/episodes/${episode}/scenes/${currentScene}/file`}
 				controls={false}
 				ref={video}
@@ -61,7 +76,7 @@ export default function Player(props: PlayerProps) {
 						 height: (video.current?.getBoundingClientRect().height ?? 0) + "px"
 					 }}
                 >
-                    <div className={"w-full px-2 flex gap-x-0.5 absolute bottom-2 left-0 h-4"}>
+                    <div className={clsx("w-full px-2 flex absolute bottom-2 left-0 h-4", props.scenes.length < 300 && "gap-x-0.5")}>
 						{props.scenes.map(s => {
 							return (
 								<div
@@ -83,7 +98,7 @@ export default function Player(props: PlayerProps) {
 							)
 						})}
                     </div>
-					<button className={"absolute top-1/2 left-4 -translate-y-1/2"} onClick={() => { props.setCurrentScene(prev => (prev ?? 0) - 1)}}>
+					<button className={"absolute top-1/2 left-4 -translate-y-1/2 p-4 bg-neutral-800/70 rounded-xl"} onClick={() => { props.setCurrentScene(prev => (prev ?? 0) - 1)}}>
 						<ChevronLeft/>
 					</button>
                     <button
@@ -95,8 +110,35 @@ export default function Player(props: PlayerProps) {
                     >
 						{(loading && currentScene !== null) && <div className={"border-4 w-8 h-8 border-yellow-500 border-b-transparent rounded-full animate-spin"}/> || paused && <Pause/> || <Play/>}
                     </button>
-					<button className={"absolute top-1/2 right-4 -translate-y-1/2"} onClick={() => { props.setCurrentScene(prev => (prev ?? 0) + 1)}}>
+					<button className={"absolute top-1/2 right-4 -translate-y-1/2 p-4 bg-neutral-800/70 rounded-xl"} onClick={() => { props.setCurrentScene(prev => (prev ?? 0) + 1)}}>
 						<ChevronRight/>
+					</button>
+					<button
+						className={"absolute top-4 right-4 group flex flex-col items-center gap-2 pb-12"}
+                        onMouseLeave={() => {
+							setVolumeSet(false);
+						}}
+                        onMouseUp={() => {setVolumeSet(false);}}
+                        onMouseMove={(e) => {
+							if(volumeSet) {
+								setVolume(Math.min((e.clientY - (volumeContainer.current?.getBoundingClientRect()?.top ?? 0)) / (volumeContainer.current?.getBoundingClientRect().height ?? 1), 1));
+							}
+						}}
+					>
+						{ (volume === 0 || muted) && <VolumeX onClick={mute}/> }
+						{ (volume < 0.33 && !muted) && <Volume onClick={mute}/> }
+						{ (volume < 0.66 && volume >= 0.33 && !muted) && <Volume1 onClick={mute}/> }
+						{ (volume >= 0.66 && !muted) && <Volume2 onClick={mute}/> }
+						<div
+							ref={volumeContainer}
+							className={"transition-all h-0 group-hover:h-20 w-1 bg-neutral-100/50 rounded"}
+							onMouseDown={(e) => {
+								setVolume((e.clientY - (volumeContainer.current?.getBoundingClientRect()?.top ?? 0)) / (volumeContainer.current?.getBoundingClientRect().height ?? 1));
+								setVolumeSet(true);
+							}}
+						>
+							<div className={"bg-yellow-500 w-full rounded"} style={{height: (volume * 100) + "%"}}/>
+						</div>
 					</button>
                 </div>
 			}
