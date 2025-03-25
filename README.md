@@ -1,12 +1,21 @@
 # Kaamelott gif
 
-Un bot discord pour créer des gifs kaamelott avec FFMPEG
+Un projet pour faire des gif Kaamelott (et autre potentiellement) contenant:
+- Un bot discord
+- Un site web
+- Une API
+- Une app mobile
 
 ## Technologies
 
 * FFMPEG pour l'édition vidéo
 * Kotlin
-* Kord pour le bot discord
+  * KTor pour l'API
+  * Kord pour le bot discord
+  * Compose Multiplatform pour l'app mobile
+* TypeScript pour le site web
+  * React
+  * Tailwind
 
 ## Utilisation
 
@@ -30,16 +39,16 @@ Un bot discord pour créer des gifs kaamelott avec FFMPEG
 - [x] Sauvegarder les infos dans une base
   - [x] Parser les infos déjà disponibles vers la base
 - [x] Sauvegarder les appels au bot dans une base
-- [ ] Faire un site web pour présenter toutes les scènes de tous les épisodes
+- [X] Faire un site web pour présenter toutes les scènes de tous les épisodes
   - [ ] Générer la première image de chaque scène d'un épisode
   - [x] Utiliser les MP4 des scènes quand ils existent pour présenter les scènes
-  - [ ] Sauvegarder les fichiers sur un S3
+  - [X] Sauvegarder les fichiers sur un S3
 - [ ] Ajouter ~~une réponse éphémere à la commande~~ une commande de message permettant de supprimer ou de demander la sauvegarde d'un gif
-- [ ] Fixer les problèmes de textes
+- [X] Fixer les problèmes de textes
 - [ ] Limiter la taille des textes
 - [x] Permettre un texte vide
 - [ ] Rendre la commande spécifique aux guildes
-- [ ] Utiliser une interface pour la récupération des fichiers
+- [X] Utiliser une interface pour la récupération des fichiers
 - [ ] Préparer plusieurs méthodes de récupération de fichier (S3, SFTP …)
 - [ ] Faire en sorte que le bot répondent aux commandes sur les serveurs autorisées uniquement
 - [ ] Ajouter une interface admin au site pour les configurations de base
