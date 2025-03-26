@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -33,14 +35,11 @@ fun SeasonsScreen(seriesName: String, navController: NavHostController) {
 	scope.launch {
 		viewModel.fetch(0)
 	}
-	LazyColumn(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(8.dp)) {
-		item {
-			Text(seriesName.replaceFirstChar { it.uppercaseChar() }, style = MaterialTheme.typography.titleLarge, textAlign = TextAlign.Center)
-		}
+	LazyVerticalGrid(GridCells.Fixed(2), Modifier.fillMaxWidth().padding(8.dp), horizontalArrangement = Arrangement.spacedBy(8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
 		viewModel.seasons.forEach { season ->
 			item {
 				Card(onClick = { navController.navigate(Episodes(seriesName, season.number)) }) {
-					AsyncImage(season.series.logo, null, colorFilter = ColorFilter.tint(Color.White, BlendMode.SrcOut))
+					AsyncImage(season.series.logo, null, Modifier.fillMaxWidth(), colorFilter = ColorFilter.tint(Color.White, BlendMode.SrcOut))
 					Row(Modifier.padding(8.dp), horizontalArrangement = Arrangement.Center) {
 						Text("Saison ${season.number}", textAlign = TextAlign.Center, style = MaterialTheme.typography.titleLarge)
 					}
