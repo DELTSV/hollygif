@@ -32,6 +32,7 @@ import fr.imacaron.mobile.gif.ui.page.SeriesScreen
 import fr.imacaron.mobile.gif.ui.theme.AppTheme
 import fr.imacaron.mobile.gif.viewmodel.DiscordViewModel
 import fr.imacaron.mobile.gif.viewmodel.LastGifViewModel
+import fr.imacaron.mobile.gif.viewmodel.MyGifViewModel
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -54,12 +55,16 @@ data class Episodes(val seriesName: String, val seasonNumber: Int)
 @Serializable
 data class EpisodeDetail(val seriesName: String, val seasonNumber: Int, val episodeName: String, val episodeNumber: Int)
 
+@Serializable
+object MyGif
+
 @Composable
 @Preview
 fun App(pref: DataStore<Preferences>, navController: NavHostController = rememberNavController()) {
 	AppTheme {
 		var logged by remember { mutableStateOf(false) }
 		val lastGifViewModel: LastGifViewModel = viewModel { LastGifViewModel() }
+		val myGifViewModel: MyGifViewModel = viewModel { MyGifViewModel(pref) }
 		val discordViewModel: DiscordViewModel = viewModel { DiscordViewModel(pref) }
 		val navGraph = remember(navController) {
 			navController.createGraph(startDestination = Home) {
@@ -73,7 +78,7 @@ fun App(pref: DataStore<Preferences>, navController: NavHostController = remembe
 				composable<GifView> {
 					val gifView: GifView = it.toRoute()
 					val gif: Gif = Json.decodeFromString<Gif>(gifView.gif)
-					GifViewScreen(gif)
+					GifViewScreen(gif, navController)
 				}
 				composable<Series> {
 					SeriesScreen(navController)
@@ -88,13 +93,21 @@ fun App(pref: DataStore<Preferences>, navController: NavHostController = remembe
 				}
 				composable<EpisodeDetail> {
 					val episodeDetail: EpisodeDetail = it.toRoute()
-					EpisodeDetailScreen(episodeDetail.seriesName, episodeDetail.seasonNumber, episodeDetail.episodeName, episodeDetail.episodeNumber)
+					EpisodeDetailScreen(episodeDetail.seriesName, episodeDetail.seasonNumber, episodeDetail.episodeNumber, navController)
+				}
+				composable<MyGif> {
+					GifList(
+						myGifViewModel.myGif.toList(),
+						loadMore = { myGifViewModel.nextPage() },
+						navController
+					)
 				}
 			}
 		}
 		val scope = rememberCoroutineScope()
 		scope.launch {
 			lastGifViewModel.fetch(0)
+			myGifViewModel.fetch(0)
 			pref.data.collect {
 				if(it.contains(TOKEN)) {
 					logged = true
@@ -103,7 +116,7 @@ fun App(pref: DataStore<Preferences>, navController: NavHostController = remembe
 		}
 		Scaffold(
 			topBar = { TopBar(navController) },
-			bottomBar = { BottomBar(logged, navController, discordViewModel, {
+			bottomBar = { BottomBar(logged, navController, discordViewModel) {
 				scope.launch {
 					pref.updateData {
 						it.toMutablePreferences().apply {
@@ -112,7 +125,8 @@ fun App(pref: DataStore<Preferences>, navController: NavHostController = remembe
 					}
 				}
 				logged = false
-			}) },
+			}
+			},
 			contentWindowInsets = WindowInsets.statusBars
 		) {
 			Column(Modifier.fillMaxWidth().padding(it), horizontalAlignment = Alignment.CenterHorizontally) {

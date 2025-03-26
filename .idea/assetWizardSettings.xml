@@ -80,8 +80,7 @@
                                               <map>
                                                 <entry key="color" value="000000" />
                                                 <entry key="imagePath" value="$USER_HOME$/Téléchargements/Kaamelott_Premier_Volet_Logo.svg" />
-                                                <entry key="scalingPercent" value="97" />
-                                                <entry key="trimmed" value="true" />
+                                                <entry key="scalingPercent" value="59" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -309,7 +308,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="file:$USER_HOME$/Android/Sdk/icons/material/materialicons/logout/baseline_logout_24.xml" />
+                                      <entry key="url" value="file:$USER_HOME$/Android/Sdk/icons/material/materialiconsoutlined/open_in_new/outline_open_in_new_24.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -319,7 +318,7 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="outputName" value="outline_logout" />
+                            <entry key="outputName" value="outline_open_in_new_24" />
                             <entry key="sourceFile" value="$USER_HOME$/Téléchargements/Kaamelott_Premier_Volet_Logo.svg" />
                           </map>
                         </option>

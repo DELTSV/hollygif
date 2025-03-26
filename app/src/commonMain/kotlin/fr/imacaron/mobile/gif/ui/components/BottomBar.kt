@@ -25,6 +25,7 @@ import com.final_class.webview_multiplatform_mobile.webview.controller.rememberW
 import com.final_class.webview_multiplatform_mobile.webview.settings.android.AndroidWebViewModifier
 import com.final_class.webview_multiplatform_mobile.webview.settings.android.instantAppsEnabled
 import fr.imacaron.mobile.gif.ui.Home
+import fr.imacaron.mobile.gif.ui.MyGif
 import fr.imacaron.mobile.gif.ui.Series
 import fr.imacaron.mobile.gif.viewmodel.DiscordViewModel
 import kaamelott_gif.app.generated.resources.Res
@@ -51,7 +52,16 @@ fun BottomBar(isLogged: Boolean, navController: NavHostController, discordViewMo
 			verticalAlignment = Alignment.CenterVertically
 		) {
 			if(isLogged) {
-				Text("Mes gifs")
+				TextButton(onClick = {
+					try {
+						val myGif = navController.getBackStackEntry(MyGif)
+						navController.popBackStack(myGif.toRoute<MyGif>(), false)
+					} catch (_: Exception) {
+						navController.navigate(MyGif)
+					}
+				} ) {
+					Text("Mes gifs", style = MaterialTheme.typography.titleLarge)
+				}
 			}
 			TextButton(onClick = {
 				try {
@@ -61,7 +71,7 @@ fun BottomBar(isLogged: Boolean, navController: NavHostController, discordViewMo
 					navController.navigate(Series)
 				}
 			}) {
-				Text("Les séries")
+				Text("Les séries", style = MaterialTheme.typography.titleLarge)
 			}
 			IconButton(onClick = { navController.popBackStack(Home, false) }) {
 				Image(

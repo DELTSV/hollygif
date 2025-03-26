@@ -8,13 +8,18 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import coil3.compose.AsyncImage
 import fr.imacaron.mobile.gif.types.Gif
+import fr.imacaron.mobile.gif.ui.EpisodeDetail
+import fr.imacaron.mobile.gif.ui.Episodes
+import fr.imacaron.mobile.gif.ui.Seasons
 import fr.imacaron.mobile.gif.ui.components.GifImage
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
@@ -25,7 +30,7 @@ import kotlinx.datetime.toLocalDateTime
 
 @OptIn(FormatStringsInDatetimeFormats::class)
 @Composable
-fun GifViewScreen(gif: Gif) {
+fun GifViewScreen(gif: Gif, navController: NavController) {
 	Column(Modifier.padding(horizontal = 16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
 		Card {
 			GifImage("https://gif.imacaron.fr/api/gif/file/${gif.file}", Modifier.fillMaxWidth())
@@ -41,8 +46,21 @@ fun GifViewScreen(gif: Gif) {
 					byUnicodePattern("dd/MM/yyyy")
 				})}")
 				Text("Timecode: ${gif.timecode}")
-				Text("Livre: ${gif.scene.episode.season.number}")
-				Text("Épisode: ${gif.scene.episode.number} ${gif.scene.episode.title}")
+				Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
+					TextButton(modifier = Modifier.padding(2.dp), onClick = { navController.navigate(Episodes(gif.scene.episode.season.series.name, gif.scene.episode.season.number)) }) {
+						Text("Livre: ${gif.scene.episode.season.number}")
+					}
+					TextButton(modifier = Modifier.padding(2.dp), onClick = {
+						navController.navigate(EpisodeDetail(
+							gif.scene.episode.season.series.name,
+							gif.scene.episode.season.number,
+							gif.scene.episode.title,
+							gif.scene.episode.number
+						))
+					}) {
+						Text("Épisode: ${gif.scene.episode.number} ${gif.scene.episode.title}")
+					}
+				}
 			}
 		}
 	}

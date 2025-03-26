@@ -37,7 +37,7 @@ fun SeriesScreen(navController: NavHostController) {
 				Card(onClick = { navController.navigate(Seasons(series.name)) }) {
 					AsyncImage(series.logo, null, colorFilter = ColorFilter.tint(Color.White, BlendMode.SrcOut))
 					Row(Modifier.padding(8.dp), horizontalArrangement = Arrangement.Center) {
-						Text(series.name.replaceFirstChar { it.uppercaseChar() }, textAlign = TextAlign.Center, style = MaterialTheme.typography.displaySmall)
+						Text(series.name.replaceFirstChar { it.uppercaseChar() }, textAlign = TextAlign.Center, style = MaterialTheme.typography.titleLarge)
 					}
 				}
 			}

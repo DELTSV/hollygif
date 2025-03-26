@@ -31,18 +31,18 @@ fun SeasonsScreen(seriesName: String, navController: NavHostController) {
 	}
 	val scope = rememberCoroutineScope()
 	scope.launch {
-		viewModel.fetch(0);
+		viewModel.fetch(0)
 	}
 	LazyColumn(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(8.dp)) {
 		item {
-			Text("Les saisons de ${seriesName.replaceFirstChar { it.uppercaseChar() }}", style = MaterialTheme.typography.displayMedium, textAlign = TextAlign.Center)
+			Text(seriesName.replaceFirstChar { it.uppercaseChar() }, style = MaterialTheme.typography.titleLarge, textAlign = TextAlign.Center)
 		}
 		viewModel.seasons.forEach { season ->
 			item {
 				Card(onClick = { navController.navigate(Episodes(seriesName, season.number)) }) {
 					AsyncImage(season.series.logo, null, colorFilter = ColorFilter.tint(Color.White, BlendMode.SrcOut))
 					Row(Modifier.padding(8.dp), horizontalArrangement = Arrangement.Center) {
-						Text("Saison ${season.number}", textAlign = TextAlign.Center, style = MaterialTheme.typography.displaySmall)
+						Text("Saison ${season.number}", textAlign = TextAlign.Center, style = MaterialTheme.typography.titleLarge)
 					}
 				}
 			}

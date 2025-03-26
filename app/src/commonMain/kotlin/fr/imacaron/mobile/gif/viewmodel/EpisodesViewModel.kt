@@ -6,6 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import fr.imacaron.mobile.gif.Json
 import fr.imacaron.mobile.gif.types.Episode
+import fr.imacaron.mobile.gif.types.Gif
 import fr.imacaron.mobile.gif.types.Response
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
@@ -44,4 +45,18 @@ class EpisodesViewModel(val seriesName: String, val seasonNumber: Int) : ViewMod
 		}
 		fetch(lastPage + 1)
 	}
+
+	private suspend fun fetchEpisode(number: Int): Episode? {
+		val response = client.get("https://gif.imacaron.fr/api/series/$seriesName/seasons/$seasonNumber/episodes/$number")
+			.body<Response<Episode>>()
+		return if(response.code == 200) {
+			response.data
+		} else {
+			null
+		}
+	}
+
+	suspend fun getEpisode(number: Int): Episode? =
+		episodes.find { it.number == number } ?: fetchEpisode(number)
+
 }

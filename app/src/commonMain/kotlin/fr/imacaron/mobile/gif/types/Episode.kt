@@ -11,5 +11,6 @@ data class Episode(
     val fps: Int,
     val title: String,
     val season: Season,
-    val duration: Double
+    val duration: Double,
+    val numberOfGif: Int? = null
 )

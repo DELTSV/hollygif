@@ -18,9 +18,14 @@ export function RouterLayout(props: RouterLayoutProps) {
         <>
             <div className={"w-screen h-screen max-h-screen flex flex-col text-yellow-500 shadow"}>
                 <div className={"w-full grid grid-cols-3 justify-between bg-black items-center px-8 py-2 drop-shadow-header"}>
-                    <Link className={"text-3xl grow"} to={"/"}>
-                        Kaamelott - gif
-                    </Link>
+                    <div className={"flex items-center gap-8 grow"}>
+                        <Link className={"text-3xl"} to={"/"}>
+                            Kaamelott - gif
+                        </Link>
+                        <a className={"h-12"} href='https://play.google.com/store/apps/details?id=fr.imacaron.mobile.gif&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'>
+                            <img className={"h-full"} alt='Disponible sur Google Play' src='https://play.google.com/intl/en_us/badges/static/images/badges/fr_badge_web_generic.png'/>
+                        </a>
+                    </div>
                     <div className={"flex justify-center gap-4"}>
                         {user !== null &&
                             <Link to={"/gif/me"}>Mes gifs</Link>

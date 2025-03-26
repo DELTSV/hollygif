@@ -2,6 +2,7 @@ package fr.imacaron.mobile.gif.ui.page
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -45,16 +46,14 @@ fun EpisodesScreen(seriesName: String, seasonNumber: Int, navController: NavHost
 			Card(modifier = Modifier.fillMaxWidth(), onClick = { navController.navigate(EpisodeDetail(
 				seriesName, seasonNumber, episode.title, episode.number
 			)) }) {
-				Text(
-					"Épisode ${episode.number}:",
-					style = MaterialTheme.typography.titleLarge,
-					modifier = Modifier.padding(8.dp).padding(bottom = 0.dp)
-				)
-				Text(
-					text = episode.title.replace('_', ' '),
-					style = MaterialTheme.typography.titleMedium,
-					modifier = Modifier.padding(8.dp).padding(top=0.dp)
-				)
+				Row(Modifier.padding(8.dp).fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+					Text("Épisode ${episode.number}:", style = MaterialTheme.typography.titleLarge)
+					Text("${episode.numberOfGif ?: 0} gif${if ((episode.numberOfGif ?: 0) > 1) "s" else ""} au total")
+				}
+				Row(Modifier.padding(8.dp).fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+					Text(text = episode.title.replace('_', ' '), style = MaterialTheme.typography.titleMedium)
+					Text("${(episode.duration / 60).toInt()}:${(episode.duration % 60).toInt()}")
+				}
 			}
 		}
 	}
