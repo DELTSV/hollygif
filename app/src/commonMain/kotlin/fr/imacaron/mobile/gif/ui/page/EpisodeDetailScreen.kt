@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -40,13 +39,10 @@ import androidx.navigation.NavHostController
 import coil3.compose.AsyncImage
 import fr.imacaron.mobile.gif.Json
 import fr.imacaron.mobile.gif.types.Episode
-import fr.imacaron.mobile.gif.types.Gif
 import fr.imacaron.mobile.gif.ui.GifView
 import fr.imacaron.mobile.gif.ui.components.GifImage
 import fr.imacaron.mobile.gif.viewmodel.EpisodeDetailViewModel
 import fr.imacaron.mobile.gif.viewmodel.EpisodesViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.IO
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)

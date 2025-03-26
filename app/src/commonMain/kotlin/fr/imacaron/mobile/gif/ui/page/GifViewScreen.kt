@@ -19,7 +19,6 @@ import coil3.compose.AsyncImage
 import fr.imacaron.mobile.gif.types.Gif
 import fr.imacaron.mobile.gif.ui.EpisodeDetail
 import fr.imacaron.mobile.gif.ui.Episodes
-import fr.imacaron.mobile.gif.ui.Seasons
 import fr.imacaron.mobile.gif.ui.components.GifImage
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone

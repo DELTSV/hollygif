@@ -6,7 +6,6 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import fr.imacaron.mobile.gif.Json
 import fr.imacaron.mobile.gif.types.Episode
-import fr.imacaron.mobile.gif.types.Gif
 import fr.imacaron.mobile.gif.types.Response
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
