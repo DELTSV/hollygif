@@ -3,9 +3,11 @@ package fr.imacaron.gif.api.types
 import dev.kord.core.entity.User
 import fr.imacaron.gif.shared.repository.GifEntity
 import kotlinx.datetime.Instant
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
+@SerialName("gif")
 data class Gif(
 	val id: Int,
 	val creator: DiscordUser,
@@ -14,7 +16,7 @@ data class Gif(
 	val scene: Scene,
 	val timecode: String,
 	val text: String
-) {
+): Searchable {
 	constructor(entity: GifEntity, user: User?): this(
 		entity.id,
 		DiscordUser(user),
@@ -24,4 +26,8 @@ data class Gif(
 		entity.timecode,
 		entity.text
 	)
+
+	companion object {
+		val type = "gif"
+	}
 }

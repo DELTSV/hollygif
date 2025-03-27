@@ -4,6 +4,7 @@ import fr.imacaron.gif.shared.NotFoundException
 import org.ktorm.database.Database
 import org.ktorm.dsl.and
 import org.ktorm.dsl.eq
+import org.ktorm.dsl.like
 import org.ktorm.entity.*
 import org.ktorm.schema.*
 
@@ -28,6 +29,11 @@ class EpisodeRepository(
 
 	fun getEpisodeGifTotal(episode: EpisodeEntity): Result<Int> {
 		return Result.success(db.gifs.filter { it.scenes.episode eq episode.id }.count())
+	}
+
+	fun searchEpisodeByTitle(search: String, page: Int, pageSize: Int): Result<Pair<List<EpisodeEntity>, Int>> {
+		return Result.success(db.episodes.filter { it.title like search }.drop(pageSize * page).take(pageSize).map { it }
+				to db.episodes.count { it.title like search })
 	}
 
 }

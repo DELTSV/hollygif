@@ -4,6 +4,7 @@ import fr.imacaron.gif.shared.CannotCreate
 import fr.imacaron.gif.shared.NotFoundException
 import org.ktorm.database.Database
 import org.ktorm.dsl.eq
+import org.ktorm.dsl.like
 import org.ktorm.entity.*
 import org.ktorm.schema.Table
 import org.ktorm.schema.int
@@ -24,6 +25,12 @@ class SeriesRepository(
 		} else {
 			Result.failure(CannotCreate("Cannot create series"))
 		}
+	}
+
+	fun searchSeriesByName(search: String, page: Int, pageSize: Int): Result<Pair<List<SeriesEntity>, Int>> {
+		val total = db.series.count { it.name like search }
+		val series = db.series.filter { it.name like search }.drop(page * pageSize).take(pageSize).map { it }
+		return Result.success(series to total)
 	}
 }
 

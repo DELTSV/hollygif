@@ -3,7 +3,7 @@ package fr.imacaron.gif.api.routing.route
 import fr.imacaron.gif.api.respond
 import fr.imacaron.gif.api.routing.resources.API
 import fr.imacaron.gif.api.types.Response
-import fr.imacaron.gif.api.types.Transcriptions
+import fr.imacaron.gif.api.types.Transcription
 import fr.imacaron.gif.shared.repository.EpisodeRepository
 import fr.imacaron.gif.shared.repository.SeasonRepository
 import fr.imacaron.gif.shared.repository.SeriesRepository
@@ -43,7 +43,7 @@ class TranscriptionRoute(
                 call.respond(Response.NotFound)
                 return@get
             }
-            call.respond(Response.Ok(transcriptions.map { t -> Transcriptions(t) }))
+            call.respond(Response.Ok(transcriptions.map { t -> Transcription(t) }))
         }
     }
 }

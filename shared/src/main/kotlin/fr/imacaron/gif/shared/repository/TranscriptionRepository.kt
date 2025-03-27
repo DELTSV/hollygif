@@ -22,8 +22,12 @@ class TranscriptionRepository(
             Result.success(it)
         } ?: Result.failure(NotFoundException("Transcription not found"))
 
-    fun searchTextInTranscription(text: String): Result<List<TranscriptionEntity>> =
-        Result.success(db.transcriptions.filter { it.text like "%$text%" }.map { it })
+    fun searchTextInTranscription(search: String, page: Int, pageSize: Int): Result<Pair<List<TranscriptionEntity>, Int>> =
+        Result.success(
+            db.transcriptions.filter { it.text like search }.drop(page * pageSize).take(pageSize).map { it }
+            to
+            db.transcriptions.count { it.text like search }
+        )
 }
 
 object TranscriptionsTable: Table<TranscriptionEntity>("TRANSCRIPTIONS") {

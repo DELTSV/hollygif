@@ -46,4 +46,6 @@ class API {
 			}
 		}
 	}
+	@Resource("/search/{search}")
+	class Search(val parent: API = API(), val search: String)
 }

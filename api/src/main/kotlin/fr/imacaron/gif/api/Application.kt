@@ -36,4 +36,5 @@ fun Application.module() = runBlocking {
 	EpisodesRoute(this@module, seriesRepository, seasonRepository, episodeRepository)
 	SeasonsRoute(this@module, seriesRepository, seasonRepository)
 	SeriesRoute(this@module, seriesRepository)
+	SearchRoute(this@module, seriesRepository, episodeRepository, gifRepository, transcriptionRepository, kord)
 }

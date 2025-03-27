@@ -43,6 +43,11 @@ class GifRepository(
 			.map { Gif(it) }
 
 	fun addGif(gifEntity: GifEntity): GifEntity = gifEntity.apply { db.gifs.add(gifEntity) }
+
+	fun searchGifsByText(search: String, page: Int, pageSize: Int): Pair<List<GifEntity>, Int> {
+		return db.gifs.filter { it.text like search }.drop(page * pageSize).take(pageSize).map { it } to
+				db.gifs.count { it.text like search }
+	}
 }
 
 enum class GifStatus(override val value: Int): TEnum<Int> {
