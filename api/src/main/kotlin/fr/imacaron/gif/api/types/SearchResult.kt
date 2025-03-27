@@ -4,11 +4,12 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
 
 @Serializable
-data class SearchResult(
+data class SearchResult<T: Searchable>(
 	val total: Int,
 	val showed: Int,
 	val page: Int,
-	val data: List<Searchable>
+	val type: String,
+	val data: List<T>
 )
 
 @Serializable

@@ -9,6 +9,7 @@ import fr.imacaron.gif.api.types.Episode
 import fr.imacaron.gif.api.types.Gif
 import fr.imacaron.gif.api.types.Response
 import fr.imacaron.gif.api.types.SearchResult
+import fr.imacaron.gif.api.types.Searchable
 import fr.imacaron.gif.api.types.Series
 import fr.imacaron.gif.api.types.Transcription
 import fr.imacaron.gif.shared.repository.EpisodeRepository
@@ -50,7 +51,7 @@ class SearchRoute(
 
 	private fun Route.search() {
 		get<API.Search> {
-			val result = mutableListOf<SearchResult>()
+			val result = mutableListOf<SearchResult<*>>()
 			val search = "%${it.search.replace(" ", "%")}%"
 			val type = call.request.queryParameters["type"]
 			val page = if(type != null) call.request.queryParameters["page"]?.toIntOrNull() ?: 0 else 0
@@ -83,24 +84,26 @@ class SearchRoute(
 		}
 	}
 
-	private fun searchEpisodes(search: String, page: Int, pageSize: Int): SearchResult? {
+	private fun searchEpisodes(search: String, page: Int, pageSize: Int): SearchResult<Episode>? {
 		return episodesRepository.searchEpisodeByTitle(search, page, pageSize).getOrNull()?.let { (episodes, total) ->
 			SearchResult(
 				total,
 				pageSize,
 				page,
+				"episodes",
 				episodes.map { Episode(it) }
 			)
 		}
 	}
 
 	@OptIn(ExperimentalCoroutinesApi::class)
-	private suspend fun searchGif(search: String, page: Int, pageSize: Int): SearchResult {
+	private suspend fun searchGif(search: String, page: Int, pageSize: Int): SearchResult<Gif> {
 		return gifRepository.searchGifsByText(search, page, pageSize).let { (gifs, total) ->
 			SearchResult(
 				total,
 				pageSize,
 				page,
+				"gifs",
 				gifs.map {
 					val user = users[it.user] ?: withContext(usersContext) {
 						kord.getUser(Snowflake(it.user))?.also { u ->
@@ -113,23 +116,25 @@ class SearchRoute(
 		}
 	}
 
-	private fun searchSeries(search: String, page: Int, pageSize: Int): SearchResult? {
+	private fun searchSeries(search: String, page: Int, pageSize: Int): SearchResult<Series>? {
 		return seriesRepository.searchSeriesByName(search, page, pageSize).getOrNull()?.let { (series, total) ->
 			SearchResult(
 				total,
 				pageSize,
 				page,
+				"series",
 				series.map { Series(it) }
 			)
 		}
 	}
 
-	private fun searchTranscriptions(search: String, page: Int, pageSize: Int): SearchResult? {
+	private fun searchTranscriptions(search: String, page: Int, pageSize: Int): SearchResult<Transcription>? {
 		return transcriptionRepository.searchTextInTranscription(search, page, pageSize).getOrNull()?.let { (transcriptions, total) ->
 			SearchResult(
 				total,
 				pageSize,
 				page,
+				"transcriptions",
 				transcriptions.map { Transcription(it) }
 			)
 		}
