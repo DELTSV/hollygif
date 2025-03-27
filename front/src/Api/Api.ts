@@ -1,4 +1,5 @@
 import APIResponse from "../Types/APIResponse.ts";
+import SearchResult from "../Types/SearchResult.ts";
 
 export default class API {
 
@@ -77,5 +78,10 @@ export default class API {
 	async scripts(series: string, season: number, episode: number): Promise<Transcription[]> {
 		const rep = await this.request<Transcription[]>(`/api/series/${series}/seasons/${season}/episodes/${episode}/transcriptions`);
 		return rep.data
+	}
+
+	async search(search: string): Promise<SearchResult[]> {
+		const rep = await this.request<SearchResult[]>(`/api/search/${search}`);
+		return rep.data;
 	}
 }
