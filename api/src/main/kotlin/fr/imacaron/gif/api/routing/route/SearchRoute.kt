@@ -51,7 +51,7 @@ class SearchRoute(
 
 	private fun Route.search() {
 		get<API.Search> {
-			val result = mutableListOf<SearchResult<*>>()
+			val result = mutableListOf<SearchResult>()
 			val search = "%${it.search.replace(" ", "%")}%"
 			val type = call.request.queryParameters["type"]
 			val page = if(type != null) call.request.queryParameters["page"]?.toIntOrNull() ?: 0 else 0
@@ -84,7 +84,7 @@ class SearchRoute(
 		}
 	}
 
-	private fun searchEpisodes(search: String, page: Int, pageSize: Int): SearchResult<Episode>? {
+	private fun searchEpisodes(search: String, page: Int, pageSize: Int): SearchResult? {
 		return episodesRepository.searchEpisodeByTitle(search, page, pageSize).getOrNull()?.let { (episodes, total) ->
 			SearchResult(
 				total,
@@ -97,7 +97,7 @@ class SearchRoute(
 	}
 
 	@OptIn(ExperimentalCoroutinesApi::class)
-	private suspend fun searchGif(search: String, page: Int, pageSize: Int): SearchResult<Gif> {
+	private suspend fun searchGif(search: String, page: Int, pageSize: Int): SearchResult {
 		return gifRepository.searchGifsByText(search, page, pageSize).let { (gifs, total) ->
 			SearchResult(
 				total,
@@ -116,7 +116,7 @@ class SearchRoute(
 		}
 	}
 
-	private fun searchSeries(search: String, page: Int, pageSize: Int): SearchResult<Series>? {
+	private fun searchSeries(search: String, page: Int, pageSize: Int): SearchResult? {
 		return seriesRepository.searchSeriesByName(search, page, pageSize).getOrNull()?.let { (series, total) ->
 			SearchResult(
 				total,
@@ -128,7 +128,7 @@ class SearchRoute(
 		}
 	}
 
-	private fun searchTranscriptions(search: String, page: Int, pageSize: Int): SearchResult<Transcription>? {
+	private fun searchTranscriptions(search: String, page: Int, pageSize: Int): SearchResult? {
 		return transcriptionRepository.searchTextInTranscription(search, page, pageSize).getOrNull()?.let { (transcriptions, total) ->
 			SearchResult(
 				total,
