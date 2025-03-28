@@ -80,8 +80,8 @@ export default class API {
 		return rep.data
 	}
 
-	async search(search: string): Promise<SearchResult[]> {
-		const rep = await this.request<SearchResult[]>(`/api/search/${search}`);
+	async search(search: string, type: string | null, page: number): Promise<SearchResult[]> {
+		const rep = await this.request<SearchResult[]>(`/api/search/${search}${type !== null ? `?type=${type}&page=${page}` : ""}`);
 		return rep.data;
 	}
 }

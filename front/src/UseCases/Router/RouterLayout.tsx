@@ -1,4 +1,4 @@
-import {useCallback, useEffect, useMemo, useRef, useState} from "react";
+import {useEffect, useMemo, useRef, useState} from "react";
 import API from "../../Api/Api";
 import {Link, Outlet} from "react-router-dom";
 import DiscordAuth from "../../DiscordAuth";
@@ -18,35 +18,59 @@ export function RouterLayout(props: RouterLayoutProps) {
 	const [user, setUser] = useState<User | null>(null);
 	const [userToken, setUserToken] = useState<string | null>(null);
 	const inputBox = useRef<HTMLInputElement>(null);
-	const [timeout, setTimeout1] = useState<number | null>(null);
+	const searchContainer = useRef<HTMLDivElement>(null);
 	const [searchText, setSearchText] = useState("");
-	const [searchFocus, setSearchFocus] = useState(false);
+	const [searchOpen, setSearchOpen] = useState(false);
 	const [searchData, setSearchData] = useState<SearchResult[] | null>(null);
+	const [page, setPage] = useState(0);
 
 	useEffect(() => {
 		if(inputBox.current) {
 			inputBox.current.onfocus = () => {
-				setSearchFocus(true);
+				setSearchOpen(true);
 			}
-			inputBox.current.onblur = () => {
-				setSearchFocus(false);
+		}
+		document.onclick = (e) => {
+			if(searchContainer.current && !searchContainer.current.contains(e.target as Node) && document.contains(e.target as Node)) {
+				setSearchOpen(false);
+				setSearchText("");
+				setType(null)
 			}
 		}
 	}, []);
 
-	const search = useCallback((search: string) => {
-		if (timeout != null) {
-			clearTimeout(timeout);
-			setTimeout1(null);
+	const [type, setType] = useState<string | null>(null);
+
+	const nextPage = useMemo(() => {
+		if(type === null) return null;
+		return () => {
+			setPage(prev => prev + 1);
 		}
-		setTimeout1(setTimeout(() => {
-			if(search !== "") {
-				props.api.search(search).then((data) => {
+	}, [type]);
+
+	useEffect(() => {
+		setSearchData(null);
+	}, [searchText]);
+
+	useEffect(() => {
+		setPage(0);
+	}, [type]);
+
+	useEffect(() => {
+		if(searchText !== "") {
+			props.api.search(searchText, type, page).then((data) => {
+				if(type === null || page === 0) {
 					setSearchData(data);
-				});
-			}
-		}, 500));
-	}, [props.api, timeout]);
+				} else {
+					setSearchData(prev => {
+						const tmp: SearchResult[] = Object.assign([], prev);
+						tmp[0].data.push(...data[0].data);
+						return tmp;
+					});
+				}
+			});
+		}
+	}, [type, searchText, props.api, page]);
 
 	return (
 		<>
@@ -68,31 +92,53 @@ export function RouterLayout(props: RouterLayoutProps) {
                             <Link to={"/gif/me"}>Mes gifs</Link>
 						}
 						<Link to={"/series"}>Les séries</Link>
-						<div className={"flex items-center gap-2 relative"}>
+						<div className={"flex items-center gap-2 relative"} ref={searchContainer}>
 							<input
-								className={clsx("transition-all bg-transparent focus:outline-0 focus:border-2 border-white rounded p-1", (searchText !== "" || searchFocus) && "w-48" || "w-0")}
+								className={clsx("transition-all bg-transparent focus:outline-0 focus:border-2 border-white rounded p-1", (searchText !== "" || searchOpen) && "w-48" || "w-0")}
 								type={"search"}
 								ref={inputBox}
 								value={searchText}
 								onChange={(e) => {
 									setSearchText(e.target.value);
-									search(e.target.value);
 								}}
 							/>
 							<Search onClick={() => {
-								if(!searchFocus) {
+								if(!searchOpen) {
 									inputBox.current?.focus()
 								}
 							}} className={"cursor-pointer"}/>
-							<div className={clsx("flex-col absolute top-full bg-neutral-900 rounded", (searchText !== "" || searchFocus) && "flex" || "hidden")}>
+							<div className={clsx("flex-col absolute top-full bg-neutral-900 rounded", (searchText !== "" || searchOpen) && "flex" || "hidden")}>
 								<div className={"flex gap-2 p-2"}>
-									<span>Épisode</span>
-									<span>Gif</span>
-									<span>Texte</span>
+									<span className={clsx("rounded-full text-sm border border-yellow-500 text-center p-2 cursor-pointer transition", type === "episode" && "bg-yellow-500 text-black")} onClick={() => {
+										if(type === "episode") {
+											setType(null)
+										} else {
+											setType("episode")
+										}
+									}}>Épisode</span>
+									<span className={clsx("rounded-full text-sm border border-yellow-500 text-center p-2 cursor-pointer transition", type === "gif" && "bg-yellow-500 text-black")} onClick={() => {
+										if(type === "gif") {
+											setType(null)
+										} else {
+											setType("gif")
+										}
+									}}>Gif</span>
+									<span className={clsx("rounded-full text-sm border border-yellow-500 text-center p-2 cursor-pointer transition", type === "transcription" && "bg-yellow-500 text-black")} onClick={() => {
+										if(type === "transcription") {
+											setType(null)
+										} else {
+											setType("transcription")
+										}
+									}}>Texte</span>
 								</div>
-								<div className={clsx("flex-col", searchData && "flex" || "hidden")}>
+								<div className={clsx("flex-col w-96", searchData && "flex" || "hidden")}>
 									{searchData?.map((res, key) => (
-										<ResultContainer result={res} key={key}/>
+										<ResultContainer result={res} key={key} clean={() => {
+											setSearchData(null);
+											setSearchText("");
+											setSearchOpen(false);
+											inputBox.current?.blur();
+										}} setType={setType} type={type} nextPage={nextPage}/>
 									))}
 								</div>
 							</div>
