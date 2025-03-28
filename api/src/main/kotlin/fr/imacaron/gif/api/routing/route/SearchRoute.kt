@@ -90,7 +90,7 @@ class SearchRoute(
 				total,
 				pageSize,
 				page,
-				"episodes",
+				"episode",
 				episodes.map { Episode(it) }
 			)
 		}
@@ -103,7 +103,7 @@ class SearchRoute(
 				total,
 				pageSize,
 				page,
-				"gifs",
+				"gif",
 				gifs.map {
 					val user = users[it.user] ?: withContext(usersContext) {
 						kord.getUser(Snowflake(it.user))?.also { u ->
@@ -134,7 +134,7 @@ class SearchRoute(
 				total,
 				pageSize,
 				page,
-				"transcriptions",
+				"transcription",
 				transcriptions.map { Transcription(it) }
 			)
 		}
