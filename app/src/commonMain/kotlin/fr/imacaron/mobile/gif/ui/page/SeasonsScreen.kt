@@ -1,5 +1,6 @@
 package fr.imacaron.mobile.gif.ui.page
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -37,7 +38,8 @@ fun SeasonsScreen(seriesName: String, navController: NavHostController) {
 		viewModel.seasons.forEach { season ->
 			item {
 				Card(onClick = { navController.navigate(Episodes(seriesName, season.number)) }) {
-					AsyncImage(season.series.logo, null, Modifier.fillMaxWidth(), colorFilter = ColorFilter.tint(Color.White, BlendMode.SrcOut))
+					AsyncImage(season.series.logo, null, Modifier.fillMaxWidth().background(Color.White), colorFilter = ColorFilter.tint(
+						MaterialTheme.colorScheme.surfaceContainerHighest, BlendMode.SrcIn))
 					Row(Modifier.padding(8.dp), horizontalArrangement = Arrangement.Center) {
 						Text("Saison ${season.number}", textAlign = TextAlign.Center, style = MaterialTheme.typography.titleLarge)
 					}
