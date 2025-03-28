@@ -31,6 +31,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import fr.imacaron.mobile.gif.types.Episode
 import fr.imacaron.mobile.gif.ui.components.GifContainer
+import fr.imacaron.mobile.gif.ui.components.TimeText
 import fr.imacaron.mobile.gif.viewmodel.EpisodeDetailViewModel
 import fr.imacaron.mobile.gif.viewmodel.EpisodesViewModel
 import kotlinx.coroutines.launch
@@ -62,7 +63,7 @@ fun EpisodeDetailScreen(seriesName: String, seasonNumber: Int, episodeNumber: In
 				}
 				Row(Modifier.padding(8.dp).fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
 					Text(text = ep.title.replace('_', ' '), style = MaterialTheme.typography.titleMedium)
-					Text("${(ep.duration / 60).toInt()}:${(ep.duration % 60).toInt()}")
+					TimeText(ep.duration)
 				}
 			}
 			if (episodeDetailViewModel.gifs.isNotEmpty()) {

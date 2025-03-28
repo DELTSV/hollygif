@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import fr.imacaron.mobile.gif.ui.EpisodeDetail
+import fr.imacaron.mobile.gif.ui.components.TimeText
 import fr.imacaron.mobile.gif.viewmodel.EpisodesViewModel
 import kotlinx.coroutines.launch
 
@@ -52,7 +53,7 @@ fun EpisodesScreen(seriesName: String, seasonNumber: Int, navController: NavHost
 				}
 				Row(Modifier.padding(8.dp).fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
 					Text(text = episode.title.replace('_', ' '), style = MaterialTheme.typography.titleMedium)
-					Text("${(episode.duration / 60).toInt()}:${(episode.duration % 60).toInt()}")
+					TimeText(episode.duration)
 				}
 			}
 		}
