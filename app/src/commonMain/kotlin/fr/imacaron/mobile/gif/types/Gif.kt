@@ -1,6 +1,7 @@
 package fr.imacaron.mobile.gif.types
 
 import kotlinx.datetime.Instant
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
@@ -15,6 +16,7 @@ import kotlinx.serialization.Serializable
  * @property text The caption associated with the GIF.
  */
 @Serializable
+@SerialName("gif")
 data class Gif(
     val id: Int,
     val creator: DiscordUser,
@@ -23,4 +25,8 @@ data class Gif(
     val scene: Scene,
     val timecode: String,
     val text: String
-)
+): Searchable {
+    companion object {
+        val type = "gif"
+    }
+}

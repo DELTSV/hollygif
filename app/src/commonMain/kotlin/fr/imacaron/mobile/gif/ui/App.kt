@@ -27,6 +27,7 @@ import fr.imacaron.mobile.gif.ui.page.EpisodeDetailScreen
 import fr.imacaron.mobile.gif.ui.page.EpisodesScreen
 import fr.imacaron.mobile.gif.ui.page.GifList
 import fr.imacaron.mobile.gif.ui.page.GifViewScreen
+import fr.imacaron.mobile.gif.ui.page.SearchScreen
 import fr.imacaron.mobile.gif.ui.page.SeasonsScreen
 import fr.imacaron.mobile.gif.ui.page.SeriesScreen
 import fr.imacaron.mobile.gif.ui.theme.AppTheme
@@ -57,6 +58,9 @@ data class EpisodeDetail(val seriesName: String, val seasonNumber: Int, val epis
 
 @Serializable
 object MyGif
+
+@Serializable
+object Search
 
 @Composable
 @Preview
@@ -101,6 +105,9 @@ fun App(pref: DataStore<Preferences>, navController: NavHostController = remembe
 						loadMore = { myGifViewModel.nextPage() },
 						navController
 					)
+				}
+				composable<Search> {
+					SearchScreen(navController)
 				}
 			}
 		}
