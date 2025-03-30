@@ -15,6 +15,7 @@ import {
 } from "react-feather";
 import API from "../Api/Api.ts";
 import {useNavigate} from "react-router-dom";
+import Spinner from "./Spinner.tsx";
 
 interface PlayerProps {
 	className?: string,
@@ -184,6 +185,7 @@ interface TextBoxProps {
 function GifMaker(props: TextBoxProps) {
 	const [textVisible, setTextVisible] = useState(false);
 	const container = useRef<HTMLDivElement>(null);
+	const [loading, setLoading] = useState(false);
 	// const textAreaRef = useRef<HTMLTextAreaElement>(null);
 	// const [x, setX] = useState(50);
 	// const [y, setY] = useState(50);
@@ -208,26 +210,29 @@ function GifMaker(props: TextBoxProps) {
 	const navigate = useNavigate();
 	return (
 		<>
-			<div className={"absolute top-4 left-4 flex gap-4"}>
-				<button onClick={() => {
+			<div className={"absolute top-4 left-4 flex gap-4 items-center"}>
+				<button title={"Ajouter du texte au gif"} onClick={() => {
 					setTextVisible(prev => !prev);
 				}}>
 					<Type/>
 				</button>
-				<button onClick={() => {
+				<button title={"Créer le gif"} onClick={() => {
+					setLoading(true);
 					props.api.createGif(props.currentScene, textVisible ? container.current?.innerText ?? "" : "").then((res) => {
-						console.log(res);
+						setLoading(false);
 						navigate("/gif/" + res.id);
+					}).catch(() => {
+						setLoading(false);
 					})
 				}}>
-					<Save/>
+					{loading && <Spinner className={"!h-6 !w-6 !border-yellow-500"}/> || <Save/>}
 				</button>
 				<div title={"Ceci est une prévisualisation, le gif final peut être légèrement différent"}>
 					<Info/>
 				</div>
 			</div>
 			<div
-				className={clsx("absolute border-dotted p-2 bottom-0 w-full kaamelott text-5xl text-white text-center focus:outline-0", textVisible || "hidden")}
+				className={clsx("absolute border-dotted p-2 bottom-8 w-full kaamelott text-5xl text-white text-center focus:outline-0", textVisible || "hidden")}
 				contentEditable
 				ref={container}
 				// style={{top: y, left: x}}
