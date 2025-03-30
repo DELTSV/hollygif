@@ -92,7 +92,7 @@ class GifRoute(
 					val gifEntity = GifEntity {
 						this.scene = scene.entity
 						this.date = Clock.System.now()
-						this.text = text
+						this.text = body.text
 						this.user = userId
 						this.timecode = timecode
 						this.status = GifStatus.SUCCESS
