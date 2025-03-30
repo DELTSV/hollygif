@@ -17,6 +17,7 @@ fun Application.configureHTTP() {
 		allowMethod(HttpMethod.Post)
 		allowMethod(HttpMethod.Get)
 		allowHeader(HttpHeaders.Authorization)
+		allowHeader(HttpHeaders.ContentType)
 		allowHeader(HttpHeaders.AccessControlAllowOrigin)
 //		allowHost("app.gif.imacaron.fr", listOf("https"))
 		anyHost()
