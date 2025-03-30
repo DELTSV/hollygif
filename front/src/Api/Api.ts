@@ -17,10 +17,15 @@ export default class API {
 
 	status: number = 0
 
-	private async request<T>(uri: string, method: "GET" | "POST" | "PUT" | "DELETE" = "GET"): Promise<APIResponse<T>> {
+	private async request<T>(uri: string, method: "GET" | "POST" | "PUT" | "DELETE" = "GET", body: object | null = null): Promise<APIResponse<T>> {
 		const headers = new Headers();
 		headers.append("Authorization", "Bearer " + this.token);
-		const rep = await fetch(`${this.baseURL}${uri}`, { method: method, headers: headers });
+		let bodyText: string | null = null;
+		if(body !== null) {
+			headers.append("Content-Type", "application/json");
+			bodyText = JSON.stringify(body);
+		}
+		const rep = await fetch(`${this.baseURL}${uri}`, { method: method, headers: headers, body: bodyText, mode: "cors" });
 		this.status = rep.status;
 		return await rep.json();
 	}
@@ -82,6 +87,11 @@ export default class API {
 
 	async search(search: string, type: string | null, page: number): Promise<SearchResult[]> {
 		const rep = await this.request<SearchResult[]>(`/api/search/${search}${type !== null ? `?type=${type}&page=${page}` : ""}`);
+		return rep.data;
+	}
+
+	async createGif(scene: Scene, text: String): Promise<Gif> {
+		const rep = await this.request<Gif>("/api/gif", "POST", {scene: scene, text: text});
 		return rep.data;
 	}
 }

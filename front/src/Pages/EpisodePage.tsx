@@ -76,6 +76,7 @@ export default function EpisodePage(props: EpisodeProps) {
 						name={name ?? ""}
 						season={parseInt(season ?? "0")}
 						episode={parseInt(episode ?? "0")}
+						api={props.api}
 					/>
 					<div/>
 					<div className={"overflow-y-auto h-full cursor-pointer flex flex-col gap-4 absolute right-0"}>

@@ -38,3 +38,12 @@ body {
     animation-direction: reverse;
     translate: 165px;
 }
+
+@font-face {
+    font-family: "KaaR/KaC font";
+    src: url("/font.otf") format("opentype");
+}
+
+.kaamelott {
+    font-family: "KaaR/KaC font";
+}

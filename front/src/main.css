@@ -9,3 +9,7 @@
 	font-optical-sizing: auto;
 	font-style: normal;
 }
+
+.field-sizing-content {
+	field-sizing: content;
+}
