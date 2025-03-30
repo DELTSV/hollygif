@@ -1,12 +1,10 @@
-val ktor_version: String by project
-val kotlin_version: String by project
 val logback_version: String by project
 
 plugins {
 	application
 	kotlin("jvm")
-	id("io.ktor.plugin") version "2.3.8"
-	id("org.jetbrains.kotlin.plugin.serialization") version "1.9.22"
+	id("io.ktor.plugin") version "3.1.1"
+	id("org.jetbrains.kotlin.plugin.serialization") version "2.1.0"
 }
 
 group = "fr.imacaron.gif"
@@ -24,7 +22,7 @@ repositories {
 }
 
 dependencies {
-	implementation("dev.kord:kord-core:0.13.1")
+	implementation("dev.kord:kord-core:0.15.0")
 	implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.5.0")
 	implementation("io.ktor:ktor-server-core-jvm")
 	implementation("io.ktor:ktor-server-resources")
@@ -42,19 +40,16 @@ dependencies {
 	implementation("io.ktor:ktor-client-core")
 	implementation("io.ktor:ktor-client-cio")
 	implementation("io.ktor:ktor-client-auth")
+	implementation("io.ktor:ktor-server-config-yaml")
 	implementation("ch.qos.logback:logback-classic:$logback_version")
 	implementation("ch.qos.logback:logback-core:$logback_version")
 	implementation("org.codehaus.janino:janino:3.1.8")
-	implementation("io.ktor:ktor-server-config-yaml:2.3.8")
 	implementation("org.ktorm:ktorm-core:3.6.0")
 	implementation("org.ktorm:ktorm-support-mysql:3.6.0")
 	implementation("com.mchange:c3p0:0.9.5.5")
 	implementation("org.mariadb.jdbc:mariadb-java-client:3.3.2")
 	implementation("software.amazon.awssdk:s3:2.24.12")
 	implementation(project(":shared"))
-
-	testImplementation("io.ktor:ktor-server-tests-jvm")
-	testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
 }
 
 tasks {
