@@ -41,6 +41,7 @@ dependencies {
 	implementation(libs.ktor.client.cio)
 	implementation(libs.ktor.client.auth)
 	implementation(libs.ktor.server.config.yaml)
+	implementation(libs.ktor.server.sse)
 	implementation("ch.qos.logback:logback-classic:$logback_version")
 	implementation("ch.qos.logback:logback-core:$logback_version")
 	implementation(libs.janino)

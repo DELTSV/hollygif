@@ -1,5 +1,6 @@
 import APIResponse from "../Types/APIResponse.ts";
 import SearchResult from "../Types/SearchResult.ts";
+import {SSE, SSEvent} from "sse.js";
 
 export default class API {
 
@@ -90,8 +91,14 @@ export default class API {
 		return rep.data;
 	}
 
-	async createGif(scene: Scene, text: String): Promise<Gif> {
-		const rep = await this.request<Gif>("/api/gif", "POST", {scene: scene, text: text});
-		return rep.data;
+	async createGif(scene: Scene, text: String, onMessage: (data: SceneStatus) => void) {
+		const headers = {
+			"Authorization": "Bearer " + this.token,
+			"Content-Type": "application/json"
+		}
+		const source = new SSE(this.baseURL + "/api/gif", { method: "POST", headers: headers, payload: JSON.stringify({ scene: scene, text: text }) });
+		source.addEventListener("message", (e: SSEvent) => {
+			onMessage(JSON.parse(e.data));
+		});
 	}
 }

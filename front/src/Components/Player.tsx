@@ -186,6 +186,7 @@ function GifMaker(props: TextBoxProps) {
 	const [textVisible, setTextVisible] = useState(false);
 	const container = useRef<HTMLDivElement>(null);
 	const [loading, setLoading] = useState(false);
+	const [status, setStatus] = useState("");
 	// const textAreaRef = useRef<HTMLTextAreaElement>(null);
 	// const [x, setX] = useState(50);
 	// const [y, setY] = useState(50);
@@ -211,25 +212,39 @@ function GifMaker(props: TextBoxProps) {
 	return (
 		<>
 			<div className={"absolute top-4 left-4 flex gap-4 items-center"}>
+				<div title={"Ceci est une prévisualisation, le gif final peut être légèrement différent"}>
+					<Info/>
+				</div>
 				<button title={"Ajouter du texte au gif"} onClick={() => {
 					setTextVisible(prev => !prev);
 				}}>
 					<Type/>
 				</button>
-				<button title={"Créer le gif"} onClick={() => {
+				<button className={"flex gap-2"} title={"Créer le gif"} onClick={() => {
 					setLoading(true);
-					props.api.createGif(props.currentScene, textVisible ? container.current?.innerText ?? "" : "").then((res) => {
-						setLoading(false);
-						navigate("/gif/" + res.id);
+					props.api.createGif(props.currentScene, textVisible ? container.current?.innerText ?? "" : "", (data) => {
+						if(data.error !== undefined) {
+							setLoading(false);
+							setStatus(data.error);
+						} else if(data.gifId !== undefined) {
+							setLoading(false);
+							navigate("/gif/" + data.gifId);
+						} else if(data.gif === true) {
+							setStatus("Le gif est prêt");
+						} else if(data.text === true) {
+							setStatus("Le texte est enluminé");
+						} else if(data.textLength === true) {
+							setStatus("Les mesures sont prises");
+						} else if(data.scene === true) {
+							setStatus("La scène est monté");
+						}
 					}).catch(() => {
 						setLoading(false);
 					})
 				}}>
 					{loading && <Spinner className={"!h-6 !w-6 !border-yellow-500"}/> || <Save/>}
+					{status}
 				</button>
-				<div title={"Ceci est une prévisualisation, le gif final peut être légèrement différent"}>
-					<Info/>
-				</div>
 			</div>
 			<div
 				className={clsx("absolute border-dotted p-2 bottom-8 w-full kaamelott text-5xl text-white text-center focus:outline-0", textVisible || "hidden")}

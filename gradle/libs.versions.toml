@@ -58,6 +58,7 @@ ktor-server-forwarded-header-jvm = { module = "io.ktor:ktor-server-forwarded-hea
 ktor-server-host-common-jvm = { module = "io.ktor:ktor-server-host-common-jvm" }
 ktor-server-openapi = { module = "io.ktor:ktor-server-openapi" }
 ktor-server-resources = { module = "io.ktor:ktor-server-resources" }
+ktor-server-sse = { module = "io.ktor:ktor-server-sse"}
 ktor-server-status-pages-jvm = { module = "io.ktor:ktor-server-status-pages-jvm" }
 ktor-server-swagger-jvm = { module = "io.ktor:ktor-server-swagger-jvm" }
 ktorm-core = { module = "org.ktorm:ktorm-core", version.ref = "ktormCore" }

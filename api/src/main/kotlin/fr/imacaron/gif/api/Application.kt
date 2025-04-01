@@ -18,6 +18,7 @@ fun Application.module() = runBlocking {
 	configureSerialization()
 	configureRouting()
 	configureAuth()
+	configureSSE()
 
 	val kord = Kord(System.getenv("TOKEN"))
 

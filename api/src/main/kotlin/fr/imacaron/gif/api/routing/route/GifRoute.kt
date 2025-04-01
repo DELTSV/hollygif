@@ -9,20 +9,27 @@ import fr.imacaron.gif.api.routing.resources.API
 import fr.imacaron.gif.api.types.CreateGif
 import fr.imacaron.gif.api.types.Gif
 import fr.imacaron.gif.api.types.Response
+import fr.imacaron.gif.api.types.SceneStatus
 import fr.imacaron.gif.shared.NotFoundException
 import fr.imacaron.gif.shared.entity.Series
 import fr.imacaron.gif.shared.repository.*
+import io.ktor.http.ContentType
+import io.ktor.http.HttpHeaders
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.request.receive
 import io.ktor.server.resources.*
 import io.ktor.server.resources.post
+import io.ktor.server.response.header
+import io.ktor.server.response.respond
 import io.ktor.server.routing.*
+import io.ktor.server.sse.SSEServerContent
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.newSingleThreadContext
 import kotlinx.coroutines.withContext
 import kotlinx.datetime.Clock
+import kotlinx.serialization.json.Json
 
 class GifRoute(
 	private val seriesRepository: SeriesRepository,
@@ -78,35 +85,36 @@ class GifRoute(
 	@OptIn(ExperimentalCoroutinesApi::class)
 	private fun Route.makeGif() {
 		post<API.Gif> {
-			val body = runCatching { call.receive<CreateGif>() }.getOrElse {
-				call.respond(Response.BadRequest)
-				return@post
-			}
-			val userId = call.principal<UserIdPrincipal>()?.name ?: run {
-				call.respond(Response.Unauthorized)
-				return@post
-			}
-			val scene = kaamelott.seasons[body.scene.episode.season.number].episodes[body.scene.episode.number].scenes[body.scene.index]
-			scene.createMeme(body.text).collect {
-				it.result?.let {
-					val gifEntity = GifEntity {
-						this.scene = scene.entity
-						this.date = Clock.System.now()
-						this.text = body.text
-						this.user = userId
-						this.timecode = timecode
-						this.status = GifStatus.SUCCESS
-					}
-					gifRepository.addGif(gifEntity)
-					val user = users[userId] ?: withContext(usersContext) {
-						kord.getUser(Snowflake(userId))?.let {u ->
-							users[userId] = u
-							u
-						}
-					}
-					call.respond(Response.Ok(Gif(gifEntity, user)))
+			call.response.header(HttpHeaders.ContentType, ContentType.Text.EventStream.toString())
+			call.response.header(HttpHeaders.CacheControl, "no-store")
+			call.response.header(HttpHeaders.Connection, "keep-alive")
+			call.response.header("X-Accel-Buffering", "no")
+			call.respond(SSEServerContent(call) {
+				val body = runCatching { call.receive<CreateGif>() }.getOrElse {
+					call.respond(Response.BadRequest)
+					return@SSEServerContent
 				}
-			}
+				val userId = call.principal<UserIdPrincipal>()?.name ?: run {
+					call.respond(Response.Unauthorized)
+					return@SSEServerContent
+				}
+				val scene = kaamelott.seasons[body.scene.episode.season.number].episodes[body.scene.episode.number].scenes[body.scene.index]
+				scene.createMeme(body.text).collect { status ->
+					send(Json.encodeToString(SceneStatus(status)))
+					status.result?.let {
+						val gifEntity = GifEntity {
+							this.scene = scene.entity
+							this.date = Clock.System.now()
+							this.text = body.text
+							this.user = userId
+							this.timecode = timecode
+							this.status = GifStatus.SUCCESS
+						}
+						gifRepository.addGif(gifEntity)
+						send(Json.encodeToString(SceneStatus(status, gifEntity.id)))
+					}
+				}
+			})
 		}
 	}
 
