@@ -77,6 +77,21 @@ export default function Player(props: PlayerProps) {
 	}, [muted]);
 	const mute = useCallback(() => setMuted(prev => !prev), []);
 	const [volumeSet, setVolumeSet] = useState(false);
+	const [height, setHeight] = useState(0);
+	const [width, setWidth] = useState(0);
+
+	useEffect(() => {
+		if(video.current) {
+			const obs = new ResizeObserver((e) => {
+				setHeight(e[0].contentRect.height);
+				setWidth(e[0].contentRect.width);
+			})
+			obs.observe(video.current);
+			return () => {
+				obs.disconnect();
+			}
+		}
+	}, []);
 
 	return (
 		<div className={clsx(props.className, "relative")}>
@@ -89,8 +104,8 @@ export default function Player(props: PlayerProps) {
 			{props.scenes.length > 0 &&
                 <div className={"absolute top-0 left-0 h-4 overflow-hidden"}
                      style={{
-						 width: (video.current?.getBoundingClientRect().width ?? 0) + "px",
-						 height: (video.current?.getBoundingClientRect().height ?? 0) + "px"
+						 width: width + "px",
+						 height: height + "px"
 					 }}
                 >
                     <div
