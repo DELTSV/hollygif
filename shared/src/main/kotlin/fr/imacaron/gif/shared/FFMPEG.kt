@@ -35,17 +35,10 @@ object FFMPEG {
 
 	fun makeScene(input: String, output: String, start: Double, end: Double) {
 		val duration = end - start
-		("ffmpeg -ss $start -i $input -t $duration -map 0:0 -map_chapters -1 -c copy $output").runCommand().apply {
+		("ffmpeg -ss $start -i $input -t $duration -c:v libx264 -pix_fmt yuv420p -map_chapters -1 $output").runCommand().apply {
 			logger.debug(this)
 		}
 		logger.debug("Scene created")
-	}
-
-	fun makeSceneStream(input: String, start: Double, end: Double): InputStream? {
-		val duration = end - start
-		return ("ffmpeg -loglevel error -nostdin -ss $start -i $input -t $duration -map_chapters -1 -c:v libvpx-vp9 -crf 30 -b:v 0 -f webm -").runCommandStream().apply {
-			logger.debug("Scene created")
-		}
 	}
 
 	fun getTextLength(scene: String, text: String, textSize: Int = 156): Double {

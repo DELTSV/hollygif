@@ -15,7 +15,6 @@ import fr.imacaron.gif.shared.repository.TranscriptionRepository
 import io.ktor.http.ContentType
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.Application
-import io.ktor.server.application.call
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.*
 import io.ktor.server.resources.*
@@ -77,7 +76,7 @@ class ScenesRoute(
 				val series = Series(seasonRepository, episodeRepository, sceneRepository, transcriptionRepository, it)
 				try {
 					series.seasons[seasonNumber].episodes[episodeNumber].scenes[sceneIndex].makeScene().onSuccess { scene ->
-						call.respondBytes(scene, ContentType("video", "webm"), HttpStatusCode.OK)
+						call.respondBytes(scene, ContentType.Video.MP4, HttpStatusCode.OK)
 					}.onFailure {
 						logger.error(it)
 						call.respond(Response.ServerError)

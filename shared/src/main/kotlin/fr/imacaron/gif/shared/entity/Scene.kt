@@ -35,24 +35,27 @@ class Scene(
 	)
 
 	fun makeScene(): Result<ByteArray> {
-		val sceneName = "${ep.season.number}_${ep.number}_$index.webm"
+		val sceneName = "${ep.season.number}_${ep.number}_$index.mp4"
 		try {
 			return Result.success(this.ep.season.series.s3.getFile("scene", sceneName))
 		} catch (_: NoSuchKeyException) {
-			val stream = FFMPEG.makeSceneStream(
+			val scene = "./out/$sceneName.mp4"
+			FFMPEG.makeScene(
 				"./episodes/L${ep.season.number}_E${ep.number.toString().padStart(3, '0')}.mkv",
+				scene,
 				start,
 				end
-			) ?: return Result.failure(Exception("Cannot make scene"))
-			if(!this.ep.season.series.s3.putFile("scene", sceneName, stream.readAllBytes())) {
+			)
+			val sceneFile = File(scene)
+			if(!this.ep.season.series.s3.putFile("scene", sceneName, sceneFile.readBytes())) {
 				return Result.failure(Exception("Cannot upload scene"))
 			}
+			sceneFile.delete()
 			return Result.success(this.ep.season.series.s3.getFile("scene", sceneName))
 		}
 	}
 
 	fun createMeme(text: String, textSize: Int = 156): Flow<Status> = flow {
-		this@Scene.ep.season.series.s3
 		logger.debug("Create meme")
 		if(duration < 0) {
 			emit(Status(error = NotEnoughTimeException()))
@@ -62,13 +65,21 @@ class Scene(
 		val sceneName = "${ep.season.number}_${ep.number}_$index"
 		val scene = "./out/$sceneName.mp4"
 		val sceneFile = File(scene)
-		if(!sceneFile.exists()) {
+		runCatching {
+			val data = this@Scene.ep.season.series.s3.getFile("scene", "$sceneName.mp4")
+			sceneFile.writeBytes(data)
+		}.getOrElse {
 			FFMPEG.makeScene(
 				"./episodes/L${ep.season.number}_E${ep.number.toString().padStart(3, '0')}.mkv",
 				scene,
 				start,
 				end
 			)
+			sceneFile.readBytes().apply {
+				if(this@Scene.ep.season.series.s3.putFile("scene", "$sceneName.mp4", this)) {
+					logger.debug("Scene uploaded")
+				}
+			}
 		}
 		emit(Status(scene = true))
 		val textLength = FFMPEG.getTextLength(scene, text, textSize)
@@ -104,5 +115,6 @@ class Scene(
 		} else {
 			emit(Status(scene = true, textLength = true, text = true, error = CannotUploadToBucket()))
 		}
+		sceneFile.delete()
 	}
 }
