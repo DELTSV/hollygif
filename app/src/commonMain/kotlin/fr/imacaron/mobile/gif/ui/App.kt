@@ -97,7 +97,7 @@ fun App(pref: DataStore<Preferences>, navController: NavHostController = remembe
 				}
 				composable<EpisodeDetail> {
 					val episodeDetail: EpisodeDetail = it.toRoute()
-					EpisodeDetailScreen(episodeDetail.seriesName, episodeDetail.seasonNumber, episodeDetail.episodeNumber, navController)
+					EpisodeDetailScreen(episodeDetail.seriesName, episodeDetail.seasonNumber, episodeDetail.episodeNumber, navController, pref)
 				}
 				composable<MyGif> {
 					GifList(

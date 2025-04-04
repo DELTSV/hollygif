@@ -314,7 +314,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="file:$USER_HOME$/Android/Sdk/icons/material/materialiconsoutlined/search/outline_search_24.xml" />
+                                      <entry key="url" value="file:$USER_HOME$/Android/Sdk/icons/material/materialiconsoutlined/text_fields/outline_text_fields_24.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -325,7 +325,7 @@
                         <option name="values">
                           <map>
                             <entry key="color" value="ffffff" />
-                            <entry key="outputName" value="outline_search_24" />
+                            <entry key="outputName" value="outline_text_fields" />
                             <entry key="sourceFile" value="$USER_HOME$/Téléchargements/Kaamelott_Premier_Volet_Logo.svg" />
                           </map>
                         </option>

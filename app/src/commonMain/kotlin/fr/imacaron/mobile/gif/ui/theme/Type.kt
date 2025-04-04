@@ -28,6 +28,11 @@ fun getJosefin() = FontFamily(
     font("Josefin Sans Thin Italic", "josefin_sans_thin_italic", FontWeight.Thin, FontStyle.Italic),
 )
 
+@Composable
+fun getKaamelottFont() = FontFamily(
+    font("Kaamelott", "font", FontWeight.Normal, FontStyle.Normal)
+)
+
 // Default Material 3 typography values
 val baseline = Typography()
 

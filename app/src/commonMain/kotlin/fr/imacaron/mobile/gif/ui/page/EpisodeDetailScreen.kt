@@ -27,18 +27,26 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import fr.imacaron.mobile.gif.Json
 import fr.imacaron.mobile.gif.types.Episode
+import fr.imacaron.mobile.gif.ui.GifView
 import fr.imacaron.mobile.gif.ui.components.GifContainer
+import fr.imacaron.mobile.gif.ui.components.PlayerCard
 import fr.imacaron.mobile.gif.ui.components.TimeText
 import fr.imacaron.mobile.gif.viewmodel.EpisodeDetailViewModel
 import fr.imacaron.mobile.gif.viewmodel.EpisodesViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EpisodeDetailScreen(seriesName: String, seasonNumber: Int, episodeNumber: Int, navController: NavHostController) {
+fun EpisodeDetailScreen(seriesName: String, seasonNumber: Int, episodeNumber: Int, navController: NavHostController, pref: DataStore<Preferences>) {
 	val episodesViewModel = viewModel<EpisodesViewModel> { EpisodesViewModel(seriesName, seasonNumber) }
 	var episode: Episode? by remember { mutableStateOf(null) }
 	val scope = rememberCoroutineScope()
@@ -46,10 +54,19 @@ fun EpisodeDetailScreen(seriesName: String, seasonNumber: Int, episodeNumber: In
 		episode = episodesViewModel.getEpisode(episodeNumber)
 	}
 	episode?.let { ep ->
-		val episodeDetailViewModel = viewModel<EpisodeDetailViewModel> { EpisodeDetailViewModel(ep) }
+		val episodeDetailViewModel = viewModel<EpisodeDetailViewModel> { EpisodeDetailViewModel(ep, pref) }
 		LaunchedEffect(episodesViewModel, ep) {
 			episodeDetailViewModel.fetchGif(0)
 			episodeDetailViewModel.fetchTranscriptions()
+			episodeDetailViewModel.fetchScenes()
+		}
+		LaunchedEffect(episodeDetailViewModel.gifId) {
+			episodeDetailViewModel.gifId?.let { gifId ->
+				episodeDetailViewModel.getGif(gifId)?.let { gif ->
+					episodeDetailViewModel.gifId = null
+					navController.navigate(GifView(Json.encodeToString(gif)))
+				}
+			}
 		}
 		Column(
 			Modifier.padding(horizontal = 16.dp).fillMaxWidth().verticalScroll(rememberScrollState()),
@@ -66,6 +83,14 @@ fun EpisodeDetailScreen(seriesName: String, seasonNumber: Int, episodeNumber: In
 					TimeText(ep.duration)
 				}
 			}
+			PlayerCard(episodeDetailViewModel.scenes, episodeDetailViewModel.currentScene, { scene ->
+				episodeDetailViewModel.scenes.indexOfFirst { it == scene }.let { index ->
+					if(index != -1) {
+						episodeDetailViewModel.currentScene = index
+					}
+				} }, {
+					scope.launch(Dispatchers.IO) { episodeDetailViewModel.createGif(it) }
+				}, episodeDetailViewModel.status)
 			if (episodeDetailViewModel.gifs.isNotEmpty()) {
 				val carouselState = rememberCarouselState {
 					return@rememberCarouselState ep.numberOfGif ?: 0

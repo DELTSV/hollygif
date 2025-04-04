@@ -59,6 +59,7 @@ kotlin {
             implementation(libs.coil.network.cache.control)
             implementation(libs.navigation.compose)
             implementation(libs.webview.multiplatform.mobile)
+            implementation(libs.compose.multiplatform.media.player)
         }
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)
@@ -74,8 +75,8 @@ android {
         applicationId = "fr.imacaron.mobile.gif"
         minSdk = libs.versions.android.minSdk.get().toInt()
         targetSdk = libs.versions.android.targetSdk.get().toInt()
-        versionCode = 5
-        versionName = "0.4.0"
+        versionCode = 6
+        versionName = "0.5.0"
     }
     packaging {
         resources {
