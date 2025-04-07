@@ -1,8 +1,12 @@
 package fr.imacaron.gif.bot
 
 import com.mchange.v2.c3p0.ComboPooledDataSource
+import dev.kord.common.entity.MessageType
 import dev.kord.core.Kord
+import dev.kord.core.behavior.edit
+import dev.kord.core.behavior.interaction.respondEphemeral
 import dev.kord.core.event.interaction.AutoCompleteInteractionCreateEvent
+import dev.kord.core.event.interaction.GuildButtonInteractionCreateEvent
 import dev.kord.core.event.interaction.GuildChatInputCommandInteractionCreateEvent
 import dev.kord.core.on
 import fr.imacaron.gif.bot.commands.Archives
@@ -91,6 +95,39 @@ suspend fun main(args: Array<String>) {
             "archives" -> archives(interaction)
             "kaagif" -> gifCommand(interaction)
         }
+    }
+
+    kord.on<GuildButtonInteractionCreateEvent> {
+        val action = interaction.componentId.split("_")
+        when(action[0]) {
+            "kaagif" -> {
+                if(interaction.user.id != interaction.message.interaction?.user?.id) {
+                    interaction.respondEphemeral {
+                        content = "Ce gif ne vous appartient pas"
+                    }
+                    return@on
+                }
+                when(action[1]) {
+                    "keep" -> {
+                        gifRepository.keepGif(action[2].toInt())
+                        interaction.message.edit {
+                            components = mutableListOf()
+                        }
+                        interaction.respondEphemeral {
+                            content = "Le gif est sauvegarder"
+                        }
+                    }
+                    "delete" -> {
+                        gifRepository.deleteGif(action[2].toInt())
+                        interaction.message.delete()
+                        interaction.respondEphemeral {
+                            content = "Le gif est supprimer"
+                        }
+                    }
+                }
+            }
+        }
+
     }
 
     logger.info("Starting")

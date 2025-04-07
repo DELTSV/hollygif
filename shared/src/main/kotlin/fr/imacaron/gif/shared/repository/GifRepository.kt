@@ -48,6 +48,17 @@ class GifRepository(
 		return db.gifs.filter { it.text like search }.drop(page * pageSize).take(pageSize).map { it } to
 				db.gifs.count { it.text like search }
 	}
+
+	fun keepGif(gif: Int) {
+		db.gifs.find { it.id eq gif }?.let {
+			it.keep = true
+			it.flushChanges()
+		}
+	}
+
+	fun deleteGif(gif: Int) {
+		db.gifs.removeIf { it.id eq gif }
+	}
 }
 
 enum class GifStatus(override val value: Int): TEnum<Int> {
@@ -65,6 +76,7 @@ object GifsTable: Table<GifEntity>("GIFS") {
 	val date = datetime("date").bindTo { it.date }
 	val scene = int("scene").references(SceneTable) { it.scene }
 	val status = enumInt<GifStatus>("status").bindTo { it.status }
+	val keep = boolean("keep").bindTo { it.keep }
 
 	val scenes: SceneTable get() = scene.referenceTable!! as SceneTable
 }
@@ -77,6 +89,7 @@ interface GifEntity : Entity<GifEntity> {
 	var date: Instant
 	var scene: SceneEntity
 	var status: GifStatus
+	var keep: Boolean
 
 	companion object: Entity.Factory<GifEntity>()
 }

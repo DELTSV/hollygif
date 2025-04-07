@@ -1,5 +1,6 @@
 package fr.imacaron.gif.bot.commands
 
+import dev.kord.common.entity.ButtonStyle
 import dev.kord.common.entity.Choice
 import dev.kord.common.entity.optional.Optional
 import dev.kord.common.entity.optional.value
@@ -10,6 +11,7 @@ import dev.kord.core.entity.interaction.AutoCompleteInteraction
 import dev.kord.core.entity.interaction.GuildChatInputCommandInteraction
 import dev.kord.rest.builder.interaction.integer
 import dev.kord.rest.builder.interaction.string
+import dev.kord.rest.builder.message.actionRow
 import dev.kord.rest.builder.message.embed
 import dev.kord.rest.request.KtorRequestException
 import fr.imacaron.gif.bot.*
@@ -209,6 +211,14 @@ class GifCommand(
 							logger.debug("IMAGE URL = $API/api/gif/file/${it.result}")
 							image = "$API/api/gif/file/${it.result}"
 							url = "$APP/gif/${gifEntity.id}"
+						}
+						this.actionRow {
+							this.interactionButton(ButtonStyle.Primary, "kaagif_keep_${gifEntity.id}") {
+								this.label = "Sauvegarder"
+							}
+							this.interactionButton(ButtonStyle.Danger, "kaagif_delete_${gifEntity.id}") {
+								this.label = "Supprimer"
+							}
 						}
 					}
 				} else if(it.gif) {
