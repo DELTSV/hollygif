@@ -109,6 +109,7 @@ class GifRoute(
 							this.user = userId
 							this.timecode = timecode
 							this.status = GifStatus.SUCCESS
+							this.keep = true
 						}
 						gifRepository.addGif(gifEntity)
 						send(Json.encodeToString(SceneStatus(status, gifEntity.id)))
