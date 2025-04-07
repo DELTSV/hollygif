@@ -59,6 +59,12 @@ class GifRepository(
 	fun deleteGif(gif: Int) {
 		db.gifs.removeIf { it.id eq gif }
 	}
+
+	fun deleteOldGif() {
+		db.gifs.filter { (it.date lt Instant.fromEpochMilliseconds(System.currentTimeMillis() - 1000 * 60 * 60 * 24 * 3)) and !it.keep }.forEach {
+			it.delete()
+		}
+	}
 }
 
 enum class GifStatus(override val value: Int): TEnum<Int> {

@@ -6,7 +6,13 @@ import fr.imacaron.gif.api.routing.configureRouting
 import fr.imacaron.gif.api.routing.route.*
 import fr.imacaron.gif.shared.repository.*
 import io.ktor.server.application.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.time.delay
+import kotlin.time.Duration
+import kotlin.time.Duration.Companion.days
+import kotlin.time.toJavaDuration
 
 fun main(args: Array<String>) {
 	io.ktor.server.cio.EngineMain.main(args)
@@ -38,4 +44,11 @@ fun Application.module() = runBlocking {
 	SeasonsRoute(this@module, seriesRepository, seasonRepository)
 	SeriesRoute(this@module, seriesRepository)
 	SearchRoute(this@module, seriesRepository, episodeRepository, gifRepository, transcriptionRepository, kord)
+
+	GlobalScope.launch {
+		while(true) {
+			gifRepository.deleteOldGif()
+			delay(1.days.toJavaDuration())
+		}
+	}
 }
