@@ -14,6 +14,7 @@ import ReturnToApp from "../../Pages/ReturnToApp.tsx";
 
 export function Router() {
     const [bottom, setBottom] = useState(false);
+    const [user, setUser] = useState<User | null>(null);
     const api = useMemo(() => new API(import.meta.env.VITE_API), []);
     const handleScroll = useCallback((e: React.UIEvent<HTMLDivElement>) => {
         const target = e.currentTarget;
@@ -27,7 +28,7 @@ export function Router() {
     const router = createBrowserRouter([
         {
             path: "/",
-            element: <RouterLayout handleScroll={handleScroll} setBottom={setBottom} api={api} />,
+            element: <RouterLayout handleScroll={handleScroll} setBottom={setBottom} api={api} user={user} setUser={setUser} />,
             children: [
                 {
                     path: "/",
@@ -35,7 +36,7 @@ export function Router() {
                 },
                 {
                     path: "gif/:id",
-                    element: <Gif api={api} />
+                    element: <Gif api={api} user={user}/>
                 },
                 {
                     path: "gif/me",

@@ -1,13 +1,14 @@
-import { useParams, Link } from "react-router-dom";
+import {useParams, Link, useNavigate} from "react-router-dom";
 import API from "../Api/Api.ts";
 import { useEffect, useRef, useState } from "react";
 import { Clipboard } from "react-feather";
-import Button from "../Components/Button.tsx";
+import Button, {DangerButton} from "../Components/Button.tsx";
 import GifCard from "../Components/GifCard.tsx";
 import Card from "../Components/Card.tsx";
 
 interface GifProps {
-	api: API
+	api: API,
+	user: User | null
 }
 
 export default function Gif(props: GifProps) {
@@ -22,6 +23,8 @@ export default function Gif(props: GifProps) {
 	}, [id, props.api]);
 
 	const input = useRef<HTMLInputElement>(null);
+
+	const navigate = useNavigate();
 
 	return (
 		<div className={"flex flex-col items-stretch gap-2"}>
@@ -51,6 +54,18 @@ export default function Gif(props: GifProps) {
 					</div>
 				</div>
 			</Card>
+			{props.user?.id === gif?.creator?.id &&
+				<Card className={"p-2 flex justify-between items-center"}>
+					<p className={"text-2xl"}>Gestion du gif</p>
+					<DangerButton onClick={() => {
+						props.api.deleteGif(parseInt(id ?? "0")).then(() => {
+							navigate(-1);
+						})
+					}}>
+						Supprimer
+					</DangerButton>
+				</Card>
+			}
 		</div>
 	)
 }

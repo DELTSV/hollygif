@@ -22,9 +22,13 @@ export default function DiscordAuth(props: DiscordAuthProps) {
 		const h = new Headers();
 		h.append("Authorization", "Bearer " + token);
 		fetch("https://discord.com/api/v10/users/@me", { headers: h }).then(async (r) => {
+			if(r.status !== 200) {
+				throw new Error("Invalid token");
+			}
 			setUser(await r.json());
 		}).catch(() => {
 			setToken(null);
+			setUser(null);
 			localStorage.removeItem("token")
 			props.api.refreshToken();
 		});

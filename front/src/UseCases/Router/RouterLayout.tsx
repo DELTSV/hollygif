@@ -1,4 +1,4 @@
-import {useEffect, useMemo, useRef, useState} from "react";
+import React, {useEffect, useMemo, useRef, useState} from "react";
 import API from "../../Api/Api";
 import {Link, Outlet} from "react-router-dom";
 import DiscordAuth from "../../DiscordAuth";
@@ -11,11 +11,13 @@ import ResultContainer from "../../Components/ResultContainer.tsx";
 interface RouterLayoutProps {
 	handleScroll: (e: React.UIEvent<HTMLDivElement>) => void,
 	setBottom: (isBottom: boolean) => void,
-	api: API
+	api: API,
+	user: User | null,
+	setUser: React.Dispatch<React.SetStateAction<User | null>>,
 }
 
 export function RouterLayout(props: RouterLayoutProps) {
-	const [user, setUser] = useState<User | null>(null);
+	const {user, setUser} = props;
 	const [userToken, setUserToken] = useState<string | null>(null);
 	const inputBox = useRef<HTMLInputElement>(null);
 	const searchContainer = useRef<HTMLDivElement>(null);

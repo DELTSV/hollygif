@@ -17,3 +17,11 @@ export default function Button(props: ButtonProps) {
 		</button>
 	);
 }
+
+export function DangerButton(props: ButtonProps) {
+	return (
+		<Button className={clsx(props.className, "!border-red-500 !text-red-500 hover:!bg-red-500 hover:!text-black")} onClick={props.onClick}>
+			{props.children}
+		</Button>
+	)
+}

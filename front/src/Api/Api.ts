@@ -28,6 +28,9 @@ export default class API {
 		}
 		const rep = await fetch(`${this.baseURL}${uri}`, { method: method, headers: headers, body: bodyText, mode: "cors" });
 		this.status = rep.status;
+		if(rep.status === 204) {
+			return {data: null as T, code: 204, message: "No Content"}
+		}
 		return await rep.json();
 	}
 
@@ -44,6 +47,11 @@ export default class API {
 	async myGif(page: number): Promise<Gif[]> {
 		const rep = await this.request<Gif[]>("/api/gif/me?page_size=12&page=" + page);
 		return rep.data;
+	}
+
+	async  deleteGif(id: number): Promise<null> {
+		const resp = await this.request<null>("/api/gif/" + id, "DELETE");
+		return resp.data;
 	}
 
 	async series(): Promise<Series[]> {

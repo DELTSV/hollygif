@@ -65,6 +65,7 @@ class GifRoute(
 			authenticate("discord-token") {
 				getMyGif()
 				makeGif()
+				deleteGif()
 			}
 		}
 	}
@@ -201,6 +202,25 @@ class GifRoute(
 				Gif(it.entity, user)
 			}
 			call.respond(Response.Ok(gifs))
+		}
+	}
+
+	private fun Route.deleteGif() {
+		delete<API.Gif.ID> { gifId ->
+			val id = call.principal<UserIdPrincipal>()?.name ?: run {
+				call.respond(Response.Unauthorized)
+				return@delete
+			}
+			val gif = gifRepository.getGif(gifId.id).getOrElse {
+				call.respond(Response.NotFound)
+				return@delete
+			}
+			if(gif.user != id) {
+				call.respond(Response.Forbidden)
+				return@delete
+			}
+			gif.entity.delete()
+			call.respond(Response.NoContent)
 		}
 	}
 }

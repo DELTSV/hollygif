@@ -12,6 +12,12 @@ export default function UserGifs(props: UserGifsProps) {
 	const [gifs, setGifs] = useState<Gif[] | null>(null);
 	const [page, setPage] = useState(0);
 	const [done, setDone] = useState(false);
+	const navigate = useNavigate();
+	useEffect(() => {
+		if(props.api.token === "") {
+			navigate("/");
+		}
+	}, [navigate, props.api]);
 	useEffect(() => {
 		if (props.bottom) {
 			setPage(prev => prev + 1);
@@ -34,8 +40,6 @@ export default function UserGifs(props: UserGifsProps) {
 			});
 		});
 	}, [props.api, done, page]);
-	const navigate = useNavigate();
-	console.log(props.api.status);
 	if (props.api.status === 401) {
 		navigate("/");
 		return;
