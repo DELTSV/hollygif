@@ -1,10 +1,10 @@
 # Kaamelott gif
 
-Un projet pour faire des gif Kaamelott (et autre potentiellement) contenant:
+Un projet pour faire des gif Kaamelott (et autre potentiellement) contenant :
 - Un bot discord
 - Un site web
 - Une API
-- Une app mobile
+- Une app mobile (Android pour le moment)
 
 ## Technologies
 
@@ -17,7 +17,7 @@ Un projet pour faire des gif Kaamelott (et autre potentiellement) contenant:
   * React
   * Tailwind
 
-## Utilisation
+## Utilisation du bot
 
 `/kaagif 'livre' 'episode' 'timecode' 'text'`
 
@@ -32,8 +32,8 @@ Un projet pour faire des gif Kaamelott (et autre potentiellement) contenant:
 ## Todo
 
 - [ ] Ajouter une commande pour upload certains gif automatiquement sur ~~tenor~~ (pas prévu, mais faisable) giphy
-- [ ] Ajouter une commande pour afficher les gifs disponible (déjà créer)
-- [ ] Améliorer le message durant la création du gif (avec des status et leur évolution)
+- [X] Ajouter une commande pour afficher les gifs disponible (déjà créer)
+- [X] Améliorer le message durant la création du gif (avec des status et leur évolution)
 - [x] Améliorer la gestion d'erreur
 - [x] Conserver les mp4 sans texte
 - [x] Sauvegarder les infos dans une base
@@ -43,7 +43,7 @@ Un projet pour faire des gif Kaamelott (et autre potentiellement) contenant:
   - [ ] Générer la première image de chaque scène d'un épisode
   - [x] Utiliser les MP4 des scènes quand ils existent pour présenter les scènes
   - [X] Sauvegarder les fichiers sur un S3
-- [ ] Ajouter ~~une réponse éphémere à la commande~~ une commande de message permettant de supprimer ou de demander la sauvegarde d'un gif
+- [X] Ajouter ~~une réponse éphémere à la commande~~ une commande de message permettant de supprimer ou de demander la sauvegarde d'un gif
 - [X] Fixer les problèmes de textes
 - [ ] Limiter la taille des textes
 - [x] Permettre un texte vide
@@ -56,4 +56,4 @@ Un projet pour faire des gif Kaamelott (et autre potentiellement) contenant:
 - [ ] Permettre de configurer le wording du bot
 - [x] Héberger les gifs sur un site pour avoir des gifs de toutes tailles
 - [x] Ajouter une commande pour voir son historique de création de gif
-- [ ] Supprimer automatiquement les gifs après un certain temps (3 jours)
+- [x] Supprimer automatiquement les gifs après un certain temps (3 jours)
