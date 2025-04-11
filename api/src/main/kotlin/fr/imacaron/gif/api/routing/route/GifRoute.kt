@@ -66,6 +66,7 @@ class GifRoute(
 				getMyGif()
 				makeGif()
 				deleteGif()
+				getTextHeight()
 			}
 		}
 	}
@@ -100,7 +101,7 @@ class GifRoute(
 					return@SSEServerContent
 				}
 				val scene = kaamelott.seasons[body.scene.episode.season.number].episodes[body.scene.episode.number].scenes[body.scene.index]
-				scene.createMeme(body.text).collect { status ->
+				scene.createMeme(body.text, body.textSize ?: 156).collect { status ->
 					send(Json.encodeToString(SceneStatus(status)))
 					status.result?.let {
 						val gifEntity = GifEntity {
@@ -221,6 +222,18 @@ class GifRoute(
 			}
 			gif.entity.delete()
 			call.respond(Response.NoContent)
+		}
+	}
+
+	private fun Route.getTextHeight() {
+		post<API.Gif.Text> {
+			val body = runCatching { call.receive<CreateGif>() }.getOrElse {
+				call.respond(Response.BadRequest)
+				return@post
+			}
+			val scene = kaamelott.seasons[body.scene.episode.season.number].episodes[body.scene.episode.number].scenes[body.scene.index]
+			val height = scene.getTextHeight(body.text, body.textSize ?: 156)
+			call.respond(Response.Ok(height))
 		}
 	}
 }

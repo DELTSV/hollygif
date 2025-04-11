@@ -117,4 +117,27 @@ class Scene(
 		}
 		sceneFile.delete()
 	}
+
+	fun getTextHeight(text: String, textSize: Int = 156): Double {
+		val sceneName = "${ep.season.number}_${ep.number}_$index"
+		val scene = "./out/$sceneName.mp4"
+		val sceneFile = File(scene)
+		runCatching {
+			val data = this@Scene.ep.season.series.s3.getFile("scene", "$sceneName.mp4")
+			sceneFile.writeBytes(data)
+		}.getOrElse {
+			FFMPEG.makeScene(
+				"./episodes/L${ep.season.number}_E${ep.number.toString().padStart(3, '0')}.mkv",
+				scene,
+				start,
+				end
+			)
+			sceneFile.readBytes().apply {
+				if(this@Scene.ep.season.series.s3.putFile("scene", "$sceneName.mp4", this)) {
+					logger.debug("Scene uploaded")
+				}
+			}
+		}
+		return FFMPEG.getTextHeight(scene, text, textSize)
+	}
 }

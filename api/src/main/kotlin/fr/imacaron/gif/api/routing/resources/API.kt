@@ -14,6 +14,9 @@ class API {
 
 		@Resource("/me")
 		class Me(val gif: Gif = Gif())
+
+		@Resource("/text")
+		class Text(val gif: Gif = Gif())
 	}
 
 	@Resource("/series")

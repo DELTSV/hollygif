@@ -99,14 +99,21 @@ export default class API {
 		return rep.data;
 	}
 
-	async createGif(scene: Scene, text: String, onMessage: (data: SceneStatus) => void) {
+	async createGif(scene: Scene, text: String, textSize: number, onMessage: (data: SceneStatus) => void) {
 		const headers = {
 			"Authorization": "Bearer " + this.token,
 			"Content-Type": "application/json"
 		}
-		const source = new SSE(this.baseURL + "/api/gif", { method: "POST", headers: headers, payload: JSON.stringify({ scene: scene, text: text }) });
+		const height = isNaN(textSize) ? 156 : textSize;
+		const source = new SSE(this.baseURL + "/api/gif", { method: "POST", headers: headers, payload: JSON.stringify({ scene: scene, text: text, textSize: height }) });
 		source.addEventListener("message", (e: SSEvent) => {
 			onMessage(JSON.parse(e.data));
 		});
 	}
+
+	async getTextSize(scene: Scene, text: string, textSize: number): Promise<number> {
+		const rep = await this.request<number>("/api/gif/text", "POST", { scene: scene, text: text, textSize: textSize });
+		return rep.data;
+	}
+
 }

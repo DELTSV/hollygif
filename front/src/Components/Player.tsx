@@ -185,7 +185,7 @@ export default function Player(props: PlayerProps) {
                             <div className={"bg-yellow-500 w-full rounded"} style={{height: (volume * 100) + "%"}}/>
                         </div>
                     </button>
-                    <GifMaker currentScene={props.scenes[currentScene]} api={props.api}/>
+                    <GifMaker currentScene={props.scenes[currentScene]} api={props.api} height={height}/>
                 </div>
 			}
 		</div>
@@ -194,7 +194,8 @@ export default function Player(props: PlayerProps) {
 
 interface TextBoxProps {
 	currentScene: Scene,
-	api: API
+	api: API,
+	height: number,
 }
 
 function GifMaker(props: TextBoxProps) {
@@ -202,6 +203,15 @@ function GifMaker(props: TextBoxProps) {
 	const container = useRef<HTMLDivElement>(null);
 	const [loading, setLoading] = useState(false);
 	const [status, setStatus] = useState("");
+	const [textSize, setTextSize] = useState("156");
+	const [textHeight, setTextHeight] = useState(199);
+	useEffect(() => {
+		if(!isNaN(parseInt(textSize))) {
+			props.api.getTextSize(props.currentScene, container.current?.innerText ?? "", parseInt(textSize)).then((res) => {
+				setTextHeight(res * props.height / props.currentScene.episode.height)
+			})
+		}
+	}, [props.api, props.currentScene, props.height, textSize]);
 	// const textAreaRef = useRef<HTMLTextAreaElement>(null);
 	// const [x, setX] = useState(50);
 	// const [y, setY] = useState(50);
@@ -230,14 +240,17 @@ function GifMaker(props: TextBoxProps) {
 				<div title={"Ceci est une prévisualisation, le gif final peut être légèrement différent"}>
 					<Info/>
 				</div>
-				<button title={"Ajouter du texte au gif"} onClick={() => {
-					setTextVisible(prev => !prev);
-				}}>
-					<Type/>
-				</button>
+				<div className={"flex gap-2"}>
+					<button title={"Ajouter du texte au gif"} onClick={() => {
+						setTextVisible(prev => !prev);
+					}}>
+						<Type/>
+					</button>
+					<input className={clsx("bg-transparent border border-yellow-500 rounded-md p-1 w-12", textVisible || "hidden")} value={textSize} onChange={(e) => { setTextSize(e.target.value)}}/>
+				</div>
 				<button className={"flex gap-2"} title={"Créer le gif"} onClick={() => {
 					setLoading(true);
-					props.api.createGif(props.currentScene, textVisible ? container.current?.innerText ?? "" : "", (data) => {
+					props.api.createGif(props.currentScene, textVisible ? container.current?.innerText ?? "" : "", parseInt(textSize), (data) => {
 						if(data.error !== undefined) {
 							setLoading(false);
 							setStatus(data.error);
@@ -262,7 +275,8 @@ function GifMaker(props: TextBoxProps) {
 				</button>
 			</div>
 			<div
-				className={clsx("absolute border-dotted p-2 bottom-8 w-full kaamelott text-5xl text-white text-center focus:outline-0", textVisible || "hidden")}
+				className={clsx("absolute border-dotted p-2 bottom-8 w-full kaamelott text-white text-center focus:outline-0", textVisible || "hidden")}
+				style={{fontSize: textHeight + "px"}}
 				contentEditable
 				ref={container}
 				// style={{top: y, left: x}}

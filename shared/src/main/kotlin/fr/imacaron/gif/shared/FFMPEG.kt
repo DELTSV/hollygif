@@ -20,8 +20,6 @@ object FFMPEG {
 			}
 		val duration = result.find { ".*Duration: [0-9:]+.*".toRegex().matches(it) }!!.let { l ->
 			"([0-9]+):([0-9]+):([0-9.]+)".toRegex().find(l)!!.groupValues.let {
-				println(l)
-				println(it)
 				it[1].toInt() * 3600 + it[2].toInt() * 60 + it[3].toDouble()
 			}
 		}
@@ -56,6 +54,25 @@ object FFMPEG {
 		} catch (e: NoSuchElementException) {
 			logger.debug("Text length: Nan")
 			logger.warn("Error getting text \"$text\" length, getting NaN")
+			Double.NaN
+		}
+	}
+
+	fun getTextHeight(scene: String, text: String, textSize: Int = 156): Double {
+		logger.debug("Getting text \"$text\" height with text size: $textSize")
+		val t = text.replace("'", "")
+		val lines =
+			"ffmpeg -i $scene -vf drawtext=fontfile=./font.otf:fontsize=$textSize:text=\'$t\':x=0+0*tw:y=0+0*print(th) -vframes 1 -f null -".runCommand()
+				.apply {
+					logger.debug(this)
+				}!!.lines()
+		return try {
+			lines.first { "^[0-9.]+$".toRegex().matches(it) }.toDouble().apply {
+				logger.debug("Text \"$text\" with text size $textSize height: $this")
+			}
+		} catch (e: NoSuchElementException) {
+			logger.debug("Text height: Nan")
+			logger.warn("Error getting text \"$text\" height, getting NaN")
 			Double.NaN
 		}
 	}

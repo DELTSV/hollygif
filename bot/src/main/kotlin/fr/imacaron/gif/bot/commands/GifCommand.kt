@@ -48,6 +48,10 @@ class GifCommand(
 				required = true
 			}
 			string("text", "Texte")
+			integer("text-size", "Taille du texte (défaut: 156)") {
+				required = false
+				minValue = 1
+			}
 		}
 	}
 
@@ -137,6 +141,10 @@ class GifCommand(
 				logger.debug("No text in command")
 				""
 			}
+			val textSize = interaction.command.integers["text-size"] ?: run {
+				logger.debug("No text-size in command")
+				156
+			}
 			val scene = ep.scenes.getSceneFromTime(time) ?: run {
 				logger.debug("Scene doesn't exist")
 				resp.respondNoScene(user, timecode)
@@ -144,7 +152,7 @@ class GifCommand(
 			}
 			logger.debug("Getting scene {}, starting at {} and last {}", scene, scene.start, scene.duration)
 			logger.debug("Creating meme")
-			scene.createMeme(text).collect {
+			scene.createMeme(text, textSize.toInt()).collect {
 				if(it.error != null) {
 					logger.debug("Creating meme failed", it.error)
 					when (it.error) {
