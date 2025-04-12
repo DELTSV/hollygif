@@ -5,35 +5,35 @@
 			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} -%kvp- %msg%n</pattern>
 		</encoder>
 	</appender>
-	<appender name="FILE_INFO" class="ch.qos.logback.core.ConsoleAppender">
-		<file>gif-api.log</file>
-		<encoder>
-			<pattern>%date %level [%thread] %logger{10} [%file:%line] -%kvp- %msg%n</pattern>
-		</encoder>
-		<filter class="ch.qos.logback.classic.filter.LevelFilter">
-			<level>DEBUG</level>
-			<onMatch>DENY</onMatch>
-			<onMismatch>ACCEPT</onMismatch>
-		</filter>
-	</appender>
-	<appender name="FILE_DEBUG" class="ch.qos.logback.core.ConsoleAppender">
-		<file>gif-api.log.extended</file>
-		<encoder>
-			<pattern>%date %level [%thread] %logger{10} [%file:%line] -%kvp- %msg%n</pattern>
-		</encoder>
-	</appender>
+<!--	<appender name="FILE_INFO" class="ch.qos.logback.core.ConsoleAppender">-->
+<!--		<file>gif-api.log</file>-->
+<!--		<encoder>-->
+<!--			<pattern>%date %level [%thread] %logger{10} [%file:%line] -%kvp- %msg%n</pattern>-->
+<!--		</encoder>-->
+<!--		<filter class="ch.qos.logback.classic.filter.LevelFilter">-->
+<!--			<level>DEBUG</level>-->
+<!--			<onMatch>DENY</onMatch>-->
+<!--			<onMismatch>ACCEPT</onMismatch>-->
+<!--		</filter>-->
+<!--	</appender>-->
+<!--	<appender name="FILE_DEBUG" class="ch.qos.logback.core.ConsoleAppender">-->
+<!--		<file>gif-api.log.extended</file>-->
+<!--		<encoder>-->
+<!--			<pattern>%date %level [%thread] %logger{10} [%file:%line] -%kvp- %msg%n</pattern>-->
+<!--		</encoder>-->
+<!--	</appender>-->
 
-	<if condition='property("DEV").contains("true")'>
-		<then>
+<!--	<if condition='property("DEV").contains("true")'>-->
+<!--		<then>-->
 			<root level="debug">
 				<appender-ref ref="STDOUT"/>
 			</root>
-		</then>
-		<else>
-			<root level="debug">
+<!--		</then>-->
+<!--		<else>-->
+<!--			<root level="debug">-->
 <!--				<appender-ref ref="FILE_INFO"/>-->
-				<appender-ref ref="FILE_DEBUG"/>
-			</root>
-		</else>
-	</if>
+<!--				<appender-ref ref="FILE_DEBUG"/>-->
+<!--			</root>-->
+<!--		</else>-->
+<!--	</if>-->
 </configuration>
