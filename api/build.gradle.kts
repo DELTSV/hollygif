@@ -1,5 +1,3 @@
-val logback_version: String by project
-
 plugins {
 	application
 	kotlin("jvm")
@@ -42,8 +40,8 @@ dependencies {
 	implementation(libs.ktor.client.auth)
 	implementation(libs.ktor.server.config.yaml)
 	implementation(libs.ktor.server.sse)
-	implementation("ch.qos.logback:logback-classic:$logback_version")
-	implementation("ch.qos.logback:logback-core:$logback_version")
+	implementation("ch.qos.logback:logback-classic:1.4.14")
+	implementation("ch.qos.logback:logback-core:1.4.14")
 	implementation(libs.janino)
 	implementation(libs.ktorm.core)
 	implementation(libs.ktorm.support.mysql)
