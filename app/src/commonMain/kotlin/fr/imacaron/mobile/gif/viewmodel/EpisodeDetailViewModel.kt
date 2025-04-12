@@ -21,7 +21,10 @@ import io.ktor.client.plugins.sse.SSE
 import io.ktor.client.plugins.sse.sse
 import io.ktor.client.request.get
 import io.ktor.client.request.header
+import io.ktor.client.request.post
 import io.ktor.client.request.setBody
+import io.ktor.client.statement.bodyAsText
+import io.ktor.client.statement.request
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpMethod
@@ -106,7 +109,7 @@ class EpisodeDetailViewModel(
 		}
 	}
 
-	suspend fun createGif(text: String) {
+	suspend fun createGif(text: String, textSize: Int) {
 		val token = getToken() ?: return
 		withContext(Dispatchers.IO) {
 			client.sse(request = {
@@ -117,7 +120,7 @@ class EpisodeDetailViewModel(
 					path("/api/gif")
 				}
 				contentType(ContentType.Application.Json)
-				setBody(Json.encodeToString(CreateGif(scenes[currentScene], text)))
+				setBody(Json.encodeToString(CreateGif(scenes[currentScene], text, textSize)))
 				header(HttpHeaders.Authorization, "Bearer $token")
 			}) {
 				while (true) {
@@ -147,6 +150,20 @@ class EpisodeDetailViewModel(
 		val response = client.get("https://gif.imacaron.fr/api/gif/$id")
 		return if(response.status == HttpStatusCode.OK) {
 			response.body<Response<Gif>>().data
+		} else {
+			null
+		}
+	}
+
+	suspend fun getTextHeight(text: String, textSize: Int): Int? {
+		val token = getToken() ?: return null
+		val response = client.post("https://gif.imacaron.fr/api/gif/text") {
+			contentType(ContentType.Application.Json)
+			setBody(CreateGif(scenes[currentScene], text, textSize))
+			header(HttpHeaders.Authorization, "Bearer $token")
+		}
+		return if(response.status == HttpStatusCode.OK) {
+			response.body<Response<Double>>().data.toInt()
 		} else {
 			null
 		}

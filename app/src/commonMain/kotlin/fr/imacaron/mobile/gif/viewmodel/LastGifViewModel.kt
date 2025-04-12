@@ -43,4 +43,8 @@ class LastGifViewModel: ViewModel() {
 		}
 		fetch(lastPage + 1)
 	}
+
+	fun delete(id: Int) {
+		lastGifs = lastGifs.filter { it.id != id }.toSet()
+	}
 }

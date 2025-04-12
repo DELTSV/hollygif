@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Card
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -35,10 +36,12 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import chaintech.videoplayer.host.MediaPlayerEvent
 import chaintech.videoplayer.host.MediaPlayerHost
@@ -64,7 +67,7 @@ import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
-fun PlayerCard(scenes: List<Scene>, currentScene: Int, onSceneClick: (Scene) -> Unit, createGif: (text: String) -> Unit, status: String) {
+fun PlayerCard(scenes: List<Scene>, currentScene: Int, onSceneClick: (Scene) -> Unit, createGif: (String, Int) -> Unit, status: String, getTextSize: suspend (String, Int) -> Int) {
 	if (scenes.isNotEmpty()) {
 		val scene = remember { scenes[currentScene] }
 		val density = LocalDensity.current
@@ -74,6 +77,8 @@ fun PlayerCard(scenes: List<Scene>, currentScene: Int, onSceneClick: (Scene) -> 
 		val url = "https://gif.imacaron.fr/api/series/${scene.episode.season.series.name}/seasons/${scene.episode.season.number}/episodes/${scene.episode.number}/scenes/$currentScene/file"
 		var text by remember { mutableStateOf("") }
 		var textDialog by remember { mutableStateOf(false) }
+		var textSize by remember { mutableStateOf("156") }
+		var realTextSize by remember { mutableStateOf(199) }
 		val host = remember {
 			MediaPlayerHost(
 				mediaUrl = url,
@@ -82,6 +87,13 @@ fun PlayerCard(scenes: List<Scene>, currentScene: Int, onSceneClick: (Scene) -> 
 		}
 		LaunchedEffect(url) {
 			host.loadUrl(url)
+		}
+		LaunchedEffect(textSize, text) {
+			if(text.isNotEmpty()) {
+				val wantedHeigthPx = getTextSize(text, textSize.toIntOrNull() ?: 156)
+				val realHeightPx = with(density) { height.toPx() }
+				realTextSize = (wantedHeigthPx * realHeightPx / scene.episode.height).toInt()
+			}
 		}
 		var time by remember { mutableStateOf(0) }
 		host.onEvent = { event ->
@@ -145,7 +157,7 @@ fun PlayerCard(scenes: List<Scene>, currentScene: Int, onSceneClick: (Scene) -> 
 					}
 				}
 				Column(Modifier.align(Alignment.BottomCenter)) {
-					Text(text, Modifier.fillMaxWidth(), textAlign = TextAlign.Center, fontFamily = getKaamelottFont(), fontSize = MaterialTheme.typography.displaySmall.fontSize)
+					Text(text, Modifier.fillMaxWidth(), textAlign = TextAlign.Center, fontFamily = getKaamelottFont(), fontSize = with(density) { realTextSize.toSp() })
 					LazyRow(Modifier.fillMaxWidth().height(16.dp), horizontalArrangement = Arrangement.spacedBy(2.dp)) {
 						scenes.forEachIndexed { index, scene ->
 							item {
@@ -175,7 +187,7 @@ fun PlayerCard(scenes: List<Scene>, currentScene: Int, onSceneClick: (Scene) -> 
 						)
 					}
 					IconButton({
-						createGif(text)
+						createGif(text, textSize.toIntOrNull() ?: 156)
 					}) {
 						Image(
 							painterResource(Res.drawable.outline_save),
@@ -194,6 +206,7 @@ fun PlayerCard(scenes: List<Scene>, currentScene: Int, onSceneClick: (Scene) -> 
 						Column(Modifier.padding(24.dp)) {
 							Text("Texte du gif", Modifier.padding(bottom = 16.dp), style = MaterialTheme.typography.headlineSmall)
 							OutlinedTextField(text, { text = it })
+							OutlinedTextField(textSize, { textSize = it }, label = { Text("Taille du texte") }, keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number), singleLine = true)
 							Row(Modifier.padding(top = 24.dp).fillMaxWidth(), horizontalArrangement = Arrangement.End) {
 								TextButton({ textDialog = false }) {
 									Text("Enregistrer")

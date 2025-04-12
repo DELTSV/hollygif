@@ -88,9 +88,9 @@ fun EpisodeDetailScreen(seriesName: String, seasonNumber: Int, episodeNumber: In
 					if(index != -1) {
 						episodeDetailViewModel.currentScene = index
 					}
-				} }, {
-					scope.launch(Dispatchers.IO) { episodeDetailViewModel.createGif(it) }
-				}, episodeDetailViewModel.status)
+				} }, { text, size ->
+					scope.launch(Dispatchers.IO) { episodeDetailViewModel.createGif(text, size) }
+				}, episodeDetailViewModel.status, { text, size -> episodeDetailViewModel.getTextHeight(text, size) ?: 199 })
 			if (episodeDetailViewModel.gifs.isNotEmpty()) {
 				val carouselState = rememberCarouselState {
 					return@rememberCarouselState ep.numberOfGif ?: 0

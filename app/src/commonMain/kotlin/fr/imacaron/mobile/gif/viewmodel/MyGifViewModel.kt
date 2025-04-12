@@ -10,10 +10,14 @@ import fr.imacaron.mobile.gif.types.Response
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.client.request.delete
 import io.ktor.client.request.get
 import io.ktor.client.request.header
 import io.ktor.http.HttpHeaders
 import io.ktor.serialization.kotlinx.json.json
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
+import kotlinx.coroutines.withContext
 
 class MyGifViewModel(pref: DataStore<Preferences>): AuthViewModel(pref) {
 	var myGif by mutableStateOf(setOf<Gif>())
@@ -48,5 +52,17 @@ class MyGifViewModel(pref: DataStore<Preferences>): AuthViewModel(pref) {
 			throw IllegalStateException("Call fetch(page) first")
 		}
 		fetch(lastPage + 1)
+	}
+
+	suspend fun delete(id: Int): Boolean {
+		val token = getToken() ?: return false
+		return withContext(Dispatchers.IO) {
+			val resp = client.delete("https://gif.imacaron.fr/api/gif/$id") {
+				header(HttpHeaders.Authorization, "Bearer $token")
+			}
+			resp.status.value == 204
+		}.also {
+			myGif = myGif.filter { it.id != id }.toSet()
+		}
 	}
 }

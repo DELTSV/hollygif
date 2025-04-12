@@ -82,7 +82,7 @@ fun App(pref: DataStore<Preferences>, navController: NavHostController = remembe
 				composable<GifView> {
 					val gifView: GifView = it.toRoute()
 					val gif: Gif = Json.decodeFromString<Gif>(gifView.gif)
-					GifViewScreen(gif, navController)
+					GifViewScreen(gif, navController, discordViewModel, myGifViewModel, lastGifViewModel)
 				}
 				composable<Series> {
 					SeriesScreen(navController)
